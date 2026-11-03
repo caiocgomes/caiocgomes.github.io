@@ -1,0 +1,62 @@
+\capitulo{2}{Quanto vale a segunda cara}
+Voltemos à gaveta das moedas viciadas. A moeda A dá cara em três de cada quatro lançamentos, e B em um de cada quatro. Escolhi uma delas ao acaso. Lanço, sai cara, e sua aposta em A passa de metade para três quartos. Você me pede que lance a mesma moeda outra vez. Ponho a mão sobre o resultado. Antes de olhar, diga uma coisa. Se tiver saído outra cara, ela valerá tanto quanto a primeira?
+
+A moeda A continua dando cara com probabilidade $3/4$, e B, com $1/4$. Nesse sentido nada mudou. Mas a primeira cara já levou metade da probabilidade que pertencia a B para a coluna de A. O que sobrou para a segunda levar?
+
+Tiro a mão. Deu cara. Em 32 mesas esperamos 16 moedas de cada tipo. Das mesas que veem a primeira cara, 12 serão de A e 4 de B, em média. Se apenas essas lançarem outra vez, esperamos que 9 das 12 mesas de A e 1 das 4 de B vejam a segunda cara.
+
+\mesas
+
+Começamos com uma mesa de A para cada uma de B. Depois da primeira cara, tínhamos três para uma. Depois da segunda, nove para uma. Nesse sentido, as duas caras fizeram exatamente a mesma coisa. Cada uma triplicou as chances a favor de A. Agora leia a coluna de A como uma fração das mesas que ainda estão na sala. Ela passou de $1/2$ para $3/4$ e depois para $9/10$. O fator que multiplicou a \emph{probabilidade} de A foi $3/2$ na primeira cara e $6/5$ na segunda. Se usássemos o primeiro fator outra vez, chegaríamos a $(3/4)(3/2)=9/8$. Acabamos de pôr mais de 100\% da probabilidade numa única moeda. Onde foi que a previsão mudou sem que déssemos conta?
+
+\secao{O que teria de acontecer para eu mudar de ideia?}
+Podemos prever essa mudança. Pergunto a quem sabe que tem a moeda A qual a chance de cara. Pergunto a você também. Se a cara sair, A ganha probabilidade quando a previa melhor do que você. Para medir de quanto foi o ganho, compare a aposta nova com a antiga por divisão. Dobrar uma aposta de dez centavos e dobrar uma de quarenta aparecem assim com o mesmo fator dois. Com $p(x)$ e $p(y)$ positivas, a igualdade dos dois preços do bilhete dá
+\[
+ W(x,y)=\frac{p(y\mid x)}{p(y)}
+       =\frac{p(x\mid y)}{p(x)}.
+\]
+À esquerda lemos quanto mudou a aposta em $y$. À direita comparamos duas previsões para $x$. As frações coincidem porque o bilhete que paga por $x$ e $y$ tem um só preço.
+
+Na primeira jogada, o dono de A dava $3/4$ para cara e você dava $1/2$. Na segunda, ele ainda dava $3/4$. E você? Entre as 16 mesas que viram a primeira cara, esperávamos que 10 vissem outra. Você já dava $10/16=5/8$ para o resultado que estava debaixo da minha mão. É daí que vem o $6/5$. Se $h$ é a história já escrita no caderno, o fator da linha seguinte é $p(x\mid y,h)/p(x\mid h)$. Repare que a história entra nas duas previsões. Se eu lhe entregasse uma fotografia da primeira jogada e avisasse que era uma fotografia, tanto você quanto o dono de A poderiam prever com certeza qual face apareceria. O fator seria $1/1$.
+
+Posso prometer que, saia o que sair na segunda jogada, vou aumentar a aposta em A? A média também subiria. Aqui uma cara leva a $9/10$ e uma coroa devolve ao empate. Com os pesos que tínhamos antes de olhar, $(5/8)(9/10)+(3/8)(1/2)=3/4$. A conta fechou antes mesmo de tirarmos a mão.
+
+Quer experimentar a conta numa observação bastante improvável? Em cada mesa ponho um envelope numerado de 000 a 999. O número vem de um sorteio uniforme, independente da moeda. Abro o seu. Saiu 731. Antes de abrir, você daria uma chance em mil a esse número. Se eu lhe tivesse contado antes que a moeda era A, daria a mesma uma em mil. Podemos devolver o envelope à gaveta sem mexer na aposta.
+
+Agora mudo uma instrução. Nas mesas que recebem A, sorteio o envelope entre os quinhentos números ímpares. Nas que recebem B, entre os quinhentos pares. As moedas continuam igualmente prováveis. Qual é a chance de sair 731 antes de você saber a letra? Ainda uma em mil. E quando sair? Conhecida a moeda A, a chance do 731 era uma em quinhentas. O fator a favor de A é dois, exatamente o que faltava para levar sua probabilidade de $1/2$ a um. A única coisa que mudei entre os dois jogos foi a relação do número com aquilo que você queria descobrir. Um livro de registros que guardasse apenas o histograma dos números pareceria igual nos dois.
+
+\secao{O preço de olhar}
+Se alguém cobrar para abrir o envelope, temos de escolher quanto pagar antes de saber o resultado. Vou propor uma unidade para fazer essa conta. Ao fim da rodada, revelo a letra. Se você havia dado certeza à letra que saiu, não paga nada. Se lhe havia dado metade, paga um ponto. Se havia dado metade da metade, paga dois. Quanto custaria ter apostado um oitavo na letra certa?
+
+Imagine que eu divida uma revelação em duas etapas. Você deu $1/2$ à primeira resposta e, sabendo dela, $1/4$ à segunda. Para acertar o par era preciso passar pelos dois filtros. A probabilidade que você deu ao par foi $1/8$. Posso lhe entregar uma conta de três pontos ou duas contas, uma de um ponto e outra de dois. Você pagou o mesmo. É para isso que quero o logaritmo. Ele conta quantas metades separam a sua aposta da certeza. Para $1/8$ são três metades exatas. Para uma aposta entre $1/4$ e $1/2$, a régua dá um número entre um e dois. Na notação matemática, se $r=2^{-c}$, a cobrança é $c=-\log_2 r$. Escolhemos o dois porque quisemos cobrar um ponto por metade.
+
+Agora anote o preço de olhar. Se descobrir a face fez você dobrar a aposta na letra que acabou saindo, economizou uma metade, qualquer que fosse a aposta de partida. Triplicar também deve valer o mesmo onde quer que você comece. Por isso interessa o fator pelo qual a aposta mudou. A economia é a cobrança de antes menos a de depois,
+\[
+ \underbrace{-\log_2 p(y)}_{\text{antes}}
+ -\underbrace{\big[-\log_2 p(y\mid x)\big]}_{\text{depois}}
+ =\log_2\frac{p(y\mid x)}{p(y)}=\log_2 W(x,y).
+\]
+
+Você pode até sair no prejuízo. Se tirei B e por acaso saiu cara, você baixou a aposta na moeda que vou lhe mostrar de $1/2$ para $1/4$. Espiar aquela cara lhe custou um ponto a mais. Isso ocorre num quarto das rodadas se incluirmos também o caso simétrico de A dar coroa. Nos outros três quartos, você aumenta a probabilidade da letra certa de $1/2$ para $3/4$. A economia média é $(3/4)\log_2(3/2)+(1/4)\log_2(1/2)$, cerca de $0{,}189$ ponto. Se a banca cobra $0{,}2$ ponto pelo direito de espiar, em média você paga mais do que economiza.
+
+Essa economia esperada é a \emph{informação mútua}, em bits se usamos logaritmos de base dois. Cada par de resultado e hipótese entra com o peso da sua probabilidade conjunta,
+\[
+ I(X;Y)=\sum_{x,y:\,p(x,y)>0}p(x,y)\log_2 W(x,y).
+\]
+Podemos também calcular o que esperaríamos pagar antes de observar e subtrair o que esperaríamos pagar depois. Imagine cem rodadas feitas com a aposta $q$ em A. Em cerca de $100q$ delas você pagaria pela probabilidade que deu a A. Nas restantes, pagaria pela que deu a B. Dividindo a conta pelas cem rodadas, chegamos à cobrança média teórica $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, a \emph{entropia} de uma aposta binária. No empate, $h(1/2)=1$ bit. Quando sabemos a resposta, a letra que sairá tem probabilidade um e a cobrança é zero.
+
+\secao{A melhor pergunta a fazer à moeda}
+Das caixas Comum e Dupla, ainda não sabemos qual saiu. Mas vimos uma cara. Se foi a Dupla, temos na mão a moeda de duas caras. Vale mais devolver a moeda e sortear de novo na mesma caixa, relançar a que ficou na mesa ou virá-la?
+
+Ao devolver a moeda e sortear de novo, qualquer face continua igualmente provável nas duas caixas. Sobra um bit de dúvida. Ao virar a moeda, uma coroa do outro lado identifica a Comum e uma cara identifica a Dupla. A próxima aposta na caixa certa já terá probabilidade um.
+
+Ao relançar a mesma moeda, em metade das mesas a caixa é Dupla e outra cara é certa. Na metade da Comum, metade verá coroa. Assim, uma coroa ocorre em $1/4$ das mesas e resolve a questão. Entre os $3/4$ que verão cara, a fração da Dupla será $(1/2)/(3/4)=2/3$. Após o lançamento, pagaremos em média $(3/4)h(2/3)$ ponto pela caixa, já que uma coroa deixou a resposta certa. Dos três gestos que você podia escolher, o primeiro vale zero bit, o segundo vale $1-(3/4)h(2/3)\simeq0{,}311$ bit e o terceiro vale um bit.
+
+Compare os extremos. Ao devolver a moeda, temos metade de chance de ver cara. Ao virá-la, também. Os dois gestos produzem o mesmo histograma de faces. Só um deles permite descobrir a caixa.
+
+\begin{quadro}{Antes de pedir mais um dado}
+\itemq{Se ele chegar} Compare o que a hipótese previa para o resultado com o que você previa antes de olhar. A razão multiplica a probabilidade da hipótese.
+\itemq{Se ainda puder escolher a observação} Imagine os resultados que cada hipótese produziria. A média de $\log_2 W(x,y)$ sobre essas possibilidades mede quanto vale observar antes de apostar, sob a cobrança logarítmica.
+\end{quadro}
+
+Quem nos contou que a moeda A dá cara em três quartos dos lançamentos?

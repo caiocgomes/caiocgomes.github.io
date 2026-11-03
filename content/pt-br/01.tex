@@ -1,0 +1,133 @@
+\capitulo{1}{O que se aprende com uma cara}
+\textbf{Temos passado por uma época em que se fala muito de Inteligência Artificial e de \emph{Machine Learning} (Aprendizado de Máquina).} Com isso, várias perguntas surgem. Os modelos que vemos agora são inteligentes? São artificiais? E eles realmente aprendem?
+
+Eu acredito que discutir essas coisas sem dizer o que entendemos por elas é um caminho fadado ao fracasso. Inteligência e aprendizado me parecem ligados, então vou começar pelo que consigo pôr à prova. Já a ideia de artificial acho que é clara pra todo mundo, e não vejo muito ganho para a estatística em tentar decidir o que ela significa neste caso.
+
+\textbf{Chamaremos de aprendizado o processo \(\mathcal F\) que incorpora uma observação \(x\) ao que sabemos sobre \(Y\).} Vou representar esse conhecimento por uma distribuição de probabilidades. Antes de ver o dado, ela é \(p\). Depois, será \(\mathcal P\). Para qualquer hipótese \(y\), escrevemos
+\[
+ p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
+ \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
+\]
+Em $\mathcal P(y)$ leio sua aposta depois de ver o dado. Em $\mathcal F$ leio também o que você teria feito se o dado fosse outro. Que relação deve haver entre essas respostas?
+
+\begin{quadro}{A hipótese atômica destas notas}
+\textbf{Aprender é conservar a coerência das apostas sob novos dados.}
+
+O dado pode mudar o preço de um bilhete. Antes de olhar, você pode avaliá-lo diretamente ou fazer a média dos preços que daria depois de cada resultado, levando em conta a chance de cada um. As duas contas devem dar o mesmo preço.
+\end{quadro}
+
+Sorteio com chances iguais a moeda A ou a moeda B. Seu bilhete paga um real se escolhi A. Você o compra ou vende por cinquenta centavos. Antes de eu lançar a moeda, você já me diz por quanto compraria o bilhete de volta. \emph{Oitenta centavos se sair cara. Sessenta se sair coroa.}
+
+Compro por cinquenta e combinamos a revenda. Ganho trinta centavos se der cara, dez se der coroa. O que precisei saber sobre as moedas para garantir esse ganho?
+
+Nem precisei saber com que frequência dão cara. Os seus três preços já me garantiam o ganho. Experimente fazer hoje a conta de quanto valerá o bilhete assim que eu mostrar a face. Dê aos oitenta centavos o peso da chance de sair cara e aos sessenta o peso da chance de sair coroa. Que pesos fariam essa média chegar a cinquenta? Você pode descobrir que há um erro sem saber ainda os preços certos. Vamos guardar esse teste. Ele voltará a nos servir quando as apostas vierem de um modelo de classificação.
+
+Quando chegam dados em sequência, escrevemos $p_t=\mathcal F(p_{t-1};x_t)$. Um sistema que usa o que observa para rever suas previsões é o que chamaremos aqui de inteligente. Até onde o teste nos leva quando conhecemos as moedas?
+
+\secao{Quanto você cobraria pelo bilhete?}
+Agora eu lhe conto como são as moedas da gaveta. A moeda A dá cara em três quartos dos lançamentos, e a moeda B em um quarto. O sorteio continua meio a meio. Uma vez escolhida a moeda, os lançamentos são independentes. Você vê as faces e quer descobrir qual moeda está na minha mão.
+
+Sai cara. Antes de continuar, escreva o preço que você considera justo pagar por um bilhete que rende quatro reais se for A e zero se for B. Neste jogo, preço justo é o pagamento médio em muitas mesas iguais. Se você dá a A uma probabilidade \(q\), esse preço é \(4q\) reais. Podemos discordar sobre o preço e ainda assim concordar que A é a letra mais provável. Como vamos decidir se um dos preços merece mais confiança?
+
+Vamos construir dois aprendizes. Ambos guardam as \emph{chances a favor de A}, o quociente \(r=p(A)/p(B)\). Chances de dois para um dão duas das três partes a A, portanto \(p(A)=2/3\). Em geral, \(p(A)=r/(1+r)\). O sorteio da gaveta põe os dois cadernos inicialmente em \(r=1\).
+
+Façamos um pedido sobre a força de uma cara. Você e eu conhecemos as mesmas moedas, mas podemos ter ouvido coisas diferentes sobre o sorteio. Suas chances a favor de A são o dobro das minhas. Se virmos juntos a mesma face, pedimos que continuem sendo o dobro. Use meu caderno como régua. Se eu partir de um empate e você de chances cinco vezes maiores, sua resposta valerá cinco vezes a minha. Em símbolos, se $f_C$ incorpora a cara, pedimos $f_C(kr)=kf_C(r)$. Faça o caderno de referência começar empatado, em $r=1$. Chamando de $a$ o que a cara faz com esse empate, obtemos $f_C(k)=ka$. Basta conhecer um número. Escolhemos \(a>1\) porque uma cara favorece A. Como as moedas trocam de papel quando trocamos as faces, exigimos também que uma coroa desfaça o efeito de uma cara. A coroa divide as chances por \(a\).
+
+Você programa seu aprendiz com \(a=2\) e eu programo o meu com \(a=4\). Depois da cara que vimos, o seu dá \(2/3\) para A, e o meu dá \(4/5\). Se eu lhe oferecer o bilhete por três reais, seu programa recusa a compra. O meu aceita. Podemos pôr os dois à prova lançando a moeda até que discordem sobre a letra?
+
+Veja o que escreverão depois de \(C\) caras e \(K\) coroas. As chances que começaram em um alcançam \(a^{C-K}\). Sempre que há mais caras, ambos escolhem A. Sempre que há mais coroas, ambos escolhem B. Com muitos lançamentos independentes da moeda A, a fração de caras tende a \(3/4\) com probabilidade um. A diferença \(C-K\) cresce sem limite. Sob B ela tende a menos infinito. Nossos programas acabam atribuindo probabilidade tão próxima de um quanto quisermos à moeda verdadeira. Se a prova é descobrir qual moeda está na gaveta, os dois aprendem. Só que o bilhete vence hoje. Que razão temos para aceitar o preço que cada um escreveu?
+
+\secao{Você confiaria o caixa ao seu aprendiz?}
+Peça aos dois aprendizes que anunciem, antes do lançamento, quanto darão a A se sair cara e quanto darão a A se sair coroa. A única notícia que vão receber é a face. Quando ela sair, separaremos as mesas em dois grupos. Posso contar quantas moedas A havia antes de separá-las ou contar as de cada grupo e somar. Se os números nos cadernos querem dizer a fração de A que esperamos encontrar, a média das duas apostas anunciadas, ponderada pela chance de cada face, tem de recuperar a aposta inicial.
+
+Faça o teste com o sorteio meio a meio. Cara e coroa têm a mesma chance de sair. Depois de cara o aprendiz escreve $a/(1+a)$, depois de coroa escreve $1/(1+a)$. A média é $1/2$. Passa o seu programa com $a=2$, passa o meu com $a=4$ e passa até um terceiro, que anota $1/2$ e vai embora antes do lançamento. Os três passam pelo teste que derrubou os preços de oitenta e sessenta centavos. E se agora puséssemos dinheiro no caixa do seu programa?
+
+Vou mudar só o sorteio. Ponho num saco duas fichas A e uma B. A cada rodada tiro uma ao acaso, lanço a moeda indicada e mostro a face. Devolvo a ficha. O aprendiz começa toda vez com chances de dois para um a favor de A, e continua usando $a=2$. Ele me vende por $120\times 2/3=80$ reais um bilhete que paga 120 reais se a ficha for A e zero se for B. Combinamos a revenda assim que sair a face, pelo preço que a regra dele indicar.
+
+Pegue o lápis. Com cara, as chances sobem de dois para um a quatro para um. Ele me paga $120\times 4/5=96$ reais para reaver o bilhete que vendeu por 80. Faltam 16 no caixa. Com coroa, as chances caem para um a um. Quanto sobra? Ele me paga 60 e embolsa 20. Como o bilhete voltou para a mão dele, podemos fechar o caixa das trocas sem saber a letra na ficha.
+
+Simulei 24 rodadas. Nas primeiras cinco só deu cara. Você já perdeu oitenta reais. Na sexta vem, enfim, uma coroa. Quanto ela lhe devolve? Faça você as duas trocas seguintes, ambas com cara, antes de conferir o saldo. Aqui estão as 24 faces, com $C$ para cara e $K$ para coroa.
+% Reprodução desta simulação: Python, random.Random(42). Em cada rodada,
+% A se randrange(3) < 2; em seguida, C se randrange(4) < (3 se A, 1 se B).
+\begin{center}
+{\small
+\begin{tabular}{@{}lcrr@{}}
+\toprule
+Rodadas & Faces em ordem & Ganho do aprendiz (R\$) & Saldo (R\$) \\
+\midrule
+1 a 8 & \texttt{CCCCCKCC} & $-92$ & $-92$ \\
+9 a 16 & \texttt{CKKKKCKC} & $+52$ & $-40$ \\
+17 a 24 & \texttt{CCKCCKCC} & $-56$ & $-96$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+Nas oito rodadas seguintes ele recuperou 52 reais. Se tivéssemos olhado só aquelas oito rodadas, talvez você quisesse ficar do lado dele. Ao fim das 24, ficaram 96 reais comigo. Dei sorte? Para responder, cubra a tabela. Que conta você faria \emph{antes} de sortear a primeira ficha?
+
+Em dois terços dos sorteios tiramos A, que dá cara três quartos das vezes. No terço restante tiramos B, que dá cara um quarto das vezes. A chance de cara numa rodada é $(2/3)(3/4)+(1/3)(1/4)=7/12$. A de coroa é $5/12$. Agora feche o caixa de uma rodada ainda por jogar,
+\[
+    \tfrac{7}{12}(-16)+\tfrac{5}{12}(20)=-1\ \text{real}.
+\]
+Em 24 rodadas eu esperava ganhar 24 reais. Ganhei 96. A sorte me ajudou. Mas de onde vinha aquele real por rodada que eu podia prever antes de qualquer sorteio? Seu aprendiz me vendia por 80 reais um bilhete que, pelos preços dele e pelas chances das faces, esperava recomprar por 81.
+
+\secao{Que fator fecharia o caixa?}
+Apague o 2 da regra e deixe $a$ no lugar. Se sair cara, as chances da ficha A passam de $2$ para $2a$, o que dá probabilidade $2a/(1+2a)$. Se sair coroa, as chances caem para $2/a$. Escreva a probabilidade correspondente antes de continuar. Quanto deveria valer, na média, a recompra de um bilhete que o aprendiz considera justo vender por 80 reais?
+
+Divida os preços por 120 para voltar às probabilidades. Para recuperar os $2/3$ iniciais, precisamos que
+\[
+\underbrace{\tfrac{7}{12}\,\tfrac{2a}{1+2a}}_{\text{se sair cara}}
++\underbrace{\tfrac{5}{12}\,\tfrac{2}{a+2}}_{\text{se sair coroa}}
+=\tfrac{2}{3}.
+\]
+Dá para fechar o caixa sem sequer abrir os olhos. Com $a=1$ ninguém mexe no preço. Mas havíamos pedido que uma cara favorecesse A. Nesse caso, o preço sobe depois de cara e desce depois de coroa. Para o caixa fechar, quanto a descida precisa compensar? Pense em doze rodadas nas proporções esperadas. Há sete subidas para cinco descidas. Cada descida precisa, portanto, ser $7/5$ de uma subida. Com $a=2$, cada alta era de 16 reais e cada queda de 20. Experimente pôr sete moedas de 16 num prato da balança e cinco de 20 no outro. A diferença de doze reais é aquele real por rodada que encontramos no caixa.
+
+Vamos pesar as duas mudanças para um $a$ qualquer. Meça o deslocamento a partir de $2/3$, em unidades de probabilidade. Depois de cara, tire os $2/3$ do preço novo. Depois de coroa, faça a subtração no outro sentido para medir o tamanho da queda. Obtemos
+\[
+ \text{alta}=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},
+ \qquad
+ \text{queda}=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+\]
+As duas têm o mesmo fator $2(a-1)/3$. Como $a>1$, podemos tirá-lo dos dois pratos, assim como poderíamos trocar reais por centavos sem alterar o equilíbrio. Para que a queda seja $7/5$ da alta, resta pedir
+\[
+ \frac{\text{queda}}{\text{alta}}=\frac{1+2a}{a+2}=\frac75.
+\]
+Cinco vezes $1+2a$ tem de ser sete vezes $a+2$. De cada lado retire $7a$ e depois 5. Sobram $3a$ de um lado e 9 do outro. A cara precisa multiplicar as chances por três.
+
+Experimente o fator 3 nas mesmas 24 rodadas. Depois de cara ele dá $6/7$ para A, e depois de coroa, $2/5$. Nas dezesseis caras e oito coroas da nossa fita, o prejuízo do aprendiz \emph{aumenta} para cerca de R\$\,109,71. Teria sido melhor ficar com o 2? Faça a conta antes de conhecer a fita. Com o fator 3, os preços de recompra pesados pelas chances das faces dão $120[(7/12)(6/7)+(5/12)(2/5)]=80$ reais. Foi essa a igualdade que exigimos. Uma sequência de 24 lançamentos pode custar dinheiro até a quem fez a conta certa.
+
+\secao{O mesmo bilhete em duas ordens}
+Volte ao sorteio meio a meio, no qual até o colega que ignorava a face passava pelo teste da média. Será que conseguimos descobrir o erro dele sem trocar a gaveta, só mudando o que está escrito no bilhete?
+
+Escrevo num bilhete novo a condição de pagamento. \emph{Pague um real se a moeda for A e o lançamento der cara.} Ele vale zero nas outras mesas. Quero saber quanto esse papel paga em média antes de alguém olhar a face ou a moeda. Comece pelas letras. Metade das mesas recebe A e, entre elas, três quartos dão cara. O bilhete paga em $3/8$ de todas as mesas. Anote esse preço.
+
+Agora pegue o mesmo bilhete e comece pelas faces. Metade das mesas dá cara. Nessas, quanto deveria valer um papel que paga um real se a letra escondida for A? Chame sua resposta de $q_C$. Nas mesas que deram coroa o bilhete já vale zero. O preço que se obtém por esse caminho é $(1/2)q_C$. Alguém trocou o bilhete enquanto fazíamos a conta? Então,
+\[
+       \underbrace{\tfrac12\,\tfrac34}_{\text{primeiro a letra}}
+       =\underbrace{\tfrac12\,q_C}_{\text{primeiro a face}},
+       \qquad q_C=\tfrac34 .
+\]
+Nosso colega que nunca muda de ideia avaliaria o papel em $3/8$ de real quando começa pela letra e em $1/4$ de real quando começa pela face. As probabilidades dele somam um. Suas apostas futuras até recuperam a atual em média. Mas ele pôs dois preços no mesmo papel, embora conheça as regras da gaveta. Conseguimos agora apontar com o dedo o que há de errado em ignorar aquela cara. Já o preço $q_C=3/4$ corresponde a três contra um. Encontramos o mesmo fator 3 na gaveta meio a meio. Bastou pedir um preço para uma aposta que só paga dentro do grupo das caras. Volte ao bilhete que pagava quatro reais por A. Depois de vermos cara, ele valia mesmo três reais.
+
+\begin{quadro}{O que pedimos ao operador \(\mathcal F\)}
+\itemq{Para incorporar o dado} A nova distribuição reparte uma unidade entre as hipóteses. Um registro que nada acrescenta ao que já sabemos sobre $Y$ preserva a aposta. É o caso de uma fotocópia declarada do primeiro lançamento. Com memória suficiente, posso interromper a conta e retomá-la de onde parei.
+\itemq{Para as moedas desta gaveta} Uma cara multiplica as chances por um fator $a>1$, qualquer que seja a aposta inicial. Pela simetria escolhida, uma coroa divide as chances pelo mesmo fator.
+\itemq{Para dar preço a uma aposta condicional} O bilhete que paga quando ocorrem $x$ e $y$ precisa ter o mesmo preço calculado nas duas ordens. Nessas moedas, isso fixa $a=3$. Somar os preços desses bilhetes sobre todos os resultados recupera a aposta inicial na hipótese.
+\end{quadro}
+
+Podemos tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
+\[
+ [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
+ =\frac{p(x\mid y)p(y)}{p(x)},\quad
+ p(x)=\sum_{y'}p(x\mid y')p(y').
+\]
+Vamos parar aqui um instante. Chegamos à fórmula de Bayes por um caminho pouco usual. Primeiro perguntamos o que seria aprender e encontramos regras distintas que descobrem a moeda certa. Só quando pedimos que cada aposta anuncie um preço compatível com as demais apostas sobre o mesmo experimento apareceu essa regra em particular. Vamos voltar a ela logo mais para ver o que ensina quando a lemos pelas lentes do aprendizado.\footnote{P. G. Bissiri, C. C. Holmes e S. G. Walker estudam atualizações baseadas em funções de perda em \href{https://doi.org/10.1111/rssb.12158}{\emph{A General Framework for Updating Belief Distributions}} (2016).}
+
+\secao{Escolha a próxima observação}
+Vou trocar a gaveta por duas caixas. Na \emph{Comum} há duas moedas equilibradas, cada uma com uma cara e uma coroa. Na \emph{Dupla} há uma moeda de duas caras e outra de duas coroas. Sorteio a caixa, sorteio dentro dela uma moeda, ambas as escolhas com chances iguais, e lanço a moeda. Você vê cara. Quanto aposta agora na caixa Dupla?
+
+Continua em \(1/2\). Nas duas caixas, metade dos primeiros lançamentos dá cara. Mesmo assim, veja o que acabou de acontecer dentro da Dupla. Se a moeda veio dali, você já sabe qual das duas está na mesa. De onde ela veio continua em aberto, mas já há uma previsão a fazer sobre o outro lado da moeda.
+
+Eu lhe dou o direito a uma observação. Posso devolver a moeda à caixa, sortear de novo e lançar. Posso relançar a que está na mesa. Com a devolução recomeçamos o sorteio e qualquer caixa dá cara com probabilidade \(1/2\). Com a mesma moeda, uma coroa elimina a Dupla. Se o que você quer descobrir é qual caixa escolhi, em qual dos dois experimentos gastaria a sua vez?
+
+Pode ser que você queira me fazer uma pergunta antes de escolher. \emph{Com a moeda aí na mesa, eu posso simplesmente virá-la?}
+
+Pode.

@@ -1,0 +1,133 @@
+\capitulo{1}{What Can We Learn from a Coin Toss?}
+\textbf{There is a lot of talk these days about artificial intelligence and \emph{machine learning}.} It raises a few questions. Are the models we see today intelligent? Are they artificial? And do they actually learn?
+
+I think we are bound to get nowhere if we discuss these things without saying what we mean by them. Intelligence and learning seem connected to me, so I will start with the one I can put to the test. I think we all have a fair idea of what artificial means here, and I doubt that statistics has much to gain from settling that question.
+
+\textbf{We will call learning the process \(\mathcal F\) that incorporates an observation \(x\) into what we know about \(Y\).} I will use a probability distribution to represent that knowledge. Before we see the observation, the distribution is \(p\). Afterward, it will be \(\mathcal P\). For any hypothesis \(y\), we write
+\[
+ p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
+ \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
+\]
+From $\mathcal P(y)$ I can read off your bet once you have seen the outcome. From $\mathcal F$ I can also tell what you would have done if the outcome had been different. How should those answers fit together?
+
+\begin{quadro}{The atomic hypothesis of these notes}
+\textbf{To learn is to keep our bets coherent as new data arrive.}
+
+An observation can change the price of a ticket. Before you look, you can price the ticket directly, or you can average the prices you would give after each possible outcome, weighting each by its chance of occurring. The two calculations should give the same price.
+\end{quadro}
+
+I pick one of two coins, A or B, with equal probability. Your ticket pays one Brazilian real if I picked A. You will buy or sell it for fifty centavos. Before I toss the coin, you tell me how much you would pay to buy the ticket back. \emph{Eighty centavos if it comes up heads. Sixty if it comes up tails.}
+
+I buy it for fifty, and we agree on those terms for selling it back. I make thirty centavos on heads and ten on tails. What did I have to know about the coins to guarantee myself a profit?
+
+I did not even need to know how often they come up heads. Your three prices had already secured my profit. Try working out now what the ticket will be worth as soon as I show you the result. Weight the eighty centavos by the chance of heads and the sixty by the chance of tails. What weights could bring that average down to fifty? You can spot a mistake before you know the right prices. Keep that test handy. We will use it again when a classification model is making the bets.
+
+When observations arrive in sequence, we write $p_t=\mathcal F(p_{t-1};x_t)$. Here we will call a system intelligent if it can use what it observes to revise its predictions. How far can the test take us when we do know the coins?
+
+\secao{How much would you charge for the ticket?}
+Now I will tell you about the coins in the drawer. Coin A comes up heads on three-quarters of its tosses, and coin B on one-quarter. Each still has a fifty-fifty chance of being picked. Once I pick the coin, its tosses are independent. You see the outcomes and want to find out which coin I am holding.
+
+Heads. Before you read on, write down what you think is a fair price for a ticket that pays four reais if I am holding A and zero if I am holding B. In this game, a fair price is the average payout at many tables playing under the same rules. If you give A a probability of \(q\), that price is \(4q\) reais. We can disagree on the price and still agree that A is the more likely letter. How could we decide whether one price deserves more confidence than the other?
+
+Let us build two learners. Both keep track of the \emph{odds in favor of A}, the ratio \(r=p(A)/p(B)\). Odds of two to one give A two shares out of three, so \(p(A)=2/3\). In general, \(p(A)=r/(1+r)\). Our draw from the drawer starts both notebooks at \(r=1\).
+
+Let us ask how much weight a single toss should carry when it comes up heads. You and I know the same two coins, but we may have heard different things about how the coin was picked. Your odds in favor of A are twice mine. If we see the same toss together, we ask that your odds still be twice mine. Use my notebook as your ruler. If I start at even odds and your odds are five times mine, your answer should still be five times mine. In symbols, if $f_H$ incorporates the observation of heads, we ask for $f_H(kr)=kf_H(r)$. Start the reference notebook at a tie, $r=1$. Call the odds after a head breaks that tie $a$. Then $f_H(k)=ka$. We only need to know one number. We choose \(a>1\) because heads favors A. Swapping heads and tails swaps the roles of our two coins, so we also ask that seeing tails undo the effect of seeing heads. Tails divides the odds by \(a\).
+
+You program your learner with \(a=2\) and I program mine with \(a=4\). After the heads we saw, yours gives A a probability of \(2/3\) and mine gives it \(4/5\). If I offer you the ticket for three reais, your program turns me down. Mine would buy. Could we put them to the test by tossing the coin until they disagree about the letter?
+
+See what they will write after \(H\) heads and \(T\) tails. The odds that started at one have reached \(a^{H-T}\). Whenever there are more heads, both choose A. Whenever there are more tails, both choose B. With many independent tosses of coin A, the fraction of heads approaches \(3/4\) with probability one. The difference \(H-T\) grows without bound. With B, it tends to minus infinity. Both programs eventually assign a probability as close to one as we please to the coin we actually picked. If the test is to identify the coin from the drawer, they both learn. But the ticket pays out today. What grounds do we have for accepting either price?
+
+\secao{Would you let your learner mind the till?}
+Ask both learners to announce, before the toss, the probability they will give A if the result is heads and the probability they will give A if it is tails. The only news they will get is the outcome of the toss. Once it comes in, we will sort the tables into two groups. I can count the A coins before I sort the tables, or I can count them in each group and add. If the numbers in the notebooks mean the fraction of A coins we expect to find, the average of the two announced bets, weighted by the chance of each outcome, must recover the original bet.
+
+Try it when A and B are equally likely. Heads and tails are equally likely, too. After heads the learner writes $a/(1+a)$, and after tails it writes $1/(1+a)$. The average is $1/2$. Your program passes with $a=2$, mine passes with $a=4$, and so does a third learner who writes down $1/2$ and walks away before the toss. All three pass the test that caught the prices of eighty and sixty centavos. How about putting some money in your program's till?
+
+I will change only the draw. I put two A tokens and one B token in a bag. Each round I draw a token at random, toss the coin it names, and show you how it lands. I put the token back. The learner starts every round with odds of two to one in favor of A and still uses $a=2$. It sells me a ticket for $120\times 2/3=80$ reais. The ticket pays 120 reais if the token is A and zero if it is B. We agree that it will buy the ticket back as soon as we see the toss, at the price its rule calls for.
+
+Grab a pencil. On heads the odds go from two to one to four to one. The learner pays me $120\times 4/5=96$ reais to get back the ticket it just sold for 80. The till is down 16. On tails the odds drop to one to one. How much is left over? The learner pays me 60 and pockets 20. Since it ends up with the same ticket it started with, we can settle the accounts for our trades without knowing which letter was on the token.
+
+I simulated 24 rounds. The first five were all heads. You are already down eighty reais. On the sixth round the coin finally comes up tails. How much does that put back in your till? Work through the next two trades, both heads, before you check your balance. Here are all 24 outcomes, with $H$ for heads and $T$ for tails.
+% To reproduce the simulation, use Python's random.Random(42). In each round,
+% draw A if randrange(3) < 2, then heads if randrange(4) < (3 if A, 1 if B).
+\begin{center}
+{\small
+\begin{tabular}{@{}lcrr@{}}
+\toprule
+Rounds & Tosses in order & Learner's gain (R\$) & Balance (R\$) \\
+\midrule
+1 to 8 & \texttt{HHHHHTHH} & $-92$ & $-92$ \\
+9 to 16 & \texttt{HTTTTHTH} & $+52$ & $-40$ \\
+17 to 24 & \texttt{HHTHHTHH} & $-56$ & $-96$ \\
+\bottomrule
+\end{tabular}}
+\end{center}
+Over the next eight rounds the learner won back 52 reais. If those were the only eight we had watched, you might have wanted to take its side. At the end of all 24, I was up 96 reais. Did I get lucky? Cover the table to answer that one. What calculation could you have done \emph{before} I drew the first token?
+
+In two-thirds of the draws we get A, which comes up heads three-quarters of the time. In the other third we get B, which comes up heads one-quarter of the time. The chance of heads in a round is $(2/3)(3/4)+(1/3)(1/4)=7/12$. The chance of tails is $5/12$. Now balance the learner's till for a round we have yet to play,
+\[
+    \tfrac{7}{12}(-16)+\tfrac{5}{12}(20)=-1\ \text{real}.
+\]
+Over 24 rounds I expected to make 24 reais. I made 96. Luck helped. But where did that one real per round come from, the one I could see coming before I drew anything? Your learner sold me for 80 reais a ticket that, at its own prices and given the chances of heads and tails, it expected to buy back for 81.
+
+\secao{What factor would balance the books?}
+Rub out the 2 in the rule and put $a$ in its place. If the toss is heads, the odds of the A token go from $2$ to $2a$, giving a probability of $2a/(1+2a)$. If it is tails, the odds fall to $2/a$. Write down the corresponding probability before you go on. On average, what should the learner pay to buy back a ticket it considers fair to sell for 80 reais?
+
+Divide the prices by 120 to get back to probabilities. To recover the original $2/3$, we need
+\[
+\underbrace{\tfrac{7}{12}\,\tfrac{2a}{1+2a}}_{\text{on heads}}
++\underbrace{\tfrac{5}{12}\,\tfrac{2}{a+2}}_{\text{on tails}}
+=\tfrac{2}{3}.
+\]
+You can balance the books with your eyes shut. With $a=1$ nobody ever changes a price. But we asked that heads favor A. In that case the price goes up on heads and down on tails. How far does it need to go down for the books to balance? Picture twelve rounds in the expected proportions. There are seven rises for every five drops. Each drop must therefore be $7/5$ the size of a rise. With $a=2$, each rise was 16 reais and each drop was 20. Put seven coins worth 16 apiece on one pan of a scale and five worth 20 on the other. The difference of twelve reais is the one real per round we found in the till.
+
+Let us weigh the two changes for any $a$. Measure the distance from $2/3$ in units of probability. After heads, subtract $2/3$ from the new price. After tails, subtract the other way around to find the size of the drop. We get
+\[
+ \text{rise}=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},
+ \qquad
+ \text{drop}=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+\]
+Both changes contain the same factor $2(a-1)/3$. Since $a>1$, we can take that factor off both pans, just as we could change from reais to centavos without tipping the scales. For the drop to be $7/5$ the size of the rise, what remains is
+\[
+ \frac{\text{drop}}{\text{rise}}=\frac{1+2a}{a+2}=\frac75.
+\]
+Five times $1+2a$ must equal seven times $a+2$. Subtract $7a$ from both sides and then subtract 5. You have $3a$ on one side and 9 on the other. Heads has to multiply the odds by three.
+
+Try a factor of 3 on the same 24 rounds. After heads the learner gives A a probability of $6/7$, and after tails, $2/5$. On the sixteen heads and eight tails we recorded, the learner's loss \emph{increases} to about R\$\,109.71. Would we have been better off sticking with 2? Do the calculation before you know the sequence. With a factor of 3, the buyback prices weighted by the chances of the two outcomes give $120[(7/12)(6/7)+(5/12)(2/5)]=80$ reais. That was the equality we asked for. A run of 24 tosses can cost you money even when you get the calculation right.
+
+\secao{One ticket, two ways of counting}
+Go back to the fifty-fifty draw, where even our colleague who ignored the toss passed the average-price test. Can we spot the mistake without changing the drawer, simply by changing what we write on the ticket?
+
+I write the terms on a fresh ticket. \emph{Pay one real if the coin is A and the toss comes up heads.} It pays zero at all other tables. I want to know what this slip of paper pays on average before anyone sees the letter or the toss. Start with the letters. Half the tables get A and, of those, three-quarters get heads. The ticket pays at $3/8$ of all the tables. Write down that price.
+
+Now take the same ticket and start with the tosses. Half the tables get heads. At those tables, how much should a ticket be worth if it pays one real when the hidden letter is A? Call your answer $q_H$. At the tables that got tails, the ticket is already worth zero. The price by this route is $(1/2)q_H$. Did anybody switch tickets on us while we were counting? Then
+\[
+       \underbrace{\tfrac12\,\tfrac34}_{\text{letter first}}
+       =\underbrace{\tfrac12\,q_H}_{\text{toss first}},
+       \qquad q_H=\tfrac34 .
+\]
+Our colleague who never changes their mind would price the ticket at $3/8$ of a real starting from the letter and $1/4$ of a real starting from the toss. Their probabilities add up to one. Even the average of their future bets recovers the present one. Yet they put two prices on the same slip of paper despite knowing the rules of the draw. We can now put a finger on what goes wrong when they ignore the toss. The price $q_H=3/4$, on the other hand, corresponds to odds of three to one. We have recovered the same factor of 3 in the fifty-fifty drawer. All we had to ask for was a price for a bet that pays only among the tables that got heads. Go back to the ticket that pays four reais if the coin is A. Once we saw heads, it really was worth three.
+
+\begin{quadro}{What we ask of the operator \(\mathcal F\)}
+\itemq{To incorporate the observation} The new distribution divides one unit of probability among the hypotheses. A record that adds nothing to what we already know about $Y$ leaves the bet where it was. A photocopy of the first toss, clearly identified as a photocopy, is one example. With enough memory I can interrupt the calculation and pick up where I left off.
+\itemq{For the coins in this drawer} Heads multiplies the odds by a factor $a>1$, whatever the original bet. By the symmetry we chose, tails divides the odds by the same factor.
+\itemq{To price a conditional bet} The ticket that pays when both $x$ and $y$ occur must have the same price in either order of calculation. For these coins, that fixes $a=3$. Adding the prices of these tickets over all possible observations recovers the original bet on the hypothesis.
+\end{quadro}
+
+We can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
+\[
+ [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
+ =\frac{p(x\mid y)p(y)}{p(x)},\quad
+ p(x)=\sum_{y'}p(x\mid y')p(y').
+\]
+Let us stop here for a moment. We have come to Bayes' formula by an unusual route. We first asked what it would mean to learn and found different rules that discover the right coin. Only when we asked that each bet quote a price consistent with the other bets on the same experiment did this particular rule appear. We will come back to it before long to see what it tells us when we read it through the lens of learning.\footnote{P. G. Bissiri, C. C. Holmes and S. G. Walker study updates based on loss functions in \href{https://doi.org/10.1111/rssb.12158}{\emph{A General Framework for Updating Belief Distributions}} (2016).}
+
+\secao{Choose your next observation}
+I will trade the drawer for two boxes. The \emph{Ordinary} box contains two fair coins, each with a head on one side and a tail on the other. The \emph{Double} box has one two-headed coin and one two-tailed coin. I pick a box, pick a coin from it, and toss. Both choices give equal chances to the two alternatives. You see heads. How much are you willing to bet on the Double box now?
+
+Still \(1/2\). In either box, half the first tosses come up heads. Even so, look at what has just happened inside the Double box. If the coin came from there, you already know which of its coins is on the table. Where it came from is still open, but you can already make a prediction about the other side of the coin.
+
+I give you one observation. I can return the coin to its box, draw again and toss. Or I can toss the coin that is already on the table. If I put it back, we start the draw again and either box gives heads with probability \(1/2\). If I toss the same coin, seeing tails rules out the Double box. If you want to find out which box I picked, which experiment would you spend your turn on?
+
+Perhaps you want to ask me something before you choose. \emph{With the coin sitting right there, can I just turn it over?}
+
+You can.

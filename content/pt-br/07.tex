@@ -1,0 +1,71 @@
+\capitulo{7}{Quanto pesa um 90\%?}
+Vamos voltar um bilhete no tempo. Você ainda está com as nove letras A e uma B do fim do capítulo anterior. Eu também andei recolhendo bilhetes com faces iguais, só que comecei mais cedo. No meu caderno há noventa letras A e dez B. Combinamos usar a frequência observada para apostar na origem do próximo bilhete desse tipo. Pergunte quanto damos para A. Cada um escreve $90\%$ num pedaço de papel. O bilhete custa R\$\,8,80 e paga dez reais se vier de A. Para os dois, o pagamento médio estimado é de nove reais. Compramos.
+
+Chega outro bilhete com faces iguais. A etiqueta diz B. Anotamos a mesma letra. Quanto vale o bilhete seguinte? Sua aposta caiu para $9/11$, e o bilhete agora lhe vale cerca de R\$\,8,18. Você recusa. Minha aposta caiu para $90/101$. Ao mesmo preço de R\$\,8,80, ainda compro algo que estimo valer R\$\,8,91.
+
+Imagine que ontem eu tenha recolhido só os dois pedaços de papel. Hoje escrevo a função da primeira página. Testo com a sua aposta de ontem e com o novo dado. As entradas são $90\%$ e B. Testo com a minha. As entradas são $90\%$ e B. Que linha do programa poderia descobrir de quem era o papel?
+
+\secao{A parte da conta que desapareceu}
+Na hora de resumir o histórico pela frequência, fizemos uma divisão. Nove dividido por dez dá o mesmo número que noventa dividido por cem. Isso era justamente o que queríamos ao comparar as apostas. Mas que operação o B recém-chegado nos pediu? Somar um ao denominador. Foi aí que precisamos saber por quanto tínhamos dividido.
+
+Chame de $n$ o número de registros e de $q$ a frequência de A entre eles. A quantidade de letras A é $nq$. Escreva $t=1$ se a nova letra for A e $t=0$ se for B. Antes de fazer a divisão, tente antecipar o movimento. Se a nova linha trouxesse exatamente a média $q$ das anteriores, a média ficaria no lugar. Ela trouxe $t$. O que veio a mais ou a menos foi $t-q$, e essa diferença se reparte agora por $n+1$ linhas. Podemos contar as letras ou repartir essa diferença. As duas contas dão
+\[
+ q'=\frac{nq+t}{n+1}
+    =q+\frac{t-q}{n+1}.
+\]
+O termo $t-q$ vale $-0{,}9$ nos dois cadernos. Quanto o dado desloca a aposta? Você divide esse termo por $11$. Eu, por $101$. Se cada um tivesse escrito $q$ e $n$ em seu papel, eu conseguiria fazer as duas contas. E saberia o que guardar para amanhã, pois o novo estado é $(q',n+1)$. Estou contando rodadas. Se eu tivesse chegado às cem linhas tirando dez fotocópias de cada uma das suas dez, só teríamos visto dez rodadas. Para dar esse peso a um caderno também é preciso saber quem o encheu.
+
+Podemos programar um aprendiz que guarde só $q$? Claro. Dou ao último registro um décimo do peso, toda vez, e escrevo $q'=q+(t-q)/10$. Os dois papéis de $90\%$ agora levarão a $81\%$ depois de um B. Se o que eu queria era dar mais influência às rodadas recentes de uma máquina cuja regulagem pode mudar, tenho uma razão para experimentar essa regra. Mas acabei de tomar uma decisão sobre o aprendiz. No meu caderno com cem registros, a frequência observada daria ao registro seguinte um peso de $1/101$. Dar-lhe um décimo exige outra justificativa.
+
+\secao{Um teste para qualquer caderno}
+Chame de $h$ a história que o aprendiz leu e de $S(h)$ o que ele conservou dela. Escreva $hd$ quando acrescentarmos ao fim dessa história o dado $d$. Suponha que os dados que podemos entregar ao programa sejam os mesmos depois de qualquer história. No nosso jogo, posso lhe entregar A ou B.
+
+Quero fechar o arquivo com os registros antigos e, mesmo assim, obter amanhã exatamente o estado que obteria se reabrisse o arquivo e refizesse tudo. Ou seja, quero uma regra determinística $U$ tal que
+\[
+                        U(S(h),d)=S(hd).
+\]
+Escolha duas histórias que o resumo tornou indistinguíveis. Feche os cadernos e entregue a ambas a mesma letra nova. Seu programa recebe exatamente as mesmas entradas. Se, ao reabrir os cadernos, você encontrar dois estados seguintes diferentes, qual deles o programa deveria ter escrito? É esse o teste que a seta expressa,
+\[
+              S(h)=S(h')\quad\Longrightarrow\quad S(hd)=S(h'd)
+              \qquad\text{para todo }d .
+\]
+\textbf{Existe uma regra $U$ com a propriedade desejada se, e somente se, o resumo passa nesse teste para todo par de histórias.}
+
+Se $U$ existe, recebe entradas idênticas nos dois casos e só pode devolver uma saída. Foi assim que descobrimos o defeito dos dois papéis de $90\%$. E na outra direção? Suponha que o teste sempre passe. Para definir $U(s,d)$ num estado alcançável $s$, escolha qualquer história $h$ que leve a $s$, acrescente $d$ e devolva $S(hd)$. Algum outro caderno que termina em $s$ poderia reclamar dessa instrução? Pelo teste, todos pedem a mesma saída. A regra está definida. Podemos aplicá-la outra vez na rodada seguinte, e assim por diante.
+
+Há um jeito de trapacear nessa prova. Escreva zero no papel, aconteça o que acontecer. A regra que devolve zero passa no teste à perfeição. Tente agora tirar dela um preço para o bilhete. Falta a outra metade do problema. Fixe a pergunta $Q$ e chame de $A_Q(h)$ a resposta que o método daria com o caderno inteiro à disposição. Para ler essa resposta do resumo, duas histórias que receberam o mesmo $S$ devem também ter a mesma resposta $A_Q$. Se isso vale, podemos chamar a leitura de $R_Q$ e escrever
+\[
+                         A_Q(h)=R_Q(S(h)).
+\]
+O papel com $90\%$ sabia dar o preço de ontem e perdeu a conta ao receber B. O papel com zero pode continuar para sempre uma conta que nunca nos dirá quanto pagar.
+
+\secao{O outro papel com 90\%}
+Se o número de observações era tão importante, por que pudemos lançar a moeda durante todo o primeiro capítulo sem carregá-lo na fórmula de Bayes? Volte à gaveta. A dá cara com probabilidade $3/4$ e B, com $1/4$. As taxas são conhecidas. Escolhemos uma moeda ao acaso, com chances iguais, e conservamos a mesma durante toda a rodada. Uma mesa anota duas caras. Outra anota três caras e uma coroa. Nas duas mesas as chances a favor de A são nove para um, pois uma cara adicional e uma coroa desfazem o efeito uma da outra. Voltaram os dois papéis com $90\%$.
+
+Façamos o teste. Revelo uma coroa em cada mesa. A coroa é três vezes mais provável sob B do que sob A. Nos dois papéis as chances passam de nove para um a três para um e a probabilidade de A cai a $3/4$. Uma cara, por sua vez, teria multiplicado por três as chances nas duas mesas. Como, fixada a identidade da moeda, um lançamento independe dos anteriores, qualquer continuação terá o mesmo efeito nas duas apostas. Nessa gaveta, saber as chances de hoje basta para atualizar as chances amanhã.
+
+Nos primeiros cadernos, os $90\%$ eram uma estimativa da frequência de A numa população, e o novo B era mais uma observação daquela população. Na gaveta, os $90\%$ são a aposta na identidade de uma moeda que já está na minha mão, e o novo dado é uma face produzida por ela. Num caso, precisamos ajustar a taxa que usaremos para o próximo bilhete. No outro, as taxas de caras de cada tipo já faziam parte das regras do jogo. É nesse sentido que a expressão $p_t=\mathcal F(p_{t-1};x_t)$ do primeiro capítulo fez uma promessa. Para cumpri-la, precisamos escolher \emph{sobre o que} é a distribuição e saber \emph{como} o próximo dado se relaciona com o que guardamos.
+
+\begin{quadro}{O que um resumo precisa preservar}
+\itemq{Para responder} Histórias que levam ao mesmo estado precisam concordar nas respostas às perguntas que o programa terá de atender.
+\itemq{Para continuar} Dê o mesmo próximo dado a duas histórias que chegaram ao mesmo estado. Se o método exigir dois estados seguintes diferentes, alguma coisa necessária ficou no papel que jogamos fora.
+\end{quadro}
+
+No caderno das moedas recortadas, duas histórias com as mesmas sessenta caras em oitenta lançamentos dão a mesma estimativa de $3/4$. Se eu perguntar quantas vezes duas caras vieram juntas, basta trocar dois pedaços de lugar para fazê-las discordar. Nas impressoras, a primeira cara e a primeira coroa deixam a mesma aposta de $1/2$ na máquina. Basta abrir a segunda janela para descobrir por que precisávamos guardar a primeira.
+
+Até o valor de uma observação depende da encomenda. Na gaveta meio a meio, espiar a primeira face vale em média $0{,}189$ bit sobre a identidade da moeda, como calculamos no capítulo 2. Quanto você me pagaria para espiar se só pudesse usar o resultado para decidir sobre a compra de um bilhete que rende dez reais quando a moeda é A? A dois reais o bilhete, você compra antes de espiar e continua comprando mesmo se vir coroa, quando a aposta em A cai a $1/4$. Espiar vale zero real para essa decisão. Mudo o preço para cinco reais. Agora, se vir cara, você compra um bilhete com pagamento médio de R\$\,7,50. Se vir coroa, fica de fora. Antes da face, o ganho esperado era zero. A escolha que você pode fazer depois de olhar vale, em média, $(1/2)(7{,}50-5)=1{,}25$ real. Fiz alguma coisa à moeda para mudar o preço dessa informação?
+
+No fim da oficina, o gerador e a logística podiam dar a mesma aposta sobre a máquina. Só o primeiro sabia simular a tiragem. O escore da SVM bastava para abrir a portinhola. Para precificar o risco da peça, precisávamos de calibração. Na primeira página, você me ofereceu oitenta centavos se saísse cara e sessenta se saísse coroa por um bilhete que acabara de me vender por cinquenta. Conseguimos encontrar o erro antes de lançar a moeda. Agora temos dois testes para essa ideia. Quando os números são preços, posso escrever um único bilhete e cobrá-lo por dois caminhos. Quando ponho o programa para rodar, posso lhe dar dois passados que ele resumiu da mesma forma e pedir que honre as apostas que prometeu para a próxima rodada. O primeiro teste examina as contas do modelo. O segundo examina se o aprendiz guardou o necessário para fazê-las. E ainda há uma verificação que nenhum dos dois faz por mim. Se o modelo supõe independência onde a máquina copia a primeira face, ele pode passar nos dois testes e continuar perdendo dinheiro. Preciso abrir bilhetes novos.
+
+\secao{A oficina muda de ideia}
+No dia seguinte o inspetor faz um pedido pequeno. Desconfia que a regulagem esteja mudando e quer no visor a fração de A \emph{apenas nos três últimos bilhetes}. Mostro dois cadernos, com as letras na ordem de chegada,
+\[
+                           A\,A\,B \qquad\qquad A\,B\,A .
+\]
+Ambos dão $2/3$. O inspetor sabe que precisará descartar a letra mais antiga. Por isso propõe guardar $(2/3,A)$ em cada aparelho, a fração no visor e a próxima letra a descartar. Ele me desafia a fazer o visor errar.
+
+Trago um B. Depois de descartar a primeira letra, as janelas passam a $ABB$ e $BAB$. A fração de A cai a $1/3$ nas duas. O inspetor abre um sorriso. Trago outro B.
+
+Na primeira janela ficam três B. Na segunda ainda temos um A. Os visores deveriam mostrar zero e $1/3$. Olhe para a rodada em que ambos ainda marcavam $1/3$. Ali o primeiro aparelho já precisava guardar A como próxima letra a sair, e o segundo precisava guardar B. Com as mesmas anotações de partida e o mesmo dado, como o programa escreveria essas duas letras diferentes? Se guardar as três letras em ordem, basta retirar a da esquerda e acrescentar a nova à direita. Foi o pedido de esquecer as velhas que tornou importante lembrar a ordem.
+
+O erro apareceu no visor uma rodada depois de o aprendiz ter esquecido o que precisava para honrar a próxima aposta. É assim que eu tentaria quebrar um aprendiz antes de pô-lo em produção. Daria a ele dois passados que decidiu esquecer da mesma maneira. Depois procuraria o dado que o faria desejar ter guardado a diferença.

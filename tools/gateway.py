@@ -1,0 +1,101 @@
+"""Build the language selector for the two public editions of the book."""
+
+
+def gateway():
+    return '''<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf7ef">
+  <meta name="description" content="O que se aprende com uma cara · What Can We Learn from a Coin Toss? Um livro de Caio Gomes em português e inglês.">
+  <link rel="alternate" hreflang="pt-BR" href="pt-br/index.html">
+  <link rel="alternate" hreflang="en" href="en/index.html">
+  <title>O que se aprende com uma cara · What Can We Learn from a Coin Toss? — Caio Gomes</title>
+  <style>
+    :root{color-scheme:light;--ink:#202b28;--teal:#235753;--paper:#faf7ef;--line:#bcbfb0;--quiet:#4d5e55;--serif:Georgia,"Times New Roman",serif}
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:var(--paper);color:var(--ink);font:1rem/1.5 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:var(--teal);text-decoration-thickness:.08em;text-underline-offset:.15em}
+    a:focus-visible{outline:3px solid #9f481a;outline-offset:5px}
+    .skip{position:fixed;top:8px;left:8px;transform:translateY(-160%);padding:.55rem .9rem;background:var(--paper);z-index:3}
+    .skip:focus{transform:none}
+    .wrap{width:min(69rem,100% - 3.5rem);margin-inline:auto}
+    .mast,.footer{display:flex;align-items:center;justify-content:space-between;gap:1rem 1.5rem}
+    .mast{padding:1.35rem 0;border-bottom:1px solid var(--line)}
+    .byline{display:inline-flex;align-items:center;gap:.72rem;color:var(--ink);font:1.3rem var(--serif)}
+    .byline svg{width:1.5rem;height:1.5rem}
+    .tag,.eyebrow{font-size:.72rem;font-weight:650;letter-spacing:.12em;text-transform:uppercase}
+    .tag{color:var(--quiet);text-align:right;letter-spacing:.08em}
+    .dividerword{margin-inline:.3em;color:var(--quiet)}
+    .edition-mark{display:flex;align-items:center;justify-content:center;margin:clamp(1.6rem,5.3vw,4.2rem) auto clamp(1.3rem,3.7vw,2.8rem);color:var(--teal)}
+    .edition-mark svg{height:auto;width:min(20rem,47vw)}
+    .spread{display:grid;grid-template-columns:1fr 1fr;border-top:2px solid var(--ink);border-bottom:1px solid var(--line)}
+    .edition{display:flex;min-width:0;flex-direction:column;align-items:flex-start;padding:clamp(1.6rem,3vw,3.1rem) clamp(1.4rem,3.7vw,3.4rem) clamp(2rem,4vw,3.5rem)}
+    .edition:first-child{padding-left:0}
+    .edition:last-child{border-left:1px solid var(--line);padding-right:0}
+    .eyebrow{display:flex;align-items:center;gap:.55rem;color:var(--teal)}
+    .eyebrow::before{content:"";width:1.6rem;height:2px;background:var(--teal)}
+    h2{max-width:14ch;margin:.85rem 0 .72rem;font:normal clamp(2.4rem,5.4vw,4.9rem)/1.03 var(--serif);letter-spacing:-.056em;text-wrap:balance}
+    .subtitle{margin:0 0 2.15rem;color:var(--quiet);font:clamp(1.05rem,1.7vw,1.35rem)/1.4 var(--serif)}
+    .read{display:inline-flex;align-items:center;gap:1.2rem;min-height:45px;margin-top:auto;padding:.62rem 1.05rem .7rem;background:var(--teal);border:1px solid var(--teal);color:#fff;text-decoration:none;font-size:.91rem;font-weight:620}
+    .read:hover{background:var(--ink);border-color:var(--ink)}
+    .read span{font-size:1.2em;line-height:1}
+    .footer{padding:1.1rem 0 2.8rem;color:var(--quiet);font-size:.8rem}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+    @media(max-width:39rem){
+      .wrap{width:calc(100% - 2.2rem)}.tag{font-size:.61rem}.byline{font-size:1.05rem}.mast{padding:.85rem 0}
+      .edition-mark{margin:1.1rem auto}.edition-mark svg{width:9.5rem}
+      .spread{grid-template-columns:1fr}.edition,.edition:first-child,.edition:last-child{padding:1.15rem 0 1.4rem;border-left:0}
+      .edition:last-child{border-top:1px solid var(--line)}
+      h2{font-size:clamp(2rem,9vw,3.15rem);max-width:19ch;margin:.5rem 0 .35rem;letter-spacing:-.045em}
+      .subtitle{margin-bottom:.85rem}.read{min-height:44px}.footer{align-items:flex-start;flex-direction:column;gap:.2rem}
+    }
+    @media(prefers-contrast:more){:root{--quiet:#202b28;--line:#65716b}.read{border:2px solid var(--ink)}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#editions">Escolher idioma / <span lang="en">Choose a language</span></a>
+  <div class="wrap">
+    <header class="mast">
+      <div class="byline">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><circle cx="16" cy="16" r="13.25"/><circle cx="16" cy="16" r="10.8"/><path d="M10.5 21 16 10l5.5 11M13 16h6"/></svg>
+        <span>Caio Gomes</span>
+      </div>
+      <div class="tag">Livro aberto <span class="dividerword" aria-hidden="true">/</span> <span lang="en">Open book</span></div>
+    </header>
+    <main id="editions" tabindex="-1">
+      <h1 class="sr-only">Escolha a edição <span lang="en">/ Choose an edition</span></h1>
+      <div class="edition-mark" aria-hidden="true">
+        <svg viewBox="0 0 360 87" fill="none" stroke="currentColor" stroke-width="1.2" focusable="false">
+          <path d="M12 56 Q180 -34 348 56" stroke-dasharray="2 5" opacity=".48"/>
+          <g transform="translate(43 49) rotate(-26)"><ellipse rx="24" ry="27" fill="#e8ecdE"/><ellipse rx="20.6" ry="23.5"/><path d="M-7.8 8.2h15.6M-5 4.6 0-8.2l5 12.8"/></g>
+          <g transform="translate(111 23) rotate(-13)"><ellipse rx="14.2" ry="16.5" fill="#faf7ef"/><ellipse rx="10.9" ry="14.2"/></g>
+          <g transform="translate(180 15) rotate(4)"><ellipse rx="2.4" ry="13.6" fill="#235753"/></g>
+          <g transform="translate(249 23) rotate(16)"><ellipse rx="14.2" ry="16.5" fill="#faf7ef"/><ellipse rx="10.9" ry="14.2"/></g>
+          <g transform="translate(317 49) rotate(28)"><ellipse rx="24" ry="27" fill="#e8ecde"/><ellipse rx="20.6" ry="23.5"/><path d="M-8-7h16M-8 0H8M-8 7H8"/></g>
+        </svg>
+      </div>
+      <div class="spread">
+        <section class="edition" lang="pt-BR" aria-labelledby="titulo-pt">
+          <div class="eyebrow">Português do Brasil</div>
+          <h2 id="titulo-pt">O que se aprende com uma cara</h2>
+          <p class="subtitle">Como pensar em aprendizado de máquina</p>
+          <a class="read" href="pt-br/index.html" hreflang="pt-BR">Ler em português <span aria-hidden="true">→</span></a>
+        </section>
+        <section class="edition" lang="en" aria-labelledby="title-en">
+          <div class="eyebrow">English</div>
+          <h2 id="title-en">What Can We Learn from a Coin Toss?</h2>
+          <p class="subtitle">How to Think About Machine Learning</p>
+          <a class="read" href="en/index.html" hreflang="en">Read in English <span aria-hidden="true">→</span></a>
+        </section>
+      </div>
+    </main>
+    <footer class="footer">
+      <span>Edição bilíngue <span aria-hidden="true">·</span> <span lang="en">Bilingual edition</span></span>
+      <span>Caio Gomes</span>
+    </footer>
+  </div>
+</body>
+</html>
+'''

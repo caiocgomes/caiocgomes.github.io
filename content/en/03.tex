@@ -1,0 +1,84 @@
+\capitulo{3}{Who Told Us How the Coin Works?}
+I was the one who told you that coin A comes up heads three times out of four. Today I brought the coins but left the instructions at home. That was the sheet that said how often each type was picked and how often it came up heads. We toss the coin and see a head. Should you raise your bet on A? Until we know which coin tends to give us more heads, we haven't even settled which way the bet should move.
+
+I did bring something to put in place of the numbers I erased. It's yesterday's notebook. At the start of each round the experimenter picked a type of coin, A or B, at random. He tossed that same coin twice and revealed its type. Tomorrow he'll play again, only this time he'll keep the letter hidden until we've placed our bet. You can take the notebook home. What would you do with it?
+
+Here are yesterday's eighty rounds. I chose the numbers so we could do the experiment by hand. Each entry counts the rounds with that many heads and the letter shown. The middle column includes both orders in which one head and one tail might have come up.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Type revealed & 0 heads & 1 head & 2 heads & Total \\
+\midrule
+A & 4 & 12 & 24 & 40 \\
+B & 24 & 12 & 4 & 40 \\
+\midrule
+Total & 28 & 24 & 28 & 80 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Before counting heads, I'd ask the person who filled the notebook a question. Why are there forty coins of each type? If he deliberately set aside forty of each for me, the fifty-fifty split came from whoever put the sample together. Here the answer is different. The experimenter drew the type afresh each round, with no quotas, just as he'll do tomorrow. Now I can use the last column to estimate the frequency of A in the round I care about. I would have read exactly the same numbers off the page in either case.
+
+\secao{A Program That Can Make Up a Round}
+Imagine you wanted to build an imitation of the game. Your program has to supply the two faces and, at the end, be able to open its hand and reveal the letter. It could start by drawing A with probability $\pi$ and B with probability $1-\pi$. If it draws A, it uses the rate $\theta_A$ for heads. If it draws B, it uses $\theta_B$. So far we can print the first face. What should the program do to print the second?
+
+Let's tell it to use the same rate and draw again, independently of the first draw. A short instruction. It says that once we know the type and its rate, the prediction for the next face stays the same whatever came up on the first toss. We also have to decide which rounds we can pool. An A drawn tomorrow has to have the same rate of heads as the A coins whose behavior we're studying today. That's how a notebook full of old coins earns the right to tell us something about a new one.
+
+Write $Y$ for the letter and $X$ for the faces. The program assigns each round the probability $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, where $\theta$ collects the three numbers we need to fit. It knows, for instance, that the chance of writing down A and two heads is $\pi\theta_A^2$. If I promise one real for A and two heads, I have to give the same ticket the same price whichever way I count. But who gave me the right to use $\theta_A^2$ as the probability of two heads? The pricing rule says nothing about squaring a number. I was the one who told the program to make two independent draws after choosing A. When we fit the joint distribution of the faces and letters to the notebook, we're doing \emph{generative learning}. We can ask the program to produce a new notebook and see how well what comes out resembles what we brought back from the table.
+
+\secao{Can I Take the Pairs Apart?}
+Cut each of the forty records for A in half. For the moment, leave the two pieces from each round side by side. How many heads do we have? The four rounds in the first column contribute none. The twelve in the middle contribute twelve. The twenty-four in the last column contribute forty-eight. That's sixty heads and twenty tails. For a candidate value $u$ of A's rate of heads, the probability of those records contains sixty factors of $u$ and twenty factors of $1-u$. Grouping the records in the table introduces a factor that's the same for every candidate. We can compare them using just
+\[
+                         L(u)=u^{60}(1-u)^{20}.
+\]
+Imagine a knob that controls how often the program produces heads. Set it at $u=1/2$ and it imitates a fair coin. Leave the eighty pieces where they are and turn only the knob. The height of the curve $L(u)$ tells you how much that setting favors the record on the table. That's what we call the \emph{likelihood}. At $u=0$ the program could never have produced those sixty heads. At $u=1$ it could never have produced the twenty tails. Somewhere between those ends there's a peak. If you started in the middle, which way would you turn the knob?
+
+Nudge it from $0.50$ to $0.51$. Each of the sixty factors for heads grows by 2\% of what it was. Each of the twenty factors for tails shrinks by 2\%. For a small enough nudge, the sixty heads pull harder. What if you were already at $0.90$? The same change of one hundredth would add a little over 1\% to each factor for heads but take 10\% off each factor for tails. Twenty tails can now outweigh sixty heads. What makes them so heavy? You've left them very little probability to give up.
+
+I could multiply all eighty factors again at every turn. But I only want to know whether I went up or down. The logarithm preserves the order of the heights, so the peak stays above the same mark on the dial. And it saves me some work. We write $\ln u$ for the exponent that gives $u$ when the base is $e\simeq2.718$. For instance, $e^2e^3=e^5$. Multiplying sixty copies of $u$ adds sixty copies of the exponent $\ln u$. I can write the height on the new scale as
+\[
+              \ln L(u)=60\ln u+20\ln(1-u).
+\]
+Imagine laying a straightedge against the curve. On the way up, its right end sits higher than its left. On the way down, it sits lower. Somewhere between the two, the straightedge lies level. To locate that mark on the dial, we can measure how much the height changes with each little turn of the knob. On the natural-log scale, the measurement has a simple interpretation. If a factor grows by 1\%, its logarithm changes by $\ln(1.01)\simeq0.00995$, very nearly $0.01$. The smaller the nudge, the better that approximation gets. A tiny turn $\delta$ increases each factor for heads by the fraction $\delta/u$ of what it was. Each factor for tails loses the fraction $\delta/(1-u)$. Add the gains and losses, then divide by the size of the turn. In the limit as the turn gets smaller, that gives the slope, or \emph{derivative}, of the curve.
+\[
+ \frac{d}{du}\ln L(u)
+   =\underbrace{\frac{60}{u}}_{\text{gain on heads}}
+    -\underbrace{\frac{20}{1-u}}_{\text{loss on tails}}.
+\]
+Where the straightedge lies level, the gain on heads balances the loss on tails. Both pans carry the same weight. We have three times as many heads as tails. For the twenty tails to balance the heads, each tail must give up three times the fraction each head gains. That happens when the space $1-u$ left for tails is one third of the space $u$ given to heads. Divide the scale into four equal parts. Three go to heads, one to tails. We have $u=3/4$. To the left of that mark, the first term is larger. To its right, the second is larger. That's how we know we've reached the maximum.
+
+\par\addvspace{5pt}\noindent\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=12.8cm,y=1.85cm,font=\footnotesize]
+\draw[->] (.445,0)--(.997,0);
+\draw[->] (.45,-.01)--(.45,1.17);
+\foreach \a/\b in {.5/{0.50},.75/{0.75},.9/{0.90}}{\draw (\a,0)--(\a,-.045) node[below] {$\b$};}
+\draw (.447,1)--(.453,1) node[pos=0,left] {$1$};
+\draw[black!50,dashed] (.75,0)--(.75,1);
+\draw[tinta,thick,domain=.45:.98,samples=95] plot (\x,{exp(60*ln(\x/.75)+20*ln((1-\x)/.25))});
+\draw[tinta] (.723,1)--(.777,1);
+\fill[tinta] (.75,1) circle[radius=1.5pt];
+\node[anchor=south west] at (.45,1.07) {Height relative to the peak};
+\node[anchor=north east] at (.99,-.24) {Probability of heads $u$};
+\end{tikzpicture}\par
+{\footnotesize\raggedright Each point uses the same eighty slips of paper. The little line at the top shows the tangent where the gains on heads balance the losses on tails.\par}
+\end{minipage}\par\addvspace{5pt}
+
+For B there are twenty heads in eighty tosses. The same balance gives $\widehat\theta_B=1/4$. Of the eighty letters, forty are A, giving $\widehat\pi=1/2$. We have recovered the instruction sheet from Chapter 1 by \emph{maximum likelihood}. If I bring another sample tomorrow, all three numbers might change.
+
+You still have A's eighty slips on the table. Pick two rounds that each had a head and a tail. Swap one face from the first round with one from the other so you end up with a pair of heads and a pair of tails. You've made up a different history for the game. A's row, which read $4,12,24$, would now read $5,10,25$. What would the program that estimates $\theta_A$ notice? The same sixty heads and twenty tails are still on the table. If I handed you the two tables without saying which one I'd changed, you'd have exactly the same grounds for preferring any candidate $u$ to any other in either table. We gave the program permission to forget which other face each head came with.
+
+What if I shuffle all eighty slips? I can still estimate the rate of heads. But see what I can no longer check without reconstructing the pairs from the original notebook. With $\widehat\theta_A=3/4$, the program expects one of each face in $2(3/4)(1/4)=3/8$ of A's rounds. The factor of two is there because either face can come first. The rates switch places for B, so the probability is still $3/8$. In a run of eighty rounds, the program expects thirty with one head. We counted twenty-four. A run can fluctuate, of course. But if the difference persists in fresh notebooks, I'll know where to look. The generator's books balance both for the heads and for the pairs it makes itself. Now we have a reason to keep the pairs that actually came out of the workshop. They let us discover that we chose the wrong generator even if we did every one of its calculations correctly.
+
+\secao{What Changes When We Open Our Hand?}
+The next morning, the experimenter draws another coin from the drawer, covers its label and tosses it twice. Two heads. Using our estimates, the chance that the round would produce A \emph{and} two heads was $(1/2)(3/4)^2=9/32$. For B and two heads it was $(1/2)(1/4)^2=1/32$. Among rounds with that outcome, what fraction carry the letter A? We get $(9/32)/(9/32+1/32)=9/10$. We made that bet holding the three estimates fixed.
+
+The experimenter opens his hand. It's B. We can add the round to our training data. The letter he revealed is the \emph{label}. When each training input comes with its label, we call this \emph{supervised learning}. Our estimate of B's rate of heads goes from $20/80$ to $22/82$. We know the identity of the coin that just went back into the drawer. The new rate will help us bet on the next one.
+
+Perhaps you'd like to keep more than one setting for the program. Give each an initial weight and ask which would most readily have produced what you just saw. A candidate $(\pi,\theta_A,\theta_B)$ gave the newly revealed row probability $(1-\pi)\theta_B^2$. Of each candidate's initial weight, keep only the fraction that would produce that row. Gather what survives across all settings. Each setting's share of that total is your new bet on it. It's the update from Chapter 1, now applied to parameters. When we got $9/10$, we chose to work with one estimated setting. The name \emph{generative} comes from what we asked the program to describe.
+
+\begin{quadro}{What the Cut-Up Slips Let Us Check}
+\itemq{To fit the rate} Once we assume a fixed rate and independent tosses given the type, we can count A's heads and tails without keeping the pairs.
+\itemq{To test the assumption} For this we need the pairs themselves. A notebook big enough to estimate the rate can be too small to test the instruction we wrote into the program.
+\end{quadro}
+
+Go back to the original notebook. In twenty-four of the twenty-eight rounds with two heads, the letter was A. You count $24/28$. I offer $9/10$. On which line of the calculation did I give myself permission to change your fraction?

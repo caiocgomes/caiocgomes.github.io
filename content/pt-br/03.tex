@@ -1,0 +1,84 @@
+\capitulo{3}{Quem nos contou como a moeda funciona}
+Fui eu que lhe disse que a moeda A dava cara em três quartos dos lançamentos. Hoje eu trouxe as moedas e deixei em casa o papel que dizia com que frequência cada tipo era sorteado e qual era sua taxa de caras. Saiu uma cara. Ela deve fazer você aumentar sua aposta em A? Se não soubermos qual das duas moedas costuma dar mais caras, nem a direção da mudança está decidida.
+
+Trouxe alguma coisa para pôr no lugar dos números que apaguei. É o caderno de ontem. No começo de cada rodada o experimentador sorteou um tipo de moeda, A ou B. Lançou a mesma moeda duas vezes e revelou o tipo. Amanhã vai repetir o jogo, só que vai esconder a letra até receber nossa aposta. Você pode levar o caderno para casa. O que faria com ele?
+
+Aqui estão as oitenta rodadas de ontem. Construí os números para que possamos fazer o experimento à mão. Uma entrada da tabela conta as rodadas em que saiu aquele número de caras com a letra indicada. A coluna do meio reúne as duas ordens em que uma cara e uma coroa podem ter saído.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Tipo revelado & 0 caras & 1 cara & 2 caras & Total \\
+\midrule
+A & 4 & 12 & 24 & 40 \\
+B & 24 & 12 & 4 & 40 \\
+\midrule
+Total & 28 & 24 & 28 & 80 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Antes de contar caras, eu faria uma pergunta a quem encheu o caderno. Por que há quarenta moedas de cada tipo? Se ele separou de propósito quarenta de cada para me entregar, o meio a meio veio de quem preparou a amostra. Aqui a resposta é outra. O experimentador sorteou os tipos a cada rodada, sem cotas, da mesma maneira que vai sorteá-los amanhã. Agora posso usar a última coluna para estimar a frequência de A na rodada que me interessa. Os números que eu teria lido nas duas situações são idênticos.
+
+\secao{Um programa que sabe inventar uma rodada}
+Imagine que você queira construir uma imitação do jogo. Seu programa precisa preencher as duas faces e, no fim, ser capaz de abrir a mão e revelar a letra. Pode começar sorteando A com probabilidade $\pi$ e B com probabilidade $1-\pi$. Se saiu A, o programa usa a taxa $\theta_A$ para sortear cara. Se saiu B, usa $\theta_B$. Até aqui conseguimos imprimir a primeira face. O que ele deve fazer para imprimir a segunda?
+
+Vamos mandar que use a mesma taxa e faça um novo sorteio, independente do primeiro. É uma instrução curta. Ela diz que, conhecidos a taxa e o tipo da moeda, a previsão para a próxima face continua a mesma qualquer que tenha sido a primeira. Outra escolha diz respeito a quais rodadas podemos juntar. Uma A de amanhã deve ter a mesma taxa de cara que as A cujo comportamento estamos estudando hoje. É assim que um caderno cheio de moedas antigas ganha o direito de dizer algo sobre uma moeda nova.
+
+Chamando de $Y$ a letra e de $X$ as faces, o programa atribui a cada rodada a probabilidade $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, onde $\theta$ reúne os três números que precisamos ajustar. Ele sabe, por exemplo, que a chance de escrever A e duas caras é $\pi\theta_A^2$. Se eu prometer um real por A e duas caras, terei de dar ao mesmo bilhete o mesmo preço pelas duas ordens de contagem. Mas quem me deu o direito de usar $\theta_A^2$ como chance de duas caras? A regra dos preços não diz que posso elevar um número ao quadrado. Fui eu que mandei o programa fazer dois sorteios independentes depois de escolher A. Quando ajustamos ao caderno a distribuição conjunta das faces e das letras, fazemos \emph{aprendizado generativo}. Podemos pedir ao programa que produza um novo caderno e examinar se o que saiu se parece com o que chegou da mesa.
+
+\secao{Posso desmontar os pares?}
+Corte os quarenta registros de A ao meio. Por enquanto, deixe os dois pedaços de cada rodada lado a lado. De quantas caras dispomos? As quatro rodadas da primeira coluna não contribuem com nenhuma. As doze do meio contribuem com doze. As vinte e quatro da última contribuem com quarenta e oito. São sessenta caras e vinte coroas. Para um candidato $u$ à taxa de caras de A, a probabilidade daquelas anotações traz sessenta fatores $u$ e vinte fatores $1-u$. O agrupamento na tabela acrescenta um fator que é igual para todos os candidatos. Podemos compará-los usando apenas
+\[
+                         L(u)=u^{60}(1-u)^{20}.
+\]
+Imagine um botão que regule a frequência de caras do nosso programa. Na posição $u=1/2$ ele imita uma moeda equilibrada. Deixe os oitenta pedaços quietos e gire só o botão. A altura da curva $L(u)$ diz quanto aquela regulagem favorece o registro que está na mesa. É isso que chamamos de \emph{verossimilhança}. Em $u=0$ o programa jamais produziria as sessenta caras. Em $u=1$ jamais produziria as vinte coroas. Entre essas pontas há um pico. Para que lado você giraria o botão a partir do meio?
+
+Empurre-o de $0{,}50$ para $0{,}51$. Cada um dos sessenta fatores de cara cresce 2\% em relação ao que valia. Cada um dos vinte fatores de coroa encolhe 2\%. Para um movimento bem pequeno, as sessenta caras puxam mais. E se você já estivesse em $0{,}90$? A mesma mudança de um centésimo acrescentaria pouco mais de 1\% a cada fator de cara, mas tiraria 10\% de cada fator de coroa. Vinte coroas agora podem pesar mais que sessenta caras. O que elas têm de tão pesado? Você lhes deixou pouca probabilidade para ceder.
+
+Eu poderia multiplicar os oitenta fatores de novo a cada giro. Mas só quero saber se subi ou desci. O logaritmo preserva a ordem das alturas, portanto o pico continua sobre a mesma marca do botão. E ele me poupa trabalho. Escrevemos $\ln u$ para o expoente que, na base $e\simeq2{,}718$, devolve $u$. Por exemplo, $e^2e^3=e^5$. Multiplicar sessenta cópias de $u$ soma sessenta cópias do expoente $\ln u$. Posso escrever a altura na nova régua como
+\[
+              \ln L(u)=60\ln u+20\ln(1-u).
+\]
+Imagine encostar uma régua no perfil dessa curva. Na subida, a ponta da direita fica mais alta. Na descida, fica mais baixa. Em algum lugar entre as duas, a régua fica horizontal. Para localizar essa marca, podemos medir quanto a altura muda a cada pequeno movimento do botão. Na escala do logaritmo natural, essa medida tem uma leitura simples. Se um fator cresce 1\%, a mudança no seu logaritmo é $\ln(1{,}01)\simeq0{,}00995$, quase $0{,}01$. Quanto menor o empurrão, melhor a aproximação. Um giro minúsculo $\delta$ acrescenta a cada fator de cara a fração $\delta/u$ do que ele valia. Cada fator de coroa perde a fração $\delta/(1-u)$. Some os ganhos e as perdas e divida pelo tamanho do giro. No limite de um giro cada vez menor, essa é a inclinação, ou \emph{derivada}, da curva.
+\[
+ \frac{d}{du}\ln L(u)
+   =\underbrace{\frac{60}{u}}_{\text{ganho nas caras}}
+    -\underbrace{\frac{20}{1-u}}_{\text{perda nas coroas}}.
+\]
+Quando a régua fica horizontal, o ganho das caras compensa a perda das coroas. Os dois pratos da balança têm o mesmo peso. Há três vezes mais caras que coroas. Para equilibrar as vinte coroas, cada coroa tem de perder três vezes a fração que cada cara ganha. Isso acontece quando o espaço $1-u$ reservado à coroa é um terço do espaço $u$ reservado à cara. Divida a régua em quatro partes. Três ficam para as caras, uma para as coroas. Temos $u=3/4$. À esquerda dessa marca o primeiro termo é maior. À direita, o segundo. Sabemos, assim, que chegamos ao máximo.
+
+\par\addvspace{5pt}\noindent\begin{minipage}{\linewidth}\centering
+\begin{tikzpicture}[x=12.8cm,y=1.85cm,font=\footnotesize]
+\draw[->] (.445,0)--(.997,0);
+\draw[->] (.45,-.01)--(.45,1.17);
+\foreach \a/\b in {.5/{0{,}50},.75/{0{,}75},.9/{0{,}90}}{\draw (\a,0)--(\a,-.045) node[below] {$\b$};}
+\draw (.447,1)--(.453,1) node[pos=0,left] {$1$};
+\draw[black!50,dashed] (.75,0)--(.75,1);
+\draw[tinta,thick,domain=.45:.98,samples=95] plot (\x,{exp(60*ln(\x/.75)+20*ln((1-\x)/.25))});
+\draw[tinta] (.723,1)--(.777,1);
+\fill[tinta] (.75,1) circle[radius=1.5pt];
+\node[anchor=south west] at (.45,1.07) {Altura em relação ao pico};
+\node[anchor=north east] at (.99,-.24) {Taxa de caras $u$};
+\end{tikzpicture}\par
+{\footnotesize\raggedright Cada ponto usa os mesmos oitenta pedaços. O traço no alto mostra a direção da tangente quando os ganhos nas caras compensam as perdas nas coroas.\par}
+\end{minipage}\par\addvspace{5pt}
+
+Para B há vinte caras em oitenta lançamentos. A mesma balança dá $\widehat\theta_B=1/4$. Das oitenta letras, quarenta são A, dando $\widehat\pi=1/2$. Recuperamos a folha de instruções do primeiro capítulo por \emph{máxima verossimilhança}. Se amanhã eu trouxer outra amostra, os três números poderão mudar.
+
+Você ainda está com os oitenta pedaços de A na mesa. Pegue duas rodadas que tinham uma cara e uma coroa cada. Troque uma face de uma rodada com a da outra para obter um par de caras e um par de coroas. Essa troca fabrica uma história diferente para o jogo. A linha de A, que dizia $4,12,24$, passaria a dizer $5,10,25$. O que o programa que estima $\theta_A$ perceberia? Continuam na mesa as mesmas sessenta caras e as mesmas vinte coroas. Se eu lhe entregasse as duas tabelas sem avisar qual alterei, você teria exatamente a mesma razão para preferir qualquer candidato $u$ a outro. O programa foi autorizado a esquecer em que companhia cada cara chegou.
+
+E se eu agora embaralhar os oitenta pedaços? Ainda consigo estimar a taxa de caras. Veja o que já não consigo conferir sem reconstruir os pares do caderno original. Com $\widehat\theta_A=3/4$, o programa espera uma face de cada em $2(3/4)(1/4)=3/8$ das rodadas de A. Há um fator dois porque podemos ter cara primeiro ou coroa primeiro. Para B as taxas trocam de lugar e a chance continua em $3/8$. Numa tiragem de oitenta rodadas, o programa espera trinta com uma cara. Contamos vinte e quatro. Uma tiragem pode flutuar, claro. Mas se a diferença persistir em cadernos novos, saberei onde olhar. As contas do gerador fecham tanto para as caras quanto para os pares que ele próprio fabrica. Agora temos um motivo para guardar os pares que a oficina de fato produziu. Eles nos permitem descobrir se escolhemos o gerador errado, mesmo tendo feito todas as suas contas direito.
+
+\secao{O que muda quando abrimos a mão}
+Na manhã seguinte, o experimentador tira outra moeda da gaveta, cobre a etiqueta e lança duas vezes. Duas caras. Usando nossas estimativas, a chance de essa rodada trazer A \emph{e} duas caras era $(1/2)(3/4)^2=9/32$. Para B e duas caras era $(1/2)(1/4)^2=1/32$. Entre as rodadas com esse resultado, que fração leva a letra A? A conta dá $(9/32)/(9/32+1/32)=9/10$. Fizemos a aposta mantendo fixas as três estimativas.
+
+O experimentador abre a mão. Veio B. Podemos acrescentar a rodada ao treino. A letra revelada é o \emph{rótulo}. Dispor do rótulo para cada entrada de treino caracteriza o \emph{aprendizado supervisionado}. A taxa de caras estimada para B passa de $20/80$ a $22/82$. A moeda que acabou de voltar à gaveta já tem identidade conhecida. A taxa nova servirá para apostar na próxima.
+
+Talvez você queira conservar mais de uma regulagem para o programa. Dê a cada uma um peso inicial e pergunte qual delas teria produzido com mais facilidade o que acaba de ver. Um candidato $(\pi,\theta_A,\theta_B)$ dava à linha revelada a probabilidade $(1-\pi)\theta_B^2$. De cada peso inicial, guarde apenas a fração que produziria aquela linha. Junte o que sobrou em todas as regulagens. A participação de cada uma nesse total é a nova aposta nela. É a atualização do primeiro capítulo, agora aplicada aos parâmetros. No cálculo de $9/10$ escolhemos trabalhar com uma única regulagem estimada. O nome \emph{generativo} vem do que pedimos ao programa que descrevesse.
+
+\begin{quadro}{O que as caras recortadas permitem conferir}
+\itemq{Para ajustar a taxa} Depois de postular uma taxa fixa e sorteios independentes dado o tipo, podemos contar as caras e coroas de A sem guardar os pares.
+\itemq{Para pôr a hipótese à prova} Precisamos justamente dos pares. O caderno que basta para estimar a taxa pode ser pequeno demais para testar a instrução que pusemos no programa.
+\end{quadro}
+
+Volte ao caderno original. Em vinte e quatro das vinte e oito rodadas com duas caras, a letra era A. Você conta $24/28$. Eu ofereço $9/10$. Em que linha da conta eu me dei o direito de mudar a sua fração?

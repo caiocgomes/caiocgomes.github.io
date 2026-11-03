@@ -1,0 +1,66 @@
+\capitulo{5}{O que o classificador precisa lembrar?}
+Eu lhe dou um bilhete e um lápis. O bilhete saiu de uma de duas impressoras, A ou B, escolhida ao acaso. Há duas janelas cobertas por abas de papel. Em cada janela a máquina imprimiu uma cara ou uma coroa. Sua tarefa é descobrir a máquina.
+
+Abra a primeira aba. Saiu cara. Metade dos bilhetes de A tem cara na primeira janela. Em B, também é metade. Quanto você aposta em A? Escreva $1/2$ no verso. Agora eu lhe peço um favor. Como essa cara não mudou em nada a sua aposta, risque o desenho até ele desaparecer.
+
+Se você ainda estiver com o lápis na mão, espere um instante.
+
+Há uma diferença entre as impressoras. A escolhe a primeira face ao acaso e, nove vezes em dez, copia o desenho na segunda janela. B também escolhe a primeira ao acaso, mas nove vezes em dez faz o desenho contrário. Essas chances de copiar valem tanto depois de uma cara quanto depois de uma coroa. Quem só olha a segunda janela também verá a mesma frequência de caras nas duas máquinas. Sob A, por exemplo, pode ter saído cara e a máquina ter copiado, ou ter saído coroa e ela ter trocado. Somando, $(1/2)(9/10)+(1/2)(1/10)=1/2$. Sob B os fatores apenas trocam de lugar.
+
+Feche a primeira aba sem riscar o desenho. Antes de abrir a outra, anote duas apostas em A. Se eu lhe mostrar outra cara, você terá visto uma repetição. Nesse caso as chances são nove contra um a favor de A. Sua aposta em A será $90\%$. Se eu lhe mostrar coroa, dará $10\%$. Agora imagine que a primeira figura tivesse sido coroa. Seu papel ainda diria $1/2$, mas você teria de inverter as instruções para a segunda janela.
+
+Abra a segunda aba. Deu cara. Quem chegou agora à sala e só a viu dá $1/2$ para A. Você dá $9/10$. Quando aprendeu alguma coisa com a primeira cara? Você já podia mostrar o que ela lhe ensinou \emph{antes} de abrir a segunda aba. Estava nas duas apostas que acabou de escrever.
+
+\secao{Um modelo que conta todas as caras e perde as repetições}
+Vamos entregar o problema a dois aprendizes. Nenhum deles conhece o truque da impressão. Ambos recebem um caderno com duzentos bilhetes de origem conhecida. Escolhi contagens que reproduzem exatamente as proporções da oficina. Como antes, $C$ designa cara e $K$, coroa, desta vez na ordem das duas janelas.
+\begin{center}
+\begin{tabular}{lrrrrr}
+\toprule
+Máquina & $CC$ & $CK$ & $KC$ & $KK$ & Total \\
+\midrule
+A & 45 & 5 & 5 & 45 & 100 \\
+B & 5 & 45 & 45 & 5 & 100 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+O primeiro aprendiz quer fabricar bilhetes como os que encontrou. Mede a frequência de cara em cada janela de cada máquina. Encontra $1/2$ quatro vezes. Se eu lhe pedir cem bilhetes de A, ele sorteará duas faces com essas taxas, independentemente uma da outra. Espera produzir vinte e cinco bilhetes $CC$. A produziu quarenta e cinco. Se lhe pedir cem bilhetes de B, espera os mesmos vinte e cinco. B produziu cinco. Em qual das quatro contagens ele se enganou?
+
+Em nenhuma. Foi o aprendiz que escreveu no programa a instrução de fazer sorteios independentes. Quando usamos esse gerador para classificar, damos a ele o nome de \emph{Naive Bayes}. A hipótese que fizemos à mão é
+\[
+     p(x_1,x_2\mid y)=p(x_1\mid y)\,p(x_2\mid y).
+\]
+Por que alguém aceitaria isso? Abra uma janela nova para cada desenho que você já conhece. Cada desenho antigo agora admite duas continuações. Repetindo a duplicação por dez janelas, chegamos a $2^{10}=1.024$ desenhos. Se eu lhe der as probabilidades de 1.023 deles, você obtém a última pelo que falta para completar um. São $1.023$ números livres por máquina. Nosso aprendiz pede dez taxas de cara por máquina, uma por janela, e usa todo bilhete para estimar cada taxa. Se eu souber que cada cabeçote tem seu próprio sorteador independente e que as regulagens ficam fixas dentro de cada máquina, há um motivo para tentar essa economia.
+
+Some as duas linhas da tabela. Há cinquenta bilhetes em cada uma das quatro colunas. Quem verificar a independência no caderno inteiro vai encontrá-la. Mas na fórmula aparece uma barra com um $y$ do lado direito. Fique apenas na linha A. Depois de uma cara, a segunda janela dá cara em $45/50$ dos casos. Depois de uma coroa, em $5/50$. A hipótese da qual o programa precisava falha justamente quando fazemos a conta no grupo que ela descreve.
+
+Podemos escrever outra receita generativa. Primeiro sorteamos a face da esquerda. Depois sorteamos se a máquina vai copiá-la. O treino do segundo sorteio cabe na soma das colunas das pontas. Noventa dos cem bilhetes de A mostram repetição, contra dez dos cem de B. Num pedido de cem bilhetes de A, a nova receita espera $100(1/2)(9/10)=45$ pares $CC$. E ao receber um bilhete $CC$ sem etiqueta, ela atribui a A a fração $45/(45+5)=9/10$. Ainda temos um modelo generativo. Trocamos uma hipótese sobre a impressora.
+
+\secao{O que uma multiplicação coloca no modelo}
+O segundo aprendiz quer estimar diretamente a letra dadas as faces. Representa cara por $+1$ e coroa por $-1$. Propõe uma regressão logística em que as log-chances de A sejam $b_0+b_1x_1+b_2x_2$. Vamos experimentar a sua fórmula sem ajustar coeficiente algum.
+
+No bilhete $CK$, troque a coroa da direita por uma cara. A aposta em A deve subir de $1/10$ a $9/10$. Faça a mesmíssima troca no bilhete $KK$. Agora ela deve cair de $9/10$ a $1/10$. Cubra a janela da esquerda nas duas contas. Ao trocar a direita de $-1$ para $+1$, você retira $-b_2$ da soma e põe $+b_2$ no seu lugar. A variação das log-chances é $2b_2$ nos dois bilhetes. Qual sinal você escolheria para $b_2$?
+
+O aprendiz pode recolher mais bilhetes. Continuará faltando um sinal que mude conforme a primeira janela. Quero uma instrução que deixe a leitura da direita como está quando a esquerda for $+1$ e troque seu sinal quando a esquerda for $-1$. Multiplicar pela leitura da esquerda faz exatamente isso. O produto $z=x_1x_2$ escreve $+1$ nas repetições e $-1$ nas trocas. As chances de A nessas duas colunas são nove para um e um para nove. Na régua dos logaritmos essas marcas ficam à mesma distância de zero, uma de cada lado. Use $z$ para escolher o lado e $\ln 9$ para marcar a distância. A regressão logística ajustada a essas proporções escreve
+\[
+              \ln\frac{p(A\mid z)}{p(B\mid z)}=z\ln 9 .
+\]
+O produto é um \emph{termo de interação}. Multiplique $x_2$ por $x_1$ e veja o que acontece à contribuição de uma cara à direita quando você troca a face da esquerda. Foi essa mudança de sinal que pedimos. E houve uma escolha nossa até nesse conserto. Ao fornecer só $z$, juntamos $CC$ com $KK$. O programa perdeu o direito de atribuir a eles probabilidades diferentes. Por isso, no próximo lote, eu guardaria as faces originais para conferir se a diferença que apaguei continua dispensável.
+
+O gerador e a logística concordam sobre a letra de \emph{todo} bilhete. Posso então dispensar o gerador e usar a logística para planejar a produção? Troque nas duas máquinas a taxa de cara da primeira janela, de $1/2$ para $0{,}8$, sem mudar as chances de copiar. De cada cem bilhetes de A esperamos agora 72 pares $CC$, e de cada cem de B esperamos oito. O classificador continua dando $72/(72+8)=9/10$ para A ao ver $CC$. Para os outros desenhos, a mudança na frequência da primeira face também se cancela na razão entre as máquinas. Quem encomenda cem bilhetes de A tem todo o interesse em saber se deve esperar 45 ou 72 com duas caras. A logística pode acertar todas as suas apostas sem descobrir o que eu mexi na impressora.
+
+\secao{Quem escolheu os exemplos?}
+Costumo dizer aos meus alunos que a modelagem acontece quando precisamos decidir o que trazer de casa para o problema. As duas oficinas a seguir querem a mesma coisa. Amanhã chegará um bilhete sem etiqueta e alguém terá de adivinhar sua origem. Em qual delas eu começaria por cada um dos caminhos?
+
+Na primeira, descobrir a letra custa dinheiro. A oficina só investiga metade dos bilhetes repetidos e um em dez dos diferentes. Dentro de cada grupo, escolhe os bilhetes ao acaso. Aplique esse procedimento à nossa tabela. Dos cem repetidos, esperamos investigar cinquenta, dos quais 45 serão de A. Dos cem diferentes, esperamos investigar dez, dos quais um será de A. Pelas contagens esperadas da auditoria, $50/60$ dos bilhetes têm faces iguais. Na esteira, a metade. Se eu usasse esse arquivo para fabricar uma nova tiragem, erraria já na primeira encomenda. Mas a chance de A entre os repetidos continua em $45/50$, e entre os diferentes, em $1/10$. O sorteio encolheu cada coluna sem favorecer uma letra dentro dela. Eu começaria pelo discriminativo porque sei por que as proporções de que preciso sobreviveram à coleta. A informação decisiva veio de quem escolheu os bilhetes para investigação.
+
+Na outra oficina eu mesmo vou até as duas impressoras. Recolho cem bilhetes ao acaso da saída de A e cem da saída de B. Agora posso estimar o que cada uma imprime. A fração de A no meu caderno é meio a meio porque acabei de decidir que seria. No turno de amanhã só um bilhete em dez virá de A. Se o mecânico me disser que as regulagens continuam as mesmas, posso transportar as taxas medidas na bancada e usar a mistura da produção. Uma repetição continua favorecendo A por um fator nove. Como as chances iniciais caíram para um contra nove, depois da repetição minha aposta fica em $1/2$. Aqui eu começaria pelo gerador. A estabilidade da regulagem é uma hipótese que eu defenderia com o mecânico. Os cem bilhetes de cada máquina, sozinhos, não a prometem.
+
+Também se pode corrigir a aposta de um discriminativo calibrado quando se conhecem a mistura anterior, a nova e essa mesma estabilidade. A escolha profissional depende do que consigo justificar a respeito do próximo turno. Para avaliá-la, eu reservaria um lote da esteira real. Se a encomenda é separar bilhetes, abriria as etiquetas para medir o custo de errar a gaveta. Se é dimensionar a tiragem, compararia as quantidades de cada desenho com aquelas que prometi ao comprador.
+
+\begin{quadro}{Antes de apagar uma coluna}
+\itemq{O que pretendo descobrir} Quando a coleta preserva a proporção de letras em cada desenho e a tarefa é identificar a máquina, posso ajustar diretamente essa proporção. Quando conheço a saída de cada máquina e a mistura do próximo turno, posso compor a previsão pelas partes que medi.
+\itemq{O que pus à mão} Sortear as duas faces separadamente e tratá-las apenas pelo produto são hipóteses diferentes. Uma proíbe a dependência dentro da máquina. A outra exige a mesma aposta para duas caras e duas coroas.
+\end{quadro}
+
+Voltemos ao seu bilhete. Posso construir um leitor que tenha espaço para guardar apenas um bit? Ao abrir a primeira aba, ele escreve cara ou coroa nesse espaço. Ao abrir a segunda, compara o que vê com o que guardou e substitui o primeiro registro pela resposta à pergunta \emph{iguais ou diferentes?} Agora pode riscar as duas faces e ainda assim apostar na máquina. Tínhamos espaço suficiente desde o começo. O que precisou mudar entre as duas leituras foi o significado daquela única anotação.

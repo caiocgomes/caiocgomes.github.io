@@ -1,0 +1,62 @@
+\capitulo{2}{How Much Is a Second Head Worth?}
+Back to the drawer of biased coins. Coin A comes up heads three times out of four, and B once out of four. I picked one of them at random. I toss it, it comes up heads, and your bet on A goes from one half to three quarters. You ask me to toss the same coin again. I cover the result with my hand. Before you look, tell me something. If it came up heads again, will that second head be worth as much as the first?
+
+Coin A still comes up heads with probability $3/4$, and B with probability $1/4$. In that sense nothing has changed. But the first head already moved half the probability that belonged to B over to A's column. How much is left for the second head to move?
+
+I lift my hand. Heads. At 32 tables we expect 16 coins of each type. Of the tables that see heads on the first toss, 12 will have A and 4 will have B, on average. If only those tables toss again, we expect 9 of the 12 tables with A and 1 of the 4 with B to see a second head.
+
+\mesas
+
+We started with one table holding A for every table holding B. After the first head there were three to one. After the second, nine to one. In that sense the two heads did exactly the same thing. Each tripled the odds in favor of A. Now read A's column as a fraction of the tables still in the room. It went from $1/2$ to $3/4$ and then to $9/10$. The first head multiplied the \emph{probability} of A by $3/2$, the second by $6/5$. If we used the first factor twice, we would get $(3/4)(3/2)=9/8$. We have just put more than 100\% of the probability on a single coin. Where did our prediction change without our noticing?
+
+\secao{What Would It Take to Change My Mind?}
+We can predict that change. I ask someone who knows they have coin A for the probability of heads. I ask you, too. If heads comes up, A gains probability whenever it predicted heads better than you did. To measure the gain, divide the new bet by the old one. Doubling a bet of ten centavos and doubling a bet of forty then give the same factor of two. For positive $p(x)$ and $p(y)$, equating the two prices for the ticket gives
+\[
+ W(x,y)=\frac{p(y\mid x)}{p(y)}
+       =\frac{p(x\mid y)}{p(x)}.
+\]
+The left side tells us how much our bet on $y$ changed. The right side compares two predictions for $x$. The ratios agree because the ticket that pays for $x$ and $y$ has a single price.
+
+On the first toss, the person holding A gave heads probability $3/4$ and you gave it $1/2$. On the second toss, they still gave it $3/4$. And you? Among the 16 tables that saw heads on the first toss, we expected 10 to see it again. You were already giving probability $10/16=5/8$ to the outcome under my hand. That's where the $6/5$ comes from. If $h$ is the history already written in the notebook, the factor for its next line is $p(x\mid y,h)/p(x\mid h)$. Notice that the history enters both predictions. If I handed you a photograph of the first toss and told you it was a photograph, you and the person holding A could both predict with certainty which side it would show. The factor would be $1/1$.
+
+Can I promise to raise my bet on A whatever happens on the second toss? The average would go up, too. Here a head takes us to $9/10$ and a tail brings us back to even odds. With the weights we had before looking, $(5/8)(9/10)+(3/8)(1/2)=3/4$. The books balanced before I even lifted my hand.
+
+Would you like to try the calculation on a particularly unlikely observation? At each table I put an envelope numbered from 000 to 999. I draw the number uniformly, independently of the coin. I open yours. It's 731. Before I opened it, you would have given that number one chance in a thousand. If I had told you beforehand that your coin was A, you would have given it the same one chance in a thousand. We can put the envelope back in the drawer without changing the bet.
+
+Now I change one instruction. At tables that get A, I draw the envelope from the five hundred odd numbers. At tables that get B, I draw from the five hundred even ones. The two coins are still equally likely. What chance do you give 731 before you know the letter? Still one in a thousand. And when it turns up? Given coin A, 731 had one chance in five hundred. The factor in favor of A is two, just enough to take its probability from $1/2$ to one. All I changed between the two games was how the number related to what you wanted to find out. A notebook that kept only a histogram of the numbers would look the same in both.
+
+\secao{The Price of a Look}
+If someone charges us to open the envelope, we have to decide how much to pay before we know the result. Let me suggest a unit for keeping score. At the end of the round, I reveal the letter. If you had assigned certainty to the letter that came up, you pay nothing. If you had given it one half, you pay one point. If you had given it half of a half, you pay two. What would it cost to have given the right letter one eighth?
+
+Imagine I reveal the answer in two stages. You gave the first answer probability $1/2$ and, knowing it, gave the second probability $1/4$. Getting the pair right meant getting through both filters. The probability you assigned the pair was $1/8$. I can hand you a single bill for three points or two bills, one for a point and one for two. You pay the same amount. That's what I want the logarithm for. It counts the halvings between certainty and your bet. For $1/8$ there are exactly three. For a bet between $1/4$ and $1/2$, the scale reads somewhere between one and two. In mathematical notation, if $r=2^{-c}$, the charge is $c=-\log_2 r$. We chose two as the base because we wanted to charge one point per halving.
+
+Now work out what a look is worth. If seeing the face doubled your bet on the letter that eventually came up, you saved yourself one halving, whatever your starting bet. Tripling should likewise be worth the same wherever you start. That's why we care about the factor by which the bet changed. Your saving is the charge before looking minus the charge afterward,
+\[
+ \underbrace{-\log_2 p(y)}_{\text{before}}
+ -\underbrace{\big[-\log_2 p(y\mid x)\big]}_{\text{after}}
+ =\log_2\frac{p(y\mid x)}{p(y)}=\log_2 W(x,y).
+\]
+
+You can even come out behind. If I drew B and happened to toss heads, you lowered your bet on the coin I'm about to show you from $1/2$ to $1/4$. Peeking at that head cost you an extra point. This happens in a quarter of the rounds if we include the mirror case where A comes up tails. In the other three quarters you raise the probability of the right letter from $1/2$ to $3/4$. The average saving is $(3/4)\log_2(3/2)+(1/4)\log_2(1/2)$, about $0.189$ points. If the house charges $0.2$ points for a peek, on average you pay more than you save.
+
+This expected saving is the \emph{mutual information}, measured in bits when we take logarithms to base two. Each outcome and hypothesis enter as a pair, with their joint probability as the weight,
+\[
+ I(X;Y)=\sum_{x,y:\,p(x,y)>0}p(x,y)\log_2 W(x,y).
+\]
+We could also work out what we expect to pay before observing and subtract what we expect to pay afterward. Imagine a hundred rounds with your bet on A set at $q$. In about $100q$ of them, you'd pay the charge for the probability you gave A. In the rest you'd pay for the probability you gave B. Divide the bill by a hundred rounds and you get the theoretical average charge $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, the \emph{entropy} of a binary bet. At even odds, $h(1/2)=1$ bit. When we know the answer, the letter that will come up has probability one and the charge is zero.
+
+\secao{The Best Question to Ask the Coin}
+We still don't know which box was picked, Ordinary or Double. But we did see a head. If it was the Double box, we're holding the two-headed coin. Which is worth more to us now: putting the coin back and drawing again from the same box, tossing the coin on the table again, or simply turning it over?
+
+If we put it back and draw again, each face remains equally likely in both boxes. One bit of uncertainty remains. If we turn it over, a tail on the other side identifies the Ordinary box and a head identifies the Double box. Our next bet on the right box will have probability one.
+
+If we toss the same coin again, half the tables have the Double box and another head is certain there. Of the half with the Ordinary box, half will see a tail. So a tail occurs at $1/4$ of all tables and settles the question. Among the $3/4$ that see a head, the fraction with the Double box will be $(1/2)/(3/4)=2/3$. After the toss our average charge for naming the box will be $(3/4)h(2/3)$ points, since a tail made the answer certain. Of the three things you could do, the first is worth zero bits, the second $1-(3/4)h(2/3)\simeq0.311$ bits, and the third one bit.
+
+Compare the extremes. When we put the coin back, there's a one-half chance of seeing heads. When we turn it over, there's also a one-half chance of seeing heads. The two actions give the same histogram of faces. Only one lets us find out which box we have.
+
+\begin{quadro}{Before Asking for One More Observation}
+\itemq{Once it arrives} Compare what the hypothesis predicted for the outcome to what you predicted before looking. The ratio multiplies the probability of the hypothesis.
+\itemq{If you can still choose what to observe} Imagine the outcomes each hypothesis would produce. Averaging $\log_2 W(x,y)$ over those possibilities tells you what it's worth to look before betting, when we use the logarithmic charge.
+\end{quadro}
+
+Who told us that coin A comes up heads on three tosses out of four?

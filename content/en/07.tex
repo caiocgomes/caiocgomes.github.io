@@ -1,0 +1,73 @@
+% Chapter 7
+
+\capitulo{7}{How Much Does 90\% Weigh?}
+Let's go back one ticket in time. You still have the nine A's and one B from the end of the last chapter. I've been collecting tickets with matching faces too, only I started earlier. My notebook has ninety A's and ten B's. We agree to use the observed frequency to bet on which machine will print the next ticket with matching faces. Ask us what probability we give A. Each of us writes $90\%$ on a slip of paper. The ticket costs R\$\,8.80 and pays ten reais if it comes from A. We both put its expected payout at nine reais. We buy.
+
+Another ticket with matching faces comes in. The label says B. We write down the same letter. What's the next ticket worth? Your estimate has fallen to $9/11$, so the ticket is now worth about R\$\,8.18 to you. You pass. Mine has fallen to $90/101$. At the same price of R\$\,8.80, I'm still buying something I expect to be worth R\$\,8.91.
+
+Suppose all I collected yesterday was the two slips of paper. Today I write the function from the first page. I try it with your bet from yesterday and the new observation. The inputs are $90\%$ and B. I try it with mine. The inputs are $90\%$ and B. What line of code could possibly tell whose slip it was?
+
+\secao{The Part of the Calculation That Disappeared}
+When we summarized the history by its frequency, we did a division. Nine divided by ten gives the same number as ninety divided by a hundred. That's exactly what we wanted when we compared the bets. But what operation did the new B ask us to perform? Add one to the denominator. That's when we needed to know what we'd divided by.
+
+Let $n$ be the number of entries and $q$ the fraction of them that are A. The number of A's is $nq$. Write $t=1$ if the new letter is A and $t=0$ if it's B. Before doing the division, try to predict which way the number will move. If the new entry contributed exactly the old average $q$, the average would stay put. It contributed $t$. The excess or shortfall is $t-q$, and we now spread that difference over $n+1$ entries. We can count letters or spread out the difference. The two calculations give
+\[
+ q'=\frac{nq+t}{n+1}
+    =q+\frac{t-q}{n+1}.
+\]
+The term $t-q$ is $-0.9$ in both notebooks. How far does the observation move the bet? You divide that term by $11$. I divide it by $101$. If each of us had written $q$ and $n$ on our slip, I could have done both calculations. I'd even know what to keep for tomorrow, since the new state is $(q',n+1)$. I'm counting rounds here. If my hundred entries were ten photocopies of each of your ten, we'd still have seen only ten rounds. To decide how much weight to give a notebook, you also need to know who filled it.
+
+Could we program a learner that keeps only $q$? Sure. Give the latest entry one tenth of the weight every time and write $q'=q+(t-q)/10$. Both slips marked $90\%$ will now give $81\%$ after a B. If I want recent rounds to carry more weight because a machine's setting can change, I have a reason to try that rule. But I've just made a choice about the learner. With a hundred entries in my notebook, the observed frequency would give the next one a weight of $1/101$. Giving it a tenth needs a reason of its own.
+
+\secao{A Test for Any Notebook}
+Let $h$ stand for the history the learner has read, and $S(h)$ for what it kept. Write $hd$ for the history we get by adding the observation $d$ at the end. Assume we can give the program the same set of possible observations after any history. In our game I can hand you an A or a B.
+
+I want to close the file of old records and still get exactly the state tomorrow that I'd get if I reopened the file and worked through everything again. In other words, I want a deterministic rule $U$ such that
+\[
+                        U(S(h),d)=S(hd).
+\]
+Choose two histories that the summary treats as indistinguishable. Close the notebooks and give both of them the same new letter. Your program gets precisely the same inputs. If you open the notebooks and find two different next states, which one was the program supposed to write down? That's the test this arrow expresses.
+\[
+              S(h)=S(h')\quad\Longrightarrow\quad S(hd)=S(h'd)
+              \qquad\text{for every }d .
+\]
+\textbf{A rule $U$ with the property we want exists if and only if the summary passes this test for every pair of histories.}
+
+If $U$ exists, it gets identical inputs in the two cases and can give only one answer. That's how we found the flaw in our two slips marked $90\%$. What about the other direction? Suppose the summary always passes the test. To define $U(s,d)$ for a state $s$ we can actually reach, choose any history $h$ that leads to $s$, append $d$, and return $S(hd)$. Could someone with a different notebook ending in $s$ object to that instruction? By the test, all those notebooks call for the same answer. We have our rule. We can apply it again next round, and keep going.
+
+There's a way to cheat on this test. Write zero on the slip, whatever happens. The rule that returns zero passes with flying colors. Now try getting a price for the ticket out of it. We're missing the other half of the problem. Fix a question $Q$ and call $A_Q(h)$ the answer our method would give with the whole notebook at hand. For us to read that answer from the summary, two histories with the same $S$ must also give the same answer $A_Q$. If that's true, we can call the readout $R_Q$ and write
+\[
+                         A_Q(h)=R_Q(S(h)).
+\]
+The slip marked $90\%$ could give yesterday's price and lost track when B arrived. The slip marked zero can keep a calculation going forever without ever telling us what to pay.
+
+\secao{The Other Slip Marked 90\%}
+If the number of observations mattered so much, how did we manage to toss a coin all through Chapter 1 without carrying the count around in Bayes' formula? Go back to the drawer. Coin A lands heads with probability $3/4$ and coin B with probability $1/4$. We know the rates. We choose one coin at random with equal chances and keep it for the whole round. One table records two heads. Another records three heads and one tail. At both tables the odds in favor of A are nine to one. An extra head and an extra tail undo each other's effect. Here are our two slips marked $90\%$ again.
+
+Let's test them. I reveal a tail at each table. A tail is three times as likely under B as under A. On both slips the odds go from nine to one to three to one, and the probability of A falls to $3/4$. A head, in turn, would have tripled the odds at both tables. Once we've fixed which coin we have, each toss is independent of the ones before it. Any sequence to come will therefore have the same effect on both bets. For this drawer, knowing today's odds is enough to update the odds tomorrow.
+
+In the first two notebooks, $90\%$ was an estimate of the frequency of A in a population, and the new B was one more observation from that population. At the drawer, $90\%$ is our bet on the identity of the coin I'm already holding, and the new observation is a face that coin produced. In one case we need to revise the rate we'll use for the next ticket. In the other, the rate of heads for each type of coin was part of the rules from the start. This is the promise we made in Chapter 1 when we wrote $p_t=\mathcal F(p_{t-1};x_t)$. To keep it, we need to choose \emph{what} the distribution is over and know \emph{how} the next observation relates to what we kept.
+
+\begin{quadro}{What a Summary Needs to Preserve}
+\itemq{To answer} Histories leading to the same state must agree on the answers to the questions the program will have to handle.
+\itemq{To keep going} Give the same next observation to two histories that reached the same state. If the method calls for two different next states, something we needed was on the paper we threw away.
+\end{quadro}
+
+In the coin notebook we cut into pieces, two histories with the same sixty heads in eighty tosses give the same estimate of $3/4$. Ask how often two heads came together, and swapping two pieces is enough to make the histories disagree. With the printers, a first head and a first tail both leave our bet on the machine at $1/2$. Open the second window and you discover why we needed to remember the first.
+
+Even the value of an observation depends on the job at hand. When the drawer gives either coin an equal chance, peeking at the first toss tells us, on average, $0.189$ bits about the coin's identity, as we worked out in Chapter 2. How much would you pay me for that peek if all you could do with the result was decide whether to buy a ticket paying ten reais if the coin is A? At two reais a ticket, you'd buy before peeking and still buy if you saw tails, when your probability for A fell to $1/4$. The peek is worth zero reais for that decision. Now I raise the price to five reais. If you see heads, you buy a ticket with an expected payout of R\$\,7.50. If you see tails, you sit it out. Before seeing the toss, your expected gain was zero. Getting to choose after you look is worth $(1/2)(7.50-5)=1.25$ reais on average. Did I do anything to the coin to change the price of that information?
+
+Back in the workshop, the generative model and logistic regression could give the same odds on the machine. Only the first could simulate a production run. The SVM score was enough to operate the sorting gate. Pricing the risk on a part took calibration. On the first page, you offered me eighty centavos if the coin landed heads and sixty if it landed tails for a ticket you'd just sold me for fifty. We found the mistake before tossing the coin. Our hypothesis was this. \emph{To learn is to keep our bets coherent as new data arrive.} Now we have two tests for that idea. When the numbers are prices, I can write out a single ticket and price it two ways. When I run the program, I can give it two pasts it summarized in the same way and ask it to honor the bets it promised for the next round. The first test checks the model's arithmetic. The second checks whether the learner kept what it needs to do that arithmetic. There's still a check neither one can do for me. If the model assumes independence where the machine copies the first face, it can pass both tests and keep losing money. I need to open fresh tickets.
+
+\secao{The Workshop Changes Its Mind}
+The next day the inspector has a small request. He suspects the machine's setting has begun to drift and wants the display to show the fraction of A's \emph{in the last three tickets only}. I show him two notebooks, with the letters in the order they came in,
+\[
+                           A\,A\,B \qquad\qquad A\,B\,A .
+\]
+Both give $2/3$. The inspector knows he'll have to drop the oldest letter. He suggests keeping $(2/3,A)$ in each device, the fraction on the display and the letter to drop next. He challenges me to make the display give the wrong answer.
+
+I bring a B. Once we drop the first letter, the windows become $ABB$ and $BAB$. The fraction of A's falls to $1/3$ in both. The inspector smiles. I bring another B.
+
+The first window now holds three B's. The second still has one A. The displays ought to read zero and $1/3$. Look back at the round when both still read $1/3$. Even then, the first device needed to remember A as the next letter to go, while the second needed to remember B. Given identical starting notes and the same observation, how could the program have written down two different letters? If it keeps all three letters in order, it can drop the one on the left and add the new one on the right. Being asked to forget the old ones is what made their order worth remembering.
+
+The error showed up on the display one round after the learner forgot what it needed to honor its next bet. That's how I'd try to break a learner before putting it into production. I'd give it two pasts it had chosen to forget in the same way. Then I'd look for the observation that would make it wish it had kept the difference.

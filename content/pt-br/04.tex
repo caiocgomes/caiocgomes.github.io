@@ -1,0 +1,84 @@
+\capitulo{4}{Duas maneiras de ler a mesma tabela}
+Duas caras na mesa, letra escondida. Vendo por R\$\,8,80 um bilhete que paga dez reais se a moeda for A e zero se for B. Podemos repetir o negócio muitas vezes. Pensando no ganho médio, você compra?
+
+Quem trouxe o gerador tira a carteira do bolso. Pela aposta de $9/10$, o bilhete vale nove reais. Quem trouxe o caderno encontra vinte e quatro letras A em vinte e oito. Pela sua estimativa, o bilhete vale R\$\,8,57. A carteira fica no bolso. Se eu tivesse pedido apenas a letra, os dois teriam dito A.
+
+Abra o caderno de treino na mesa.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Tipo revelado & 0 caras & 1 cara & 2 caras & Total\\
+\midrule
+A & 4 & 12 & 24 & 40\\
+B & 24 & 12 & 4 & 40\\
+\midrule
+Total & 28 & 24 & 28 & 80\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Ponha o dedo sobre o $24$ da primeira linha. O que você precisa ler para transformá-lo numa probabilidade? Se a pergunta for que fração das rodadas de A deu duas caras, percorra a linha e divida por quarenta. Se for qual a probabilidade de a moeda ser A, sabendo que deu duas caras, percorra a coluna e divida por vinte e oito. O numerador está no mesmo lugar. Quem escolheu o denominador foi a pergunta.
+
+O gerador contou também as outras colunas e estimou as taxas das moedas. Em quarenta rodadas de cada tipo, espera $40(3/4)^2=22{,}5$ rodadas de A com duas caras e $40(1/4)^2=2{,}5$ de B. A coluna que ele espera encontrar sugere $22{,}5/(22{,}5+2{,}5)=9/10$. A que vimos ontem dá $24/(24+4)=6/7$. Mas não acabamos de exigir um preço só para o mesmo papel? Considere um real por A \emph{e} duas caras antes de lançar. No caderno de ontem, contar pela linha ou pela coluna dá
+\[
+        \frac{40}{80}\frac{24}{40}
+        =\frac{24}{80}
+        =\frac{28}{80}\frac{24}{28}.
+\]
+No caderno que o gerador espera produzir, a conta também fecha,
+\[
+        \frac12\left(\frac34\right)^2
+        =\frac{9}{32}
+        =\frac{5}{16}\frac9{10}.
+\]
+O primeiro usa as frequências observadas. O segundo usa a independência para compor o par. Para acusar um aprendiz de contradição, eu teria de obter dois preços partindo das hipóteses \emph{dele}. Para saber qual compra melhor, preciso de rodadas novas.
+
+\secao{Uma conta que só pede as letras}
+Amanhã, toda vez que tiver de responder, já terei visto as duas faces. Posso usar o treino para ajustar diretamente a probabilidade da letra para cada resultado que me mostrarem. Essa maneira de aprender a prever $Y$ a partir de $X$ é o \emph{aprendizado discriminativo}. Para ver como funciona, fique apenas com os vinte e oito bilhetes da última coluna e escolha uma probabilidade $q$ para anunciar. O que o caderno lhe cobraria por essa escolha?
+
+Imagine que você tenha anunciado $q=0{,}80$ para A. Separe os bilhetes em duas pilhas, as vinte e quatro letras A de um lado e as quatro B do outro. Agora dê a A um centésimo a mais de probabilidade. Na pilha maior, cada um dos vinte e quatro bilhetes ficará um pouco mais barato. De onde veio esse centésimo? Saiu dos $0{,}20$ que você tinha reservado a B. Os quatro bilhetes daquela pilha ficam mais caros. Se você continuar tirando de B, qual das duas pilhas acabará mandando na conta?
+
+Use a régua do capítulo anterior. Para um empurrão minúsculo em $q$, o desconto por bilhete A depende do tamanho do empurrão em relação à aposta $q$. Para um bilhete B, o acréscimo se calcula em relação à aposta que sobrou, $1-q$. Quando $q=0{,}80$, os vinte e quatro descontos puxam com força $24/0{,}80=30$. Os quatro acréscimos puxam com força $4/0{,}20=20$. Vale a pena subir. Experimente $q=0{,}90$. Os descontos agora somam cerca de $26{,}7$ por unidade de deslocamento e os acréscimos somam 40. Você já passou do ponto.
+
+Podemos escrever o que acabamos de pesar. Cada A cobra $-\ln q$ e cada B cobra $-\ln(1-q)$. O logaritmo natural só troca a unidade dos pontos. A altura agora é uma despesa. Estamos procurando o fundo do vale. Se chamarmos de $D$ a despesa total, sua inclinação é
+\[
+ D(q)=-24\ln q-4\ln(1-q),\qquad
+ D'(q)=-\frac{24}{q}+\frac{4}{1-q}.
+\]
+O equilíbrio pede $24/q=4/(1-q)$. Há seis vezes mais bilhetes A. Para os dois lados pesarem o mesmo, a fatia de probabilidade de A precisa ser seis vezes a de B. Seis partes em sete dão $q=6/7=24/28$. Até lá um empurrão para a direita reduz a despesa. Depois disso, aumenta. Agora sabemos por que contar as letras produz justamente a aposta que sai mais barata naquele caderno.
+
+Podemos fazer o mesmo nas outras colunas. Para zero caras, a aposta mais barata em A é $4/28=1/7$. Para uma cara, é $12/24=1/2$. Nesse ponto nosso programa cabe no verso de uma moeda grande. Basta guardar três frações e consultar a que corresponde à coluna recebida. Mas imagine que eu cubra uma coluna inteira antes do treino. Para aquela coluna, nenhuma fração estará disponível. O que eu teria de acrescentar para arriscar uma resposta mesmo assim?
+
+\secao{O que permite adivinhar a coluna coberta}
+Vale procurar uma pista no gerador. Com as taxas $3/4$ e $1/4$, cada cara triplica as chances a favor de A. Cada coroa as divide por três. Receba uma cara e uma coroa e risque as duas do papel. Sua aposta voltou ao ponto de partida. Depois de riscar todos os pares assim, o que sobrou? Se houve $C$ caras e $K$ coroas, o saldo $s=C-K$ conta quantas multiplicações por três restaram, ou quantas divisões, quando é negativo. Partindo das chances $r_0$, chegamos a $r_0\,3^s$.
+
+Pense nas marcas $1,3,9,27$ de uma régua para as chances. Cada passagem para a marca seguinte custou exatamente uma cara a mais. Se eu quiser que passos iguais no caderno ocupem distâncias iguais na régua, onde devo pôr essas marcas? Tome o logaritmo e elas ficam em $0,\ln 3,2\ln 3,3\ln 3$. O saldo passa a contar passos, cada um de tamanho $\ln 3$. Para uma aposta $q$ em A, a posição de chegada é
+\[
+             \ln\frac{q}{1-q}=\ln r_0+s\ln 3 .
+\]
+A reta apareceu antes de falarmos em regressão. A marca inicial veio das chances antes de ver as faces. O comprimento do passo veio da diferença entre as duas moedas.
+
+Vamos conservar a régua e deixar que o caderno escolha as duas medidas. Chamemos de $\beta_0$ a marca inicial e de $\beta_1$ o tamanho do passo. Para um saldo $s$ lemos $v=\beta_0+\beta_1s$. Como voltar de uma marca a uma probabilidade? Se ela diz $\ln 3$, temos três partes de A para uma de B. A aposta em A vale três das quatro partes. Se a marca diz $v$, desfazer o logaritmo dá $e^v$ partes de A para uma de B. Divida pelo total de partes. Dividir depois o numerador e o denominador por $e^v$ apenas conta as mesmas partes em outra unidade. A \emph{regressão logística} devolve assim
+\[
+              q(s)=\frac{e^v}{1+e^v}=\frac{1}{1+e^{-v}},
+              \qquad v=\beta_0+\beta_1s .
+\]
+
+Os rótulos vão escolher os coeficientes. A exigência de que as três apostas caibam na mesma reta veio de nós.\footnote{A. Y. Ng e M. I. Jordan estudam o que acontece ao ajustar classificadores pela distribuição conjunta ou diretamente pela condicional em \href{https://proceedings.neurips.cc/paper_files/paper/2001/file/7b7a53e239400a13bd6be6c91c4f6c4e-Paper.pdf}{\emph{On Discriminative vs. Generative Classifiers}} (2001).}
+
+Você já viu os números da última coluna. Cubra-a mesmo assim. O que queremos descobrir é se a aposta naquela coluna ainda era livre depois de aceitarmos a reta. As duas visíveis têm saldos $-2$ e $0$. Na primeira as chances a favor de A são quatro para vinte e quatro, ou um para seis. Na segunda, doze para doze, ou um para um. Ao avançar duas unidades de saldo, multiplicamos as chances por seis. Antes de tirar o dedo, quanto escreve na última coluna? Avançamos outras duas unidades. Se as log-chances seguirem uma reta, precisamos multiplicar por seis de novo. De um para um passamos a seis para um, o que dá probabilidade $6/7$.
+
+Pode tirar o dedo. As chances observadas eram mesmo vinte e quatro para quatro. Nesta tabela, a reta que passa pelos dois pontos visíveis também minimiza a perda na terceira coluna. Como a altura é zero em $s=0$ e é $\ln 6$ em $s=2$, os coeficientes ajustados são $\widehat\beta_0=0$ e $\widehat\beta_1=(\ln 6)/2$. Com as taxas ajustadas pelo gerador a inclinação era $\ln 3$. Os dois programas chegaram a curvas da mesma família. Um ajustou as taxas que explicam as faces dentro de cada tipo. O outro ajustou as probabilidades que a reta dá às letras.
+
+Também podemos usar Bayes para aprender a reta. A cada letra revelada, multiplicamos o peso de cada reta candidata pela probabilidade que ela deu àquela letra para aquele saldo. Normalizamos sobre as candidatas. O treino continua discriminativo, pois as retas fazem apostas sobre a letra dadas as faces.
+
+Faça um pequeno estrago no caderno. Corrija uma única letra na coluna do meio, de B para A. As apostas das colunas extremas continuam dando alturas $-\ln 6$ e $\ln 6$, mas no meio as chances passam a treze para onze. Já não há uma reta que cumpra os três pedidos ao mesmo tempo. Se ajustarmos uma só reta às oitenta rodadas, uma correção no meio poderá mudar a aposta até na coluna das duas caras, onde letra alguma foi alterada. Somos capazes de aprender sobre uma coluna usando as outras pela mesma razão que nos permite errar uma delas quando a relação que imaginamos falha.
+
+\begin{quadro}{Antes de comprar o bilhete}
+\itemq{Leia o denominador} Ajustar a distribuição conjunta nos permite perguntar como cada tipo produz as faces. Ajustar diretamente a condicional nos permite perguntar qual letra esperar das faces observadas. Para classificar, ambos podem chegar à mesma forma de curva.
+\itemq{Procure o empréstimo} O gerador juntou lançamentos pela taxa de cada tipo. A logística juntou colunas pela inclinação de uma reta. Quando uma observação muda a previsão para outra entrada, procure a hipótese que as ligou.
+\end{quadro}
+
+Eu selaria as duas previsões e separaria para o teste rodadas inteiras com moedas novas. Para comprar a R\$\,8,80, interessa se A passa de $88\%$ nas rodadas com duas caras. Para avaliar as probabilidades de todo o jogo, interessa a cobrança média dos logaritmos nas rodadas novas. Se decidisse pelo mesmo caderno usado no treino, daria ao ajuste direto o privilégio de corrigir a própria prova.
+
+Até aqui, uma cara já favorecia A. Se a primeira face sozinha nada disser e a segunda sozinha também nada disser, vale a pena guardar as duas?
