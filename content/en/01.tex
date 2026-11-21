@@ -82,9 +82,10 @@ You can balance the books with your eyes shut. With $a=1$ nobody ever changes a 
 
 Let us weigh the two changes for any $a$. Measure the distance from $2/3$ in units of probability. After heads, subtract $2/3$ from the new price. After tails, subtract the other way around to find the size of the drop. We get
 \[
- \text{rise}=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},
- \qquad
- \text{drop}=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \begin{aligned}
+ \text{rise}&=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},\\[4pt]
+ \text{drop}&=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \end{aligned}
 \]
 Both changes contain the same factor $2(a-1)/3$. Since $a>1$, we can take that factor off both pans, just as we could change from reais to centavos without tipping the scales. For the drop to be $7/5$ the size of the rise, what remains is
 \[
@@ -115,9 +116,11 @@ Our colleague who never changes their mind would price the ticket at $3/8$ of a 
 
 We can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
 \[
+ \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
- =\frac{p(x\mid y)p(y)}{p(x)},\quad
+ =\frac{p(x\mid y)p(y)}{p(x)},\\[4pt]
  p(x)=\sum_{y'}p(x\mid y')p(y').
+ \end{gathered}
 \]
 Let us stop here for a moment. We have come to Bayes' formula by an unusual route. We first asked what it would mean to learn and found different rules that discover the right coin. Only when we asked that each bet quote a price consistent with the other bets on the same experiment did this particular rule appear. We will come back to it before long to see what it tells us when we read it through the lens of learning.\footnote{P. G. Bissiri, C. C. Holmes and S. G. Walker study updates based on loss functions in \href{https://doi.org/10.1111/rssb.12158}{\emph{A General Framework for Updating Belief Distributions}} (2016).}
 
@@ -131,3 +134,11 @@ I give you one observation. I can return the coin to its box, draw again and tos
 Perhaps you want to ask me something before you choose. \emph{With the coin sitting right there, can I just turn it over?}
 
 You can.
+
+\begin{quadro}{What to take away from this chapter}
+\itemq{1} Getting the letter right in the long run still leaves open which probabilities to announce today.
+\itemq{2} When probabilities are prices, the same ticket must have the same value along either calculation. In this chapter's drawer, that requirement fixes the Bayesian update.
+\itemq{3} What a face teaches depends on the question and the experiment we choose. Tossing again, returning the coin, and turning it over can answer different questions.
+\itemq{What changed} We began by asking whether the learner changes its mind. Now we can check whether its announced bets are coherent with one another, even before we know which coin was chosen.
+\itemq{To carry forward} Does a second head teach as much as the first? On what scale would you measure that gain?
+\end{quadro}

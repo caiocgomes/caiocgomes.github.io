@@ -1,0 +1,41 @@
+% Shared cover. The build inlines this file into each downloadable manuscript.
+% Keep coin-toss.png beside the manuscript when compiling the source bundle.
+\usepackage{graphicx}
+\definecolor{covercream}{HTML}{F2E8D3}
+\definecolor{covercopper}{HTML}{D8AD7C}
+\newcommand{\bookcover}[3]{%
+  \hypersetup{pageanchor=false}%
+  \thispagestyle{empty}%
+  \pdfbookmark[0]{#3}{cover}%
+  \noindent\begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={(current page.north west)},x=1mm,y=-1mm]
+      \node[anchor=north west,inner sep=0] at (0,0)
+        {\includegraphics[width=\paperwidth,height=\paperheight]{coin-toss.png}};
+      \node[anchor=base west,inner sep=0,text=covercopper,
+        font=\fontsize{48}{50}\selectfont\itshape] at (19,43) {The CAIO};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\fontsize{23}{25}\selectfont]
+        at (20,62) {LECTURES ON};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\bfseries\fontsize{39}{41}\selectfont]
+        at (19,79) {MACHINE};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\bfseries\fontsize{39}{41}\selectfont]
+        at (19,95) {LEARNING};
+      \draw[covercopper,line width=.65pt] (20,104)--(34,104);
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontsize{11.5}{14}\selectfont\itshape] at (20,115) {#1};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontsize{16}{18}\selectfont] at (20,211) {Caio Gomes};
+      \node[anchor=base west,inner sep=0,text=covercopper,
+        font=\fontfamily{phv}\selectfont\fontsize{6.8}{9}\selectfont]
+        at (20,219) {CAIO = Chief AI Officer};
+      \node[anchor=base east,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\fontsize{6.8}{9}\selectfont]
+        at (145,219) {#2};
+    \end{scope}
+  \end{tikzpicture}%
+  \par\null\clearpage
+  \hypersetup{pageanchor=true}%
+  \setcounter{page}{1}%
+}

@@ -82,3 +82,11 @@ Let's do a little damage to the notebook. Correct a single letter in the middle 
 I'd seal both predictions and set aside whole rounds with fresh coins for testing. To decide whether to buy at R\$\,8.80, I want to know whether A occurs in more than $88\%$ of rounds with two heads. To assess the probabilities throughout the game, I want the average log loss on new rounds. If I decided from the notebook used for training, I'd be letting the directly fitted model grade its own exam.
 
 So far, one head already favored A. If the first toss on its own tells us nothing and the second on its own tells us nothing either, is there any point in keeping both?
+
+\begin{quadro}{What to take away from this chapter}
+\itemq{1} Fitting the joint distribution and fitting the probability of the letter given the faces are different tasks. Both approaches can produce classifiers.
+\itemq{2} With a separate, unconstrained bet for each column, logarithmic loss is minimized at the observed share of each letter.
+\itemq{3} A straight line in log odds connects the columns: it lets us predict a column with no examples, but also spreads the effects of a poor assumption.
+\itemq{What changed} We moved from fitting a recipe for generating rounds to fitting the answer to the question directly. We can identify the assumption that lets one example teach us something about another input.
+\itemq{To carry forward} If neither face alone tells us anything about the letter, what can the two together teach us?
+\end{quadro}

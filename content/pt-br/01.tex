@@ -82,9 +82,10 @@ Dá para fechar o caixa sem sequer abrir os olhos. Com $a=1$ ninguém mexe no pr
 
 Vamos pesar as duas mudanças para um $a$ qualquer. Meça o deslocamento a partir de $2/3$, em unidades de probabilidade. Depois de cara, tire os $2/3$ do preço novo. Depois de coroa, faça a subtração no outro sentido para medir o tamanho da queda. Obtemos
 \[
- \text{alta}=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},
- \qquad
- \text{queda}=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \begin{aligned}
+ \text{alta}&=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},\\[4pt]
+ \text{queda}&=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \end{aligned}
 \]
 As duas têm o mesmo fator $2(a-1)/3$. Como $a>1$, podemos tirá-lo dos dois pratos, assim como poderíamos trocar reais por centavos sem alterar o equilíbrio. Para que a queda seja $7/5$ da alta, resta pedir
 \[
@@ -115,9 +116,11 @@ Nosso colega que nunca muda de ideia avaliaria o papel em $3/8$ de real quando c
 
 Podemos tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
 \[
+ \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
- =\frac{p(x\mid y)p(y)}{p(x)},\quad
+ =\frac{p(x\mid y)p(y)}{p(x)},\\[4pt]
  p(x)=\sum_{y'}p(x\mid y')p(y').
+ \end{gathered}
 \]
 Vamos parar aqui um instante. Chegamos à fórmula de Bayes por um caminho pouco usual. Primeiro perguntamos o que seria aprender e encontramos regras distintas que descobrem a moeda certa. Só quando pedimos que cada aposta anuncie um preço compatível com as demais apostas sobre o mesmo experimento apareceu essa regra em particular. Vamos voltar a ela logo mais para ver o que ensina quando a lemos pelas lentes do aprendizado.\footnote{P. G. Bissiri, C. C. Holmes e S. G. Walker estudam atualizações baseadas em funções de perda em \href{https://doi.org/10.1111/rssb.12158}{\emph{A General Framework for Updating Belief Distributions}} (2016).}
 
@@ -131,3 +134,11 @@ Eu lhe dou o direito a uma observação. Posso devolver a moeda à caixa, sortea
 Pode ser que você queira me fazer uma pergunta antes de escolher. \emph{Com a moeda aí na mesa, eu posso simplesmente virá-la?}
 
 Pode.
+
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Acertar a letra no longo prazo ainda deixa em aberto quais probabilidades anunciar hoje.
+\itemq{2} Quando probabilidades são preços, o mesmo bilhete precisa ter o mesmo valor pelos dois caminhos. Na gaveta deste capítulo, essa exigência fixa a atualização de Bayes.
+\itemq{3} O que uma face ensina depende da pergunta e do experimento escolhido. Relançar, devolver e virar a moeda podem responder a perguntas diferentes.
+\itemq{O que mudou} Começamos perguntando se o aprendiz muda de ideia. Agora conseguimos examinar se as apostas que ele anuncia são coerentes entre si, antes mesmo de saber qual moeda foi escolhida.
+\itemq{Para levar adiante} Uma segunda cara ensina tanto quanto a primeira? Em qual régua você mediria esse ganho?
+\end{quadro}

@@ -64,3 +64,11 @@ You can also correct the bet of a calibrated discriminative model if you know th
 \end{quadro}
 
 Back to your ticket. Can I build a reader with room to store only one bit? As it opens the first flap it writes heads or tails in that space. When it opens the second, it compares what it sees with what it stored, then replaces the first entry with the answer to the question \emph{same or different?} Now it can cross out both faces and still bet on the machine. We had enough room from the beginning. What had to change between the two readings was the meaning of that one entry.
+
+\begin{quadro}{What to take away from this chapter}
+\itemq{1} A face can be needed to interpret the next one, even when it leaves our current bet on the machine unchanged.
+\itemq{2} The independence in Naive Bayes is conditional on the class. Multiplying the two faces captures the example's interaction, but also groups patterns that the model must then treat alike.
+\itemq{3} Data collection determines which proportions we can carry into the next shift. Making that choice requires knowing the workshop and checking predictions on fresh data.
+\itemq{What changed} We now assess a representation by what it lets us answer and what it makes us forget. Even a single bit can serve, provided its meaning keeps up with the reading.
+\itemq{To carry forward} Have two classifiers that always announce the same letter learned the same thing?
+\end{quadro}

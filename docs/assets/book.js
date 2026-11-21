@@ -18,12 +18,11 @@
   const results = dialog.querySelector('.search-results');
   const normalize = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
   const initial = Array.from(document.querySelectorAll('[data-chapter-title]'), item => ({
-    n: Number(item.getAttribute('href').slice(0, 2)), title: item.dataset.chapterTitle, url: item.getAttribute('href'), text: ''
+    label: item.dataset.pageLabel, title: item.dataset.chapterTitle, url: item.getAttribute('href'), text: ''
   }));
   let records = initial;
   let loading;
   let fallback = false;
-  const label = pt ? 'Capítulo' : 'Chapter';
   const text = (tag, cls, value) => {
     const el = document.createElement(tag);
     el.className = cls;
@@ -40,15 +39,15 @@
     const matches = records.map(row => ({
       row, index: normalize(row.text || '').indexOf(term), heading: normalize(row.title).includes(term)
     })).filter(hit => hit.heading || hit.index >= 0);
-    matches.sort((a,b) => Number(b.heading) - Number(a.heading) || a.row.n - b.row.n);
-    status.textContent = matches.length ? (pt ? 'Capítulos encontrados: ' : 'Matching chapters: ') + matches.length :
-      (pt ? 'Nenhum capítulo encontrado.' : 'No matching chapters.');
+    matches.sort((a,b) => Number(b.heading) - Number(a.heading));
+    status.textContent = matches.length ? (pt ? 'Resultados encontrados: ' : 'Matching results: ') + matches.length :
+      (pt ? 'Nenhum resultado encontrado.' : 'No matching results.');
     if (fallback) status.textContent += pt ? ' Busca por título.' : ' Searching titles only.';
     for (const {row,index} of matches) {
       const li = document.createElement('li');
       const a = document.createElement('a');
       a.href = row.url;
-      a.append(text('small','', label+' '+String(row.n).padStart(2,'0')),text('b','',row.title));
+      a.append(text('small','',row.label),text('b','',row.title));
       if (index >= 0) {
         const original = row.text;
         const start = Math.max(0,index-65);
@@ -62,7 +61,7 @@
       const response = await fetch('../assets/search-'+language+'.json');
       if (!response.ok) throw Error();
       const rows = await response.json();
-      if (!Array.isArray(rows) || !rows.every(r => typeof r.title==='string' && typeof r.url==='string' && /^\.?\/?\d{2}\.html$/.test(r.url))) throw Error();
+      if (!Array.isArray(rows) || !rows.every(r => typeof r.title==='string' && typeof r.label==='string' && /^(?:introduction|(?:interlude-)?\d{2})\.html$/.test(r.url))) throw Error();
       records = rows;
     } catch (_) { fallback = true; }
     render();

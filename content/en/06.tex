@@ -70,3 +70,11 @@ When the state is a distribution over hypotheses, $U$ can be our $\mathcal F$, a
 The pile with nine A tickets and one B ticket is still on the table. You know only those counts and you bet according to the observed frequency. I bring another ticket with matching faces. We turn it over. B. You cross out the ten at the bottom of the column and write eleven. I ask about the next letter. You say A, just as you did before. I hold out the ticket that pays ten reais and ask R\$\,8.80 for it. It is now worth $10\times9/11$ to you, about R\$\,8.18. You leave my hand hanging there.
 
 If I had written down only the letter you predicted, I could have spent the whole afternoon without noticing that you had learned something.
+
+\begin{quadro}{What to take away from this chapter}
+\itemq{1} The loss we choose defines what counts as improvement, even when the predicted letter stays the same. Logistic loss and hinge loss charge for different things.
+\itemq{2} In an SVM, the loss and the norm penalty work together. The geometric margin depends on the representation and the scale of the measurements.
+\itemq{3} A classification score needs calibration checked against data to support decisions based on risk probabilities.
+\itemq{What changed} We separated two operations: updating the learner's state and reading an answer from it. A class prediction can stay the same while the bet and the decision to buy change.
+\itemq{To carry forward} If two notebooks announce $90\%$, should the next observation change both bets in the same way?
+\end{quadro}

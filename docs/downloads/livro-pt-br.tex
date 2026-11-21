@@ -5,15 +5,16 @@
 %   latexmk -pdf O_que_se_aprende_com_uma_cara.tex
 
 
-\documentclass[11pt,oneside]{article}
+\documentclass[12pt,oneside]{article}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[brazil]{babel}
 \usepackage[sc]{mathpazo}
 \usepackage{amsmath,amssymb,booktabs,microtype}
-\usepackage[paperwidth=165mm,paperheight=235mm,left=22mm,right=21mm,top=20mm,bottom=22mm,headheight=14pt,headsep=7mm,footskip=12mm]{geometry}
+\usepackage[paperwidth=165mm,paperheight=235mm,left=22mm,right=21mm,top=22mm,bottom=24mm,headheight=14pt,headsep=7mm,footskip=12mm]{geometry}
 \usepackage{xcolor,tikz,fancyhdr,titlesec,needspace,environ}
 \usepackage[unicode,hidelinks]{hyperref}
-\hypersetup{pdfauthor={Caio Gomes},pdftitle={O que se aprende com uma cara},pdfsubject={Aprendizado de máquina, atualização de probabilidades e modelos de classificação. Capítulos 1 a 7.},pdflang={pt-BR},bookmarksopen=true,bookmarksnumbered=false,pdfdisplaydoctitle=true}
+\hypersetup{pdfauthor={Caio Gomes},pdftitle={The CAIO Lectures on Machine Learning},pdfsubject={Aprendizado de máquina, atualização de probabilidades e modelos de classificação. Capítulos 1 a 7.},pdflang={pt-BR},bookmarksopen=true,bookmarksnumbered=false,pdfdisplaydoctitle=true}
 \definecolor{tinta}{HTML}{224D50}
 \definecolor{leve}{HTML}{B9CFCC}
 \definecolor{papel}{HTML}{F4F7F6}
@@ -22,18 +23,19 @@
 \fancyhead[R]{\footnotesize\itshape\nouppercase{\rightmark}}\fancyfoot[C]{\small\thepage}
 \renewcommand{\headrulewidth}{0pt}
 \fancypagestyle{opening}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
-\setlength{\parindent}{1.22em}\setlength{\parskip}{0pt}\linespread{1.07}
+\setlength{\parindent}{1em}\setlength{\parskip}{4pt plus 1pt minus 1pt}\linespread{1.16}
+\renewcommand{\arraystretch}{1.12}
 \setlength{\emergencystretch}{1.7em}
 \interfootnotelinepenalty=10000\clubpenalty=10000\widowpenalty=10000\displaywidowpenalty=10000
 \titleformat{\subsection}{\large\bfseries}{}{0pt}{}
-\titlespacing*{\subsection}{0pt}{13pt plus 3pt minus 3pt}{5.5pt}
+\titlespacing*{\subsection}{0pt}{18pt plus 4pt minus 3pt}{8pt}
 \setcounter{secnumdepth}{0}\raggedbottom
 \newcommand{\F}{\mathcal F}
 \newcommand{\alinhamentodotitulo}{\raggedright}
-\newcommand{\capitulo}[2]{\clearpage\thispagestyle{opening}\markright{#2}\pdfbookmark[0]{Capítulo #1 · #2}{ch#1}\noindent{\small\color{tinta}\textsc{Capítulo #1}\par}\vspace{6pt}{\alinhamentodotitulo\noindent\fontsize{24}{27}\selectfont\bfseries #2\par}\vspace{13pt}\noindent\ignorespaces}
+\newcommand{\capitulo}[2]{\clearpage\thispagestyle{opening}\markright{#2}\phantomsection\label{chapter:#1}\pdfbookmark[0]{Capítulo #1 · #2}{ch#1}\noindent{\small\color{tinta}\textsc{Capítulo #1}\par}\vspace{8pt}{\alinhamentodotitulo\noindent\fontsize{24}{27}\selectfont\bfseries #2\par}\vspace{18pt}\noindent\ignorespaces}
 \newcommand{\secao}[1]{\Needspace{5.2\baselineskip}\subsection*{#1}}
 \newcommand{\itemq}[1]{\par\textbf{#1.}\enspace}
-\NewEnviron{quadro}[1]{\par\addvspace{9pt}\begingroup\setlength{\fboxsep}{8pt}\setlength{\fboxrule}{.55pt}\noindent\fcolorbox{tinta}{papel}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}\small\setlength{\parindent}{0pt}\setlength{\parskip}{3pt}{\large\bfseries\color{tinta}#1\par}\vspace{1pt}\BODY\end{minipage}}\par\endgroup\addvspace{9pt}}
+\NewEnviron{quadro}[1]{\par\addvspace{12pt}\begingroup\setlength{\fboxsep}{10pt}\setlength{\fboxrule}{.55pt}\noindent\fcolorbox{tinta}{papel}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}\small\setlength{\parindent}{0pt}\setlength{\parskip}{4pt}{\large\bfseries\color{tinta}#1\par}\vspace{3pt}\BODY\end{minipage}}\par\endgroup\addvspace{12pt}}
 \newcommand{\mesas}{%
 \par\addvspace{7pt}\noindent\begin{minipage}{\linewidth}\centering
 \begin{tikzpicture}[x=.42cm,y=.44cm,font=\small]
@@ -64,12 +66,123 @@
 {\footnotesize\raggedright Nas duas curvas, uma margem positiva corresponde à letra certa. Para a \emph{hinge}, a partir de \(m=1\) a cobrança por aquele exemplo chega a zero.\par}
 \end{minipage}\par\addvspace{7pt}}
 
-\newlanguage\brasil
-\language=\brasil
 \lefthyphenmin=2\righthyphenmin=3
 \hyphenation{a-pren-da a-pren-de-mos a-pren-der a-pren-di-do a-pren-di-zes a-pren-di-za-do a-pren-di-za-gem pro-ba-bi-li-da-de pro-ba-bi-li-da-des dis-tri-bui-ção dis-tri-bui-ções ob-ser-va-ção ob-ser-va-ções ex-pe-ri-men-to ex-pe-ri-men-tos lan-ça-men-to lan-ça-men-tos hi-pó-te-se hi-pó-te-ses atu-a-li-za-ção atu-a-li-za-ções ge-ne-ra-ti-vo ge-ne-ra-ti-vos dis-cri-mi-na-ti-vo dis-cri-mi-na-ti-vos ve-ros-si-mi-lhan-ça e-xem-plos fre-quên-cia fre-quên-cias in-te-li-gên-cia in-te-li-gen-te in-de-pen-dên-cia in-de-pen-den-tes in-de-pen-den-te-men-te in-for-ma-ção in-for-ma-ções ne-ces-sá-rio ne-ces-sá-ria con-di-ci-o-nal con-di-ci-o-nais co-nhe-ci-men-to re-sul-ta-do re-sul-ta-dos ex-pe-ri-men-ta-dor es-ti-ma-ti-va es-ti-ma-ti-vas ge-ne-ra-li-zar co-e-fi-ci-en-te co-e-fi-ci-en-tes pre-vi-são pre-vi-sões con-ti-nu-ar con-ti-nua con-si-de-rar lo-ga-rit-mo lo-ga-rit-mos di-fe-ren-ça di-fe-ren-tes re-gres-são mul-ti-pli-ca-ção co-e-rên-cia pro-por-ci-o-nal neu-tra-li-da-de su-fi-ci-en-te su-fi-ci-en-tes pro-pri-e-da-de pro-pri-e-da-des exa-ta-men-te com-ple-ta-men-te con-ti-nua-rão per-gun-ta per-gun-tas clas-si-fi-ca-dor clas-si-fi-ca-do-res en-tro-pia in-cer-te-za dis-tri-bu-i-ção ex-pe-ri-men-ta-do-res re-pre-sen-tar de-ter-mi-nam con-di-ci-o-nan-do pa-râ-me-tros dis-po-ni-bi-li-da-de}
 
+\newcommand{\bookinterludename}{Interlúdio}
+% Shared front matter, inlined into the downloadable LaTeX manuscripts.
+\usepackage{tabularx}
+\newcommand{\bookfrontheading}[2]{%
+  \clearpage\thispagestyle{opening}\markright{#1}%
+  \phantomsection\label{front:#2}\pdfbookmark[0]{#1}{#2}%
+  {\noindent\color{tinta}\fontsize{26}{30}\selectfont\bfseries #1\par}%
+  \vspace{18pt}\noindent\ignorespaces
+}
+\newcommand{\bookintroduction}[1]{\bookfrontheading{#1}{introduction}}
+\newcommand{\bookinterlude}[3]{%
+  \clearpage\thispagestyle{opening}\markright{#3}%
+  \phantomsection\label{interlude:#1}\pdfbookmark[0]{\bookinterludename{} #1 - #2 · #3}{interlude#1}%
+  \vspace*{.055\textheight}%
+  {\noindent\small\color{tinta}\textsc{\bookinterludename}\enspace #1\,\textrightarrow\,#2\par}%
+  \vspace{8pt}{\raggedright\noindent\color{tinta}\fontsize{25}{29}\selectfont\bfseries #3\par}%
+  \vspace{9pt}{\noindent\color{tinta}\rule{18mm}{.6pt}\par}%
+  \vspace{14pt}\noindent\ignorespaces
+}
+\newcommand{\booktocentry}[3]{%
+  \par\addvspace{9pt}\noindent
+  \begin{tabularx}{\linewidth}{@{}p{6mm}>{\raggedright\arraybackslash}X r@{}}
+    \textcolor{tinta}{#1} & \hyperref[#3]{#2} & \hyperref[#3]{\pageref*{#3}}\\
+  \end{tabularx}\par
+}
+\newcommand{\booktocpart}[2]{%
+  \par\addvspace{23pt}{\noindent\small\color{tinta}\textsc{#1}\par}%
+  \vspace{5pt}{\noindent\large\bfseries #2\par}\vspace{4pt}%
+}
+\newcommand{\bookplannedpart}[2]{%
+  \par\addvspace{15pt}\noindent{\small\color{tinta}\textsc{#1}}\enspace{\bfseries #2}\par\nopagebreak
+}
+\newcommand{\bookplannedentry}[2]{%
+  \par\addvspace{4pt}\noindent\hangindent=9mm\hangafter=1\makebox[9mm][l]{#1}#2\par
+}
+
+% Shared cover. The build inlines this file into each downloadable manuscript.
+% Keep coin-toss.png beside the manuscript when compiling the source bundle.
+\usepackage{graphicx}
+\definecolor{covercream}{HTML}{F2E8D3}
+\definecolor{covercopper}{HTML}{D8AD7C}
+\newcommand{\bookcover}[3]{%
+  \hypersetup{pageanchor=false}%
+  \thispagestyle{empty}%
+  \pdfbookmark[0]{#3}{cover}%
+  \noindent\begin{tikzpicture}[remember picture,overlay]
+    \begin{scope}[shift={(current page.north west)},x=1mm,y=-1mm]
+      \node[anchor=north west,inner sep=0] at (0,0)
+        {\includegraphics[width=\paperwidth,height=\paperheight]{coin-toss.png}};
+      \node[anchor=base west,inner sep=0,text=covercopper,
+        font=\fontsize{48}{50}\selectfont\itshape] at (19,43) {The CAIO};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\fontsize{23}{25}\selectfont]
+        at (20,62) {LECTURES ON};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\bfseries\fontsize{39}{41}\selectfont]
+        at (19,79) {MACHINE};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\bfseries\fontsize{39}{41}\selectfont]
+        at (19,95) {LEARNING};
+      \draw[covercopper,line width=.65pt] (20,104)--(34,104);
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontsize{11.5}{14}\selectfont\itshape] at (20,115) {#1};
+      \node[anchor=base west,inner sep=0,text=covercream,
+        font=\fontsize{16}{18}\selectfont] at (20,211) {Caio Gomes};
+      \node[anchor=base west,inner sep=0,text=covercopper,
+        font=\fontfamily{phv}\selectfont\fontsize{6.8}{9}\selectfont]
+        at (20,219) {CAIO = Chief AI Officer};
+      \node[anchor=base east,inner sep=0,text=covercream,
+        font=\fontfamily{phv}\selectfont\fontsize{6.8}{9}\selectfont]
+        at (145,219) {#2};
+    \end{scope}
+  \end{tikzpicture}%
+  \par\null\clearpage
+  \hypersetup{pageanchor=true}%
+  \setcounter{page}{1}%
+}
+
 \begin{document}
+
+\bookcover{Como pensar em aprendizado de máquina}{EDIÇÃO EM PORTUGUÊS}{Capa}
+
+\pagenumbering{roman}
+\bookfrontheading{Sumário}{contents}
+\booktocentry{}{Introdução}{front:introduction}
+\booktocpart{Parte I}{A aposta e a moeda}
+\booktocentry{1}{O que se aprende com uma cara}{chapter:1}
+\booktocentry{2}{Quanto vale a segunda cara}{chapter:2}
+\booktocentry{3}{Quem nos contou como a moeda funciona}{chapter:3}
+\booktocentry{4}{Duas maneiras de ler a mesma tabela}{chapter:4}
+\booktocentry{5}{O que o classificador precisa lembrar?}{chapter:5}
+\booktocentry{6}{Quando um acerto já basta?}{chapter:6}
+\booktocentry{7}{Quanto pesa um 90\%?}{chapter:7}
+\booktocentry{}{\textit{Interlúdio} · Do outro lado da portinhola}{interlude:I}
+\bookfrontheading{Capítulos em preparação}{upcoming}
+\bookplannedpart{Parte II}{A régua contínua}
+\bookplannedentry{8}{O preço na reta real}
+\bookplannedentry{9}{A balança das retas}
+\bookplannedpart{Parte III}{A cascata de perguntas}
+\bookplannedentry{10}{O jogo das vinte perguntas}
+\bookplannedentry{11}{Quando a floresta vê o que a árvore cega perde}
+\bookplannedpart{Parte IV}{O apostador com agência}
+\bookplannedentry{12}{Quanto custa descobrir a melhor alavanca?}
+\bookplannedentry{13}{O caixa fechado no futuro}
+\bookplannedpart{Parte V}{A memória aberta}
+\bookplannedentry{14}{Réguas multidimensionais e o gargalo do esquecimento}
+\bookplannedentry{15}{O Transformer: a mesa que nunca se fecha}
+
+\bookintroduction{Introdução}
+
+Eu sou o Caio. No trabalho também sou o CAIO, só que lá eles escrevem em maiúsculas. Eu sempre quis dar um curso inspirado nas Feynman Lectures. Quando percebi que já tinha o título, ficou faltando só a parte fácil, que era escrever o curso inteiro.
+
+\clearpage
+\pagenumbering{arabic}
 
 \capitulo{1}{O que se aprende com uma cara}
 \textbf{Temos passado por uma época em que se fala muito de Inteligência Artificial e de \emph{Machine Learning} (Aprendizado de Máquina).} Com isso, várias perguntas surgem. Os modelos que vemos agora são inteligentes? São artificiais? E eles realmente aprendem?
@@ -155,9 +268,10 @@ Dá para fechar o caixa sem sequer abrir os olhos. Com $a=1$ ninguém mexe no pr
 
 Vamos pesar as duas mudanças para um $a$ qualquer. Meça o deslocamento a partir de $2/3$, em unidades de probabilidade. Depois de cara, tire os $2/3$ do preço novo. Depois de coroa, faça a subtração no outro sentido para medir o tamanho da queda. Obtemos
 \[
- \text{alta}=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},
- \qquad
- \text{queda}=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \begin{aligned}
+ \text{alta}&=\frac{2a}{1+2a}-\frac23=\frac{2(a-1)}{3(1+2a)},\\[4pt]
+ \text{queda}&=\frac23-\frac{2}{a+2}=\frac{2(a-1)}{3(a+2)}.
+ \end{aligned}
 \]
 As duas têm o mesmo fator $2(a-1)/3$. Como $a>1$, podemos tirá-lo dos dois pratos, assim como poderíamos trocar reais por centavos sem alterar o equilíbrio. Para que a queda seja $7/5$ da alta, resta pedir
 \[
@@ -188,9 +302,11 @@ Nosso colega que nunca muda de ideia avaliaria o papel em $3/8$ de real quando c
 
 Podemos tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
 \[
+ \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
- =\frac{p(x\mid y)p(y)}{p(x)},\quad
+ =\frac{p(x\mid y)p(y)}{p(x)},\\[4pt]
  p(x)=\sum_{y'}p(x\mid y')p(y').
+ \end{gathered}
 \]
 Vamos parar aqui um instante. Chegamos à fórmula de Bayes por um caminho pouco usual. Primeiro perguntamos o que seria aprender e encontramos regras distintas que descobrem a moeda certa. Só quando pedimos que cada aposta anuncie um preço compatível com as demais apostas sobre o mesmo experimento apareceu essa regra em particular. Vamos voltar a ela logo mais para ver o que ensina quando a lemos pelas lentes do aprendizado.\footnote{P. G. Bissiri, C. C. Holmes e S. G. Walker estudam atualizações baseadas em funções de perda em \href{https://doi.org/10.1111/rssb.12158}{\emph{A General Framework for Updating Belief Distributions}} (2016).}
 
@@ -204,6 +320,14 @@ Eu lhe dou o direito a uma observação. Posso devolver a moeda à caixa, sortea
 Pode ser que você queira me fazer uma pergunta antes de escolher. \emph{Com a moeda aí na mesa, eu posso simplesmente virá-la?}
 
 Pode.
+
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Acertar a letra no longo prazo ainda deixa em aberto quais probabilidades anunciar hoje.
+\itemq{2} Quando probabilidades são preços, o mesmo bilhete precisa ter o mesmo valor pelos dois caminhos. Na gaveta deste capítulo, essa exigência fixa a atualização de Bayes.
+\itemq{3} O que uma face ensina depende da pergunta e do experimento escolhido. Relançar, devolver e virar a moeda podem responder a perguntas diferentes.
+\itemq{O que mudou} Começamos perguntando se o aprendiz muda de ideia. Agora conseguimos examinar se as apostas que ele anuncia são coerentes entre si, antes mesmo de saber qual moeda foi escolhida.
+\itemq{Para levar adiante} Uma segunda cara ensina tanto quanto a primeira? Em qual régua você mediria esse ganho?
+\end{quadro}
 
 \capitulo{2}{Quanto vale a segunda cara}
 Voltemos à gaveta das moedas viciadas. A moeda A dá cara em três de cada quatro lançamentos, e B em um de cada quatro. Escolhi uma delas ao acaso. Lanço, sai cara, e sua aposta em A passa de metade para três quartos. Você me pede que lance a mesma moeda outra vez. Ponho a mão sobre o resultado. Antes de olhar, diga uma coisa. Se tiver saído outra cara, ela valerá tanto quanto a primeira?
@@ -267,6 +391,14 @@ Compare os extremos. Ao devolver a moeda, temos metade de chance de ver cara. Ao
 \end{quadro}
 
 Quem nos contou que a moeda A dá cara em três quartos dos lançamentos?
+
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Na nossa gaveta, cada cara multiplica as chances pelo mesmo fator. O quanto a probabilidade aumenta depende da aposta que tínhamos antes.
+\itemq{2} Um resultado raro só ajuda a distinguir hipóteses quando elas fazem previsões diferentes para ele.
+\itemq{3} Sob a cobrança logarítmica, a informação mútua mede a economia esperada ao observar. Podemos usá-la para comparar experimentos antes de conhecer seus resultados.
+\itemq{O que mudou} Já sabíamos atualizar uma aposta depois de ver o dado. Agora conseguimos comparar, antes de olhar, o que esperamos aprender com cada observação disponível.
+\itemq{Para levar adiante} E quando ninguém nos conta as taxas das moedas? De onde vêm as probabilidades usadas nessas contas?
+\end{quadro}
 
 \capitulo{3}{Quem nos contou como a moeda funciona}
 Fui eu que lhe disse que a moeda A dava cara em três quartos dos lançamentos. Hoje eu trouxe as moedas e deixei em casa o papel que dizia com que frequência cada tipo era sorteado e qual era sua taxa de caras. Saiu uma cara. Ela deve fazer você aumentar sua aposta em A? Se não soubermos qual das duas moedas costuma dar mais caras, nem a direção da mudança está decidida.
@@ -353,6 +485,14 @@ Talvez você queira conservar mais de uma regulagem para o programa. Dê a cada 
 
 Volte ao caderno original. Em vinte e quatro das vinte e oito rodadas com duas caras, a letra era A. Você conta $24/28$. Eu ofereço $9/10$. Em que linha da conta eu me dei o direito de mudar a sua fração?
 
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Um modelo generativo descreve como produzir as faces e as letras. Independência e estabilidade das taxas são escolhas dessa descrição.
+\itemq{2} A máxima verossimilhança escolhe os parâmetros que mais favorecem os registros observados, dentro do modelo. Outra amostra pode mudar as estimativas.
+\itemq{3} As contagens que bastam para ajustar uma taxa podem apagar os pares de que precisamos para conferir a hipótese de independência.
+\itemq{O que mudou} As taxas das moedas eram parte do enunciado. Agora nós as estimamos de um caderno e precisamos justificar tanto a coleta dos dados quanto a receita que os interpreta.
+\itemq{Para levar adiante} Precisamos reconstruir o jogo inteiro para apostar apenas na letra escondida?
+\end{quadro}
+
 \capitulo{4}{Duas maneiras de ler a mesma tabela}
 Duas caras na mesa, letra escondida. Vendo por R\$\,8,80 um bilhete que paga dez reais se a moeda for A e zero se for B. Podemos repetir o negócio muitas vezes. Pensando no ganho médio, você compra?
 
@@ -438,6 +578,14 @@ Eu selaria as duas previsões e separaria para o teste rodadas inteiras com moed
 
 Até aqui, uma cara já favorecia A. Se a primeira face sozinha nada disser e a segunda sozinha também nada disser, vale a pena guardar as duas?
 
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Ajustar a distribuição conjunta e ajustar a probabilidade da letra dadas as faces são tarefas diferentes. Os dois caminhos podem produzir classificadores.
+\itemq{2} Com uma aposta livre por coluna, a perda logarítmica é mínima na proporção observada de cada letra.
+\itemq{3} A reta nas log-chances liga as colunas: permite prever uma coluna sem exemplos, mas também espalha os efeitos de uma hipótese inadequada.
+\itemq{O que mudou} Passamos de ajustar uma receita para gerar rodadas a ajustar diretamente a resposta à pergunta. Conseguimos localizar a hipótese que permite a um exemplo ensinar algo sobre outra entrada.
+\itemq{Para levar adiante} Se cada face isolada nada disser sobre a letra, o que as duas juntas podem ensinar?
+\end{quadro}
+
 \capitulo{5}{O que o classificador precisa lembrar?}
 Eu lhe dou um bilhete e um lápis. O bilhete saiu de uma de duas impressoras, A ou B, escolhida ao acaso. Há duas janelas cobertas por abas de papel. Em cada janela a máquina imprimiu uma cara ou uma coroa. Sua tarefa é descobrir a máquina.
 
@@ -504,6 +652,14 @@ Também se pode corrigir a aposta de um discriminativo calibrado quando se conhe
 \end{quadro}
 
 Voltemos ao seu bilhete. Posso construir um leitor que tenha espaço para guardar apenas um bit? Ao abrir a primeira aba, ele escreve cara ou coroa nesse espaço. Ao abrir a segunda, compara o que vê com o que guardou e substitui o primeiro registro pela resposta à pergunta \emph{iguais ou diferentes?} Agora pode riscar as duas faces e ainda assim apostar na máquina. Tínhamos espaço suficiente desde o começo. O que precisou mudar entre as duas leituras foi o significado daquela única anotação.
+
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Uma face pode ser necessária para interpretar a seguinte, mesmo sem mudar a aposta atual na máquina.
+\itemq{2} A independência do Naive Bayes é condicional à classe. O produto das duas faces captura a interação do exemplo, mas também junta padrões que o modelo passa a tratar como iguais.
+\itemq{3} A coleta determina quais proporções podemos transportar para o próximo turno. Essa escolha exige conhecer a oficina e conferir previsões em dados novos.
+\itemq{O que mudou} Agora avaliamos uma representação pelo que ela permite responder e pelo que nos obriga a esquecer. Até um único bit pode servir, desde que seu significado acompanhe a leitura.
+\itemq{Para levar adiante} Dois classificadores que sempre anunciam a mesma letra aprenderam a mesma coisa?
+\end{quadro}
 
 \capitulo{6}{Quando um acerto já basta?}
 Tenho duas turmas de aprendizes corrigindo os bilhetes da oficina. Quando as faces coincidem, todos escrevem A. Uma das turmas acha que A aparece em nove desses bilhetes a cada dez. A outra, em seis a cada dez. Se a prova pedir só a letra de cada bilhete, posso trocar as folhas de resposta das duas turmas e ninguém perceberá.
@@ -578,6 +734,14 @@ Ficou na mesa o maço com nove bilhetes de A e um de B. Você conhece só essas 
 
 Se eu tivesse anotado apenas a letra que você previu, teria passado a tarde inteira sem perceber que você aprendeu alguma coisa.
 
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} A perda escolhida define o que conta como melhorar, mesmo quando a letra prevista continua igual. A logística e a \emph{hinge} cobram coisas diferentes.
+\itemq{2} Na SVM, a perda e a penalização da norma trabalham juntas. A margem geométrica depende da representação e da escala das medidas.
+\itemq{3} Um escore de classificação precisa de uma calibração conferida nos dados para sustentar decisões baseadas em probabilidades de risco.
+\itemq{O que mudou} Separamos duas operações: atualizar o estado do aprendiz e ler dele uma resposta. Uma previsão de classe pode ficar igual enquanto a aposta e a decisão de comprar mudam.
+\itemq{Para levar adiante} Se dois cadernos anunciam $90\%$, o próximo dado deveria mudar as duas apostas da mesma maneira?
+\end{quadro}
+
 \capitulo{7}{Quanto pesa um 90\%?}
 Vamos voltar um bilhete no tempo. Você ainda está com as nove letras A e uma B do fim do capítulo anterior. Eu também andei recolhendo bilhetes com faces iguais, só que comecei mais cedo. No meu caderno há noventa letras A e dez B. Combinamos usar a frequência observada para apostar na origem do próximo bilhete desse tipo. Pergunte quanto damos para A. Cada um escreve $90\%$ num pedaço de papel. O bilhete custa R\$\,8,80 e paga dez reais se vier de A. Para os dois, o pagamento médio estimado é de nove reais. Compramos.
 
@@ -649,5 +813,22 @@ Trago um B. Depois de descartar a primeira letra, as janelas passam a $ABB$ e $B
 Na primeira janela ficam três B. Na segunda ainda temos um A. Os visores deveriam mostrar zero e $1/3$. Olhe para a rodada em que ambos ainda marcavam $1/3$. Ali o primeiro aparelho já precisava guardar A como próxima letra a sair, e o segundo precisava guardar B. Com as mesmas anotações de partida e o mesmo dado, como o programa escreveria essas duas letras diferentes? Se guardar as três letras em ordem, basta retirar a da esquerda e acrescentar a nova à direita. Foi o pedido de esquecer as velhas que tornou importante lembrar a ordem.
 
 O erro apareceu no visor uma rodada depois de o aprendiz ter esquecido o que precisava para honrar a próxima aposta. É assim que eu tentaria quebrar um aprendiz antes de pô-lo em produção. Daria a ele dois passados que decidiu esquecer da mesma maneira. Depois procuraria o dado que o faria desejar ter guardado a diferença.
+
+\begin{quadro}{O que levar deste capítulo}
+\itemq{1} Nove em dez e noventa em cem dão a mesma frequência, mas reagem de maneiras diferentes a uma observação nova.
+\itemq{2} Para continuar a mesma conta, histórias com o mesmo resumo precisam levar ao mesmo resumo seguinte quando recebem o mesmo dado.
+\itemq{3} O estado também precisa preservar as respostas pedidas. O que basta guardar depende do modelo, da pergunta e das atualizações que queremos fazer.
+\itemq{O que mudou} Temos um teste para a memória do aprendiz: procurar dois passados que ele tornou indistinguíveis e uma continuação que exija respostas diferentes. A coerência das contas ainda precisa ser confrontada com dados novos.
+\itemq{Para levar adiante} Se a resposta fosse um valor numa régua contínua, como escolheríamos o que guardar e o que cobrar por um erro?
+\end{quadro}
+
+\bookinterlude{I}{II}{Do outro lado da portinhola}
+Você se lembra da peça de 5,2 mm que o inspetor mediu duas vezes? Vou atrás dela. A portinhola dá um estalo, a peça cai na gaveta A e eu dou a volta na bancada para ver quem vem esvaziar a gaveta.
+
+É a mulher que faz as buchas em que essas peças vão entrar. Amanhã ela precisa abrir o furo da próxima bucha enquanto a nossa peça ainda está no torno. Pergunta que diâmetro pode esperar. Digo que estou disposto a apostar dinheiro que a peça vai para A. Ela põe o dedo no desenho. “E quantos milímetros eu escrevo aqui?”
+
+O inspetor procura no caderno a regulagem que vai usar amanhã. Nas últimas três vezes saíram duas peças de 5,2 mm e uma de 5,8 mm. Todas foram para A. Você sugere 5,2. Eu faço a média e sugiro 5,4. Naquelas três peças você teria acertado duas em cheio e errado a outra por seis décimos. Eu teria errado as três, duas por dois décimos e uma por quatro.
+
+Ela continua com o lápis na mão. Antes de lhe dar um número, eu queria ouvir a opinião de quem vai fazer os furos. O que dá mais trabalho nessa bancada, corrigir os meus três erros ou o seu?
 
 \end{document}

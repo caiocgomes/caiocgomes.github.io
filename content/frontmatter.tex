@@ -1,0 +1,34 @@
+% Shared front matter, inlined into the downloadable LaTeX manuscripts.
+\usepackage{tabularx}
+\newcommand{\bookfrontheading}[2]{%
+  \clearpage\thispagestyle{opening}\markright{#1}%
+  \phantomsection\label{front:#2}\pdfbookmark[0]{#1}{#2}%
+  {\noindent\color{tinta}\fontsize{26}{30}\selectfont\bfseries #1\par}%
+  \vspace{18pt}\noindent\ignorespaces
+}
+\newcommand{\bookintroduction}[1]{\bookfrontheading{#1}{introduction}}
+\newcommand{\bookinterlude}[3]{%
+  \clearpage\thispagestyle{opening}\markright{#3}%
+  \phantomsection\label{interlude:#1}\pdfbookmark[0]{\bookinterludename{} #1 - #2 · #3}{interlude#1}%
+  \vspace*{.055\textheight}%
+  {\noindent\small\color{tinta}\textsc{\bookinterludename}\enspace #1\,\textrightarrow\,#2\par}%
+  \vspace{8pt}{\raggedright\noindent\color{tinta}\fontsize{25}{29}\selectfont\bfseries #3\par}%
+  \vspace{9pt}{\noindent\color{tinta}\rule{18mm}{.6pt}\par}%
+  \vspace{14pt}\noindent\ignorespaces
+}
+\newcommand{\booktocentry}[3]{%
+  \par\addvspace{9pt}\noindent
+  \begin{tabularx}{\linewidth}{@{}p{6mm}>{\raggedright\arraybackslash}X r@{}}
+    \textcolor{tinta}{#1} & \hyperref[#3]{#2} & \hyperref[#3]{\pageref*{#3}}\\
+  \end{tabularx}\par
+}
+\newcommand{\booktocpart}[2]{%
+  \par\addvspace{23pt}{\noindent\small\color{tinta}\textsc{#1}\par}%
+  \vspace{5pt}{\noindent\large\bfseries #2\par}\vspace{4pt}%
+}
+\newcommand{\bookplannedpart}[2]{%
+  \par\addvspace{15pt}\noindent{\small\color{tinta}\textsc{#1}}\enspace{\bfseries #2}\par\nopagebreak
+}
+\newcommand{\bookplannedentry}[2]{%
+  \par\addvspace{4pt}\noindent\hangindent=9mm\hangafter=1\makebox[9mm][l]{#1}#2\par
+}

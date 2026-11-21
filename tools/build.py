@@ -6,14 +6,14 @@ import json
 import re
 import subprocess
 
-from layout import chapter, landing
+from layout import EDITION, reader, landing
 from gateway import gateway
+from manuscript import read_manuscript
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / 'docs'
 CONTENT = ROOT / 'content'
 LANGS = ('pt-br', 'en')
-CHAPTER = re.compile(r'^\\capitulo\{(\d+)\}\{(.*)\}\s*$')
 FIGURE = re.compile(r'\\par\\addvspace\{[^}]+\}\\noindent\\begin\{minipage\}.*?\\end\{minipage\}\\par\\addvspace\{[^}]+\}', re.S)
 FIGURES = {
     'pt-br': {
@@ -73,7 +73,7 @@ def render(source, lang):
     tex = tex.replace(r'\end{quadro}', r'\end{quote}')
     tex = re.sub(r'^\\itemq\{(.*?)\}\s*',r'\n\\textbf{\1.} ',tex,flags=re.M)
     tex = r'\newcommand{\F}{\mathcal F}'+'\n'+tex
-    proc = subprocess.run(['pandoc','-f','latex','-t','html5','--mathml','--wrap=none'],input=tex,text=True,capture_output=True,check=True)
+    proc = subprocess.run(['pandoc','-f','latex','-t','html5','--math-method=mathml','--wrap=none'],input=tex,text=True,capture_output=True,check=True)
     if proc.stderr.strip():
         raise RuntimeError(proc.stderr.strip())
     html = proc.stdout.replace('<blockquote>', '<blockquote class="recap">')
@@ -94,20 +94,16 @@ def main():
     for lang in LANGS:
         directory = DOCS/lang
         directory.mkdir(parents=True,exist_ok=True)
-        sources=[re.sub(r'\A(?:[ \t]*%[^\n]*\n|\s*\n)*','',p.read_text()) for p in sorted((CONTENT/lang).glob('[0-9][0-9].tex'))]
-        titles = []
-        for n,source in enumerate(sources,1):
-            m=CHAPTER.match(source.splitlines()[0])
-            if not m or int(m[1])!=n:
-                raise ValueError(f'Unexpected chapter heading in {lang} {n}: {source.splitlines()[0]}')
-            titles.append(m[2].replace(r'\%','%'))
-        (directory/'index.html').write_text(landing(lang,titles))
-        entries=[]
-        for n,source in enumerate(sources,1):
-            body,sections=render(source,lang)
-            filename=f'{n:02}.html'
-            (directory/filename).write_text(chapter(lang,n,titles,body,sections))
-            entries.append({'n':n,'title':titles[n-1],'url':filename,'text':plain(body)})
+        introduction, parts = read_manuscript(CONTENT/lang, EDITION[lang])
+        (directory/'index.html').write_text(landing(lang, introduction, parts))
+        pages = [introduction] + [page for part in parts for page in part.pages]
+        entries = []
+        for i, page in enumerate(pages):
+            body, sections = render(page.source, lang)
+            previous = pages[i-1] if i else None
+            following = pages[i+1] if i+1 < len(pages) else None
+            (directory/page.url).write_text(reader(lang, page, introduction, parts, body, sections, previous, following))
+            entries.append({'n': page.number, 'label': page.label, 'title': page.title, 'url': page.url, 'text': plain(body)})
         (DOCS/'assets'/f'search-{lang}.json').write_text(json.dumps(entries,ensure_ascii=False))
     (DOCS/'index.html').write_text(gateway())
     (DOCS/'.nojekyll').touch()

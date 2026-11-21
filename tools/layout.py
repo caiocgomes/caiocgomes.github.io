@@ -3,21 +3,29 @@ from html import escape
 
 EDITION = {
     "pt-br": {
-        "html": "pt-BR", "title": "O que se aprende com uma cara",
+        "html": "pt-BR", "title": "The CAIO Lectures on Machine Learning",
         "subtitle": "Como pensar em aprendizado de máquina", "lang": "Português",
         "brand": "Caderno de aprendizado", "toc": "Sumário", "home": "Capa", "search": "Buscar",
         "searchLabel": "Buscar neste livro", "hint": "Digite uma palavra ou expressão",
         "close": "Fechar", "skip": "Ir para o conteúdo", "chapter": "Capítulo", "chapters": "capítulos",
         "author": "Por Caio Gomes", "edition": "Edição em português", "begin": "Ler o primeiro capítulo",
         "pdf": "Baixar PDF", "pdfFile": "livro-pt-br.pdf", "prep": "Em preparação",
-        "part1": "Parte I", "part2": "Parte II", "part1Name": "Moedas, apostas e classificadores",
-        "part2Name": "A régua contínua", "upcoming": ("O preço na reta real", "A balança das retas"),
+        "part": "Parte", "interlude": "Interlúdio",
+        "partNames": ("A aposta e a moeda", "A régua contínua", "A cascata de perguntas",
+                      "O apostador com agência", "A memória aberta"),
+        "upcoming": {8: "O preço na reta real", 9: "A balança das retas",
+                     10: "O jogo das vinte perguntas", 11: "Quando a floresta vê o que a árvore cega perde",
+                     12: "Quanto custa descobrir a melhor alavanca?", 13: "O caixa fechado no futuro",
+                     14: "Réguas multidimensionais e o gargalo do esquecimento",
+                     15: "O Transformer: a mesa que nunca se fecha"},
         "contentsTitle": "Os capítulos", "contentsIntro": "Da primeira cara à escolha do que um modelo precisa guardar.",
         "open": "Índice de leitura", "previous": "Anterior", "next": "Próximo", "back": "Voltar ao sumário",
         "here": "Nesta página", "nav": "Navegação do livro", "languages": "Idioma da edição", "top": "Voltar ao topo",
         "desc": "Uma das minhas moedas dá cara três vezes em quatro. A outra, uma vez em quatro. Escolho uma delas ao acaso e lanço. Sai cara. Quanto você apostaria que escolhi a primeira?",
         "figure": "Um lançamento", "side1": "Cara", "side2": "Coroa", "plate": "Prancha",
         "intro": "Um livro aberto de", "number": "Cap.", "read": "Abrir capítulo",
+        "introduction": "Introdução", "frontmatter": "Sobre este livro",
+        "introductionDesc": "",
         "section": "Seção", "forthcoming": "Capítulos em preparação", "searchIntro": "Busque um conceito, um exemplo ou um capítulo.",
         "descriptions": (
             "Quando uma nova observação nos obriga a mudar de aposta?",
@@ -30,21 +38,29 @@ EDITION = {
         ),
     },
     "en": {
-        "html": "en", "title": "What Can We Learn from a Coin Toss?",
+        "html": "en", "title": "The CAIO Lectures on Machine Learning",
         "subtitle": "How to Think About Machine Learning", "lang": "English",
         "brand": "A notebook on learning", "toc": "Contents", "home": "Cover", "search": "Search",
         "searchLabel": "Search this book", "hint": "Enter a word or phrase",
         "close": "Close", "skip": "Skip to content", "chapter": "Chapter", "chapters": "chapters",
         "author": "By Caio Gomes", "edition": "English edition", "begin": "Read the first chapter",
         "pdf": "Download PDF", "pdfFile": "book-en.pdf", "prep": "In preparation",
-        "part1": "Part I", "part2": "Part II", "part1Name": "Coins, bets, and classifiers",
-        "part2Name": "The continuous ruler", "upcoming": ("A price on the real line", "Balancing the lines"),
+        "part": "Part", "interlude": "Interlude",
+        "partNames": ("The bet and the coin", "The continuous ruler", "A cascade of questions",
+                      "The bettor with agency", "Open memory"),
+        "upcoming": {8: "A price on the real line", 9: "Balancing the lines",
+                     10: "The game of twenty questions", 11: "When the forest sees what one tree is blind to",
+                     12: "What does it cost to find the best lever?", 13: "The cashbox that opens in the future",
+                     14: "Multidimensional rulers and the bottleneck of forgetting",
+                     15: "The Transformer: the table that never closes"},
         "contentsTitle": "The chapters", "contentsIntro": "From the first toss to deciding what a model needs to remember.",
         "open": "Reading menu", "previous": "Previous", "next": "Next", "back": "Back to contents",
         "here": "On this page", "nav": "Book navigation", "languages": "Edition language", "top": "Back to top",
         "desc": "One of my coins comes up heads three times out of four. The other does so once in four. I pick one at random and toss it. Heads. What would you bet that I picked the first coin?",
         "figure": "One toss", "side1": "Heads", "side2": "Tails", "plate": "Plate",
         "intro": "An open book on", "number": "Ch.", "read": "Open chapter",
+        "introduction": "Introduction", "frontmatter": "About this book",
+        "introductionDesc": "",
         "section": "Section", "forthcoming": "Chapters in preparation", "searchIntro": "Find a concept, an example, or a chapter.",
         "descriptions": (
             "When does a new observation oblige us to change a bet?",
@@ -77,7 +93,7 @@ def shell(lang, title, summary, filename, inner):
     other = "en" if lang == "pt-br" else "pt-br"
     labels = {"pt-br":"PT-BR", "en":"EN"}
     source_label = "Fonte LaTeX" if lang == "pt-br" else "LaTeX source"
-    source_file = t["pdfFile"].replace(".pdf", ".tex")
+    source_file = t["pdfFile"].replace(".pdf", "-source.zip")
     edlinks = "".join(
         f'<a class="lang{" active" if code==lang else ""}" lang="{EDITION[code]["html"]}" hreflang="{EDITION[code]["html"]}" href="../{code}/{filename}"'
         + (' aria-current="true"' if code==lang else '') + f'>{labels[code]}</a>' for code in ("pt-br","en")
@@ -114,36 +130,66 @@ def plate(t):
 {coin(150,147,-12,sun)}{coin(290,186,14,moon)}
 <path d="M29 278h397" stroke="currentColor" opacity=".55"/><g fill="currentColor" font-family="Georgia,serif" font-style="italic" font-size="17"><text x="33" y="305">{t["figure"]}</text></g><text fill="currentColor" font-family="monospace" font-size="11" letter-spacing="1" x="410" y="305" text-anchor="end">{t["side1"].upper()} / {t["side2"].upper()}</text></svg>'''
 
-def landing(lang, chapters):
+def search_attrs(page):
+    return f'data-chapter-title="{escape(page.title, quote=True)}" data-page-label="{escape(page.label, quote=True)}"'
+
+
+def landing(lang, introduction, parts):
     t = EDITION[lang]
-    rows = ''.join(
-        f'<li><a href="{i:02}.html" data-chapter-title="{escape(title,quote=True)}"><span class="row-n">{i:02}</span><span class="row-t"><strong>{escape(title)}</strong><small>{escape(t["descriptions"][i-1])}</small></span><span class="row-arrow">{icon("right")}</span></a></li>'
-        for i,title in enumerate(chapters,1)
-    )
-    planned = ''.join(f'<li><span>{i:02}</span>{escape(name)}</li>' for i,name in enumerate(t["upcoming"],8))
+
+    def catalog_row(page):
+        number = f'{page.number:02}' if page.number else '—'
+        detail = page.label if page.number is None else page.description
+        note = f'<small>{escape(detail)}</small>' if detail else ''
+        return (f'<li><a href="{page.url}" {search_attrs(page)}><span class="row-n">{number}</span>'
+                f'<span class="row-t"><strong>{escape(page.title)}</strong>{note}</span>'
+                f'<span class="row-arrow">{icon("right")}</span></a></li>')
+
+    groups = [f'<ol class="chapter-list">{catalog_row(introduction)}</ol>']
+    for part in parts:
+        status = f'<small>{t["prep"]}</small>' if not part.pages else ''
+        groups.append(f'<div class="group-head future"><span>{part.label}</span>'
+                      f'<h3>{escape(part.title)}</h3>{status}</div>')
+        if part.pages:
+            groups.append('<ol class="chapter-list">' + ''.join(catalog_row(p) for p in part.pages) + '</ol>')
+        if part.planned:
+            rows = ''.join(f'<li><span>{n:02}</span>{escape(title)}</li>' for n, title in part.planned)
+            if part.pages:
+                groups.append(f'<p class="tiny">{t["forthcoming"]}</p>')
+            groups.append(f'<ol class="planned" start="{part.planned[0][0]}">{rows}</ol>')
     inner = f'''<main id="main" class="home">
 <section class="hero"><div class="hero-copy"><div class="kicker"><span></span>{t["edition"]}</div><h1>{escape(t["title"])}</h1><p class="sub">{t["subtitle"]}</p><p class="deck">{t["desc"]}</p>
 <div class="actions"><a class="button primary" href="01.html">{t["begin"]}{icon("right")}</a><a class="button secondary" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></div>
 <div class="plate-wrap">{plate(t)}</div></section>
 <section id="contents" class="catalog" aria-labelledby="toc-heading"><div class="catalog-intro"><div class="kicker"><span></span>{t["toc"]}</div><h2 id="toc-heading">{t["contentsTitle"]}</h2><p>{t["contentsIntro"]}</p></div>
-<div class="catalog-list"><div class="group-head"><span>{t["part1"]}</span><h3>{t["part1Name"]}</h3></div>
-<ol class="chapter-list">{rows}</ol><div class="group-head future"><span>{t["part2"]}</span><h3>{t["part2Name"]}</h3><small>{t["prep"]}</small></div><ol class="planned" start="8">{planned}</ol></div></section></main>'''
+<div class="catalog-list">{''.join(groups)}</div></section></main>'''
     return shell(lang,t["title"]+' · Caio Gomes',t["desc"],'index.html',inner)
 
-def chapter(lang, n, chapters, body, sections):
+def reader(lang, page, introduction, parts, body, sections, previous, following):
     t = EDITION[lang]
-    n = int(n)
-    title = chapters[n-1]
-    links = ''.join(
-        f'<li><a href="{i:02}.html" data-chapter-title="{escape(name,quote=True)}"'+(' aria-current="page"' if i==n else '')+f'><span>{i:02}</span>{escape(name)}</a></li>' for i,name in enumerate(chapters,1)
-    )
+
+    def link_attrs(target):
+        current = ' aria-current="page"' if target.url == page.url else ''
+        return f'href="{target.url}" {search_attrs(target)}{current}'
+
+    groups = []
+    for part in parts:
+        if part.pages:
+            links = []
+            for entry in part.pages:
+                number = f'{entry.number:02}' if entry.number else '—'
+                links.append(f'<li><a {link_attrs(entry)}><span>{number}</span>{escape(entry.title)}</a></li>')
+            groups.append(f'<p class="tiny">{part.label}</p><ol>{"".join(links)}</ol>')
     subsections = ''.join(f'<li><a href="#{escape(anchor,quote=True)}">{escape(label)}</a></li>' for anchor,label in sections)
-    def page_nav(target,label,side):
-        name = chapters[target-1] if target else t["toc"]
-        dest = f'{target:02}.html' if target else 'index.html#contents'
+
+    def page_nav(target, side):
+        name = target.title if target else t["toc"]
+        dest = target.url if target else 'index.html#contents'
+        label = t["previous" if side == "left" else "next"] if target else t["back"]
         return f'<a class="pager-{side}" href="{dest}"><span>{icon(side)}{label}</span><b>{escape(name)}</b></a>'
-    inner=f'''<main class="read-layout" id="main"><aside class="index-rail"><details class="book-menu" open><summary>{icon("book")} {t["open"]}</summary><div><a class="contents-link" href="index.html#contents">{t["toc"]}</a><p class="tiny">{t["part1"]}</p><ol>{links}</ol><a class="rail-pdf" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></details></aside>
-<div class="reading"><header class="chapter-head"><a class="crumb" href="index.html">{escape(t["title"])}</a><div class="kicker"><span></span>{t["chapter"]} {n:02}</div><h1>{escape(title)}</h1><div class="by">{t["author"]}</div></header>
+    intro_link = f'<a class="contents-link" {link_attrs(introduction)}>{escape(introduction.title)}</a>'
+    inner=f'''<main class="read-layout" id="main"><aside class="index-rail"><details class="book-menu" open><summary>{icon("book")} {t["open"]}</summary><div><a class="contents-link" href="index.html#contents">{t["toc"]}</a>{intro_link}{''.join(groups)}<a class="rail-pdf" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></details></aside>
+<div class="reading"><header class="chapter-head"><a class="crumb" href="index.html">{escape(t["title"])}</a><div class="kicker"><span></span>{escape(page.label)}</div><h1>{escape(page.title)}</h1><div class="by">{t["author"]}</div></header>
 {('<details class="local-index"><summary>'+t["here"]+'</summary><ol>'+subsections+'</ol></details>') if sections else ''}
-<article class="prose">{body}</article><nav class="pager" aria-label="{t["nav"]}">{page_nav(n-1 if n>1 else 0,t["previous"] if n>1 else t["back"],"left")}{page_nav(n+1 if n<len(chapters) else 0,t["next"] if n<len(chapters) else t["back"],"right")}</nav></div></main>'''
-    return shell(lang,title+' · '+t["title"],t["descriptions"][n-1],f'{n:02}.html',inner)
+<article class="prose">{body}</article><nav class="pager" aria-label="{t["nav"]}">{page_nav(previous,"left")}{page_nav(following,"right")}</nav></div></main>'''
+    return shell(lang,page.title+' · '+t["title"],page.description or page.label,page.url,inner)

@@ -8,10 +8,10 @@ def gateway():
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#faf7ef">
-  <meta name="description" content="O que se aprende com uma cara · What Can We Learn from a Coin Toss? Um livro de Caio Gomes em português e inglês.">
+  <meta name="description" content="The CAIO Lectures on Machine Learning. Um livro de Caio Gomes em português e inglês. CAIO = Chief AI Officer.">
   <link rel="alternate" hreflang="pt-BR" href="pt-br/index.html">
   <link rel="alternate" hreflang="en" href="en/index.html">
-  <title>O que se aprende com uma cara · What Can We Learn from a Coin Toss? — Caio Gomes</title>
+  <title>The CAIO Lectures on Machine Learning — Caio Gomes</title>
   <style>
     :root{color-scheme:light;--ink:#202b28;--teal:#235753;--paper:#faf7ef;--line:#bcbfb0;--quiet:#4d5e55;--serif:Georgia,"Times New Roman",serif}
     *,*::before,*::after{box-sizing:border-box}
@@ -79,13 +79,13 @@ def gateway():
       <div class="spread">
         <section class="edition" lang="pt-BR" aria-labelledby="titulo-pt">
           <div class="eyebrow">Português do Brasil</div>
-          <h2 id="titulo-pt">O que se aprende com uma cara</h2>
+          <h2 id="titulo-pt" lang="en">The CAIO Lectures on Machine Learning</h2>
           <p class="subtitle">Como pensar em aprendizado de máquina</p>
           <a class="read" href="pt-br/index.html" hreflang="pt-BR">Ler em português <span aria-hidden="true">→</span></a>
         </section>
         <section class="edition" lang="en" aria-labelledby="title-en">
           <div class="eyebrow">English</div>
-          <h2 id="title-en">What Can We Learn from a Coin Toss?</h2>
+          <h2 id="title-en">The CAIO Lectures on Machine Learning</h2>
           <p class="subtitle">How to Think About Machine Learning</p>
           <a class="read" href="en/index.html" hreflang="en">Read in English <span aria-hidden="true">→</span></a>
         </section>
