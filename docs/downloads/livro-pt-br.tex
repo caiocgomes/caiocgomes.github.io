@@ -72,6 +72,13 @@
 \newcommand{\bookinterludename}{Interlúdio}
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\newcommand{\booktitlepage}[3]{%
+  \thispagestyle{empty}\vspace*{.17\textheight}%
+  {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
+  \vspace{12pt}{\noindent\large\itshape #2\par}%
+  \vfill{\noindent\Large Caio Gomes\par}%
+  \vspace{5pt}{\noindent #3\par}\vspace*{10mm}%
+}
 \newcommand{\bookfrontheading}[2]{%
   \clearpage\thispagestyle{opening}\markright{#1}%
   \phantomsection\label{front:#2}\pdfbookmark[0]{#1}{#2}%
@@ -152,6 +159,27 @@
 \bookcover{Como pensar em aprendizado de máquina}{EDIÇÃO EM PORTUGUÊS}{Capa}
 
 \pagenumbering{roman}
+\booktitlepage{The CAIO Lectures on Machine Learning}{Como pensar em aprendizado de máquina}{Edição em português}
+\bookfrontheading{Créditos e avisos}{credits}
+\begin{quadro}{Dados da edição}
+\emph{The CAIO Lectures on Machine Learning}\\
+Como pensar em aprendizado de máquina\\
+Caio Gomes · Edição digital em português brasileiro\\
+Novembro de 2026
+\end{quadro}
+
+\begin{quadro}{Direitos autorais}
+Texto © 2026 Caio Gomes.\\
+Ao citar este livro, indique o autor, o título e a data da edição. A versão atual está em \url{https://caiocgomes.github.io/}.
+\end{quadro}
+
+\begin{quadro}{Erros e correções}
+Pode haver erros no texto, nas equações ou nos exemplos. Se encontrar algum, indique o capítulo e a página e copie o trecho em questão. Se uma conta der outro resultado, inclua os passos para que eu possa refazê-la.
+
+Envie a correção pelo repositório do livro.\\
+\href{https://github.com/caiocgomes/caiocgomes.github.io/issues}{github.com/caiocgomes/caiocgomes.github.io/issues}
+\end{quadro}
+
 \bookfrontheading{Sumário}{contents}
 \booktocentry{}{Introdução}{front:introduction}
 \booktocpart{Parte I}{A aposta e a moeda}

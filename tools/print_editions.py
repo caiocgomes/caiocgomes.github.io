@@ -79,8 +79,11 @@ def render_edition(language, interludes_only=False):
     introduction, parts = read_manuscript(content / language, labels)
     pages = [page for part in parts for page in part.pages]
     chapters = [page for page in pages if page.number]
+    credits = (content / language / "credits.tex").read_text(encoding="utf-8")
     contents = [
         r"\pagenumbering{roman}",
+        rf"\booktitlepage{{{labels['title']}}}{{{labels['subtitle']}}}{{{labels['edition']}}}",
+        credits,
         rf"\bookfrontheading{{{labels['toc']}}}{{contents}}",
         rf"\booktocentry{{}}{{{introduction.tex_title}}}{{front:introduction}}",
     ]

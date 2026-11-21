@@ -64,6 +64,13 @@
 \newcommand{\bookinterludename}{Interlude}
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\newcommand{\booktitlepage}[3]{%
+  \thispagestyle{empty}\vspace*{.17\textheight}%
+  {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
+  \vspace{12pt}{\noindent\large\itshape #2\par}%
+  \vfill{\noindent\Large Caio Gomes\par}%
+  \vspace{5pt}{\noindent #3\par}\vspace*{10mm}%
+}
 \newcommand{\bookfrontheading}[2]{%
   \clearpage\thispagestyle{opening}\markright{#1}%
   \phantomsection\label{front:#2}\pdfbookmark[0]{#1}{#2}%
@@ -144,6 +151,27 @@
 \bookcover{How to Think About Machine Learning}{ENGLISH EDITION}{Cover}
 
 \pagenumbering{roman}
+\booktitlepage{The CAIO Lectures on Machine Learning}{How to Think About Machine Learning}{English edition}
+\bookfrontheading{Publication details}{credits}
+\begin{quadro}{About this edition}
+\emph{The CAIO Lectures on Machine Learning}\\
+How to Think About Machine Learning\\
+Caio Gomes · English digital edition\\
+November 2026
+\end{quadro}
+
+\begin{quadro}{Copyright}
+Text © 2026 Caio Gomes.\\
+When citing this book, include the author, title, and edition date. The current version is available at \url{https://caiocgomes.github.io/}.
+\end{quadro}
+
+\begin{quadro}{Errors and corrections}
+The text, equations, or examples may contain errors. If you spot one, please give the chapter and page and quote the passage. If a calculation gives you a different result, include your steps so I can work through it myself.
+
+Send corrections through the book’s repository.\\
+\href{https://github.com/caiocgomes/caiocgomes.github.io/issues}{github.com/caiocgomes/caiocgomes.github.io/issues}
+\end{quadro}
+
 \bookfrontheading{Contents}{contents}
 \booktocentry{}{Introduction}{front:introduction}
 \booktocpart{Part I}{The bet and the coin}

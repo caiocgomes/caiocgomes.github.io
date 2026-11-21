@@ -1,5 +1,12 @@
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\newcommand{\booktitlepage}[3]{%
+  \thispagestyle{empty}\vspace*{.17\textheight}%
+  {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
+  \vspace{12pt}{\noindent\large\itshape #2\par}%
+  \vfill{\noindent\Large Caio Gomes\par}%
+  \vspace{5pt}{\noindent #3\par}\vspace*{10mm}%
+}
 \newcommand{\bookfrontheading}[2]{%
   \clearpage\thispagestyle{opening}\markright{#1}%
   \phantomsection\label{front:#2}\pdfbookmark[0]{#1}{#2}%
