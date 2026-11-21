@@ -8,7 +8,7 @@ import subprocess
 
 from layout import EDITION, reader, landing
 from gateway import gateway
-from manuscript import read_manuscript
+from manuscript import Page, read_manuscript, subject_entries
 
 ROOT = Path(__file__).resolve().parents[1]
 DOCS = ROOT / 'docs'
@@ -57,6 +57,7 @@ def plain(html):
 
 def render(source, lang):
     tex = source.split('\n', 1)[1]
+    tex = re.sub(r'\\bookanchor\{([^{}]+)\}', r'\\hypertarget{\1}{}', tex)
     captions = {}
     def inline_figure(match):
         text = re.search(r'\\footnotesize\\raggedright (.*?)\\par\}', match[0], re.S)
@@ -94,15 +95,24 @@ def main():
     for lang in LANGS:
         directory = DOCS/lang
         directory.mkdir(parents=True,exist_ok=True)
-        introduction, parts = read_manuscript(CONTENT/lang, EDITION[lang])
-        (directory/'index.html').write_text(landing(lang, introduction, parts))
-        pages = [introduction] + [page for part in parts for page in part.pages]
+        opening, parts = read_manuscript(CONTENT/lang, EDITION[lang])
+        labels = EDITION[lang]
+        index = Page('subject-index', labels['subjectIndex'], labels['frontmatter'], '', number=0)
+        (directory/'index.html').write_text(landing(lang, opening, parts, index))
+        pages = opening + [page for part in parts for page in part.pages] + [index]
         entries = []
         for i, page in enumerate(pages):
-            body, sections = render(page.source, lang)
+            if page is index:
+                rows = []
+                for term, refs in subject_entries(parts):
+                    links = [f'<a href="{target.url}#{key}">{escape(target.label)}</a>' for target, key in refs]
+                    rows.append(f'<dt>{escape(term)}</dt><dd>{", ".join(links)}</dd>')
+                body, sections = '<dl class="subject-index">' + ''.join(rows) + '</dl>', []
+            else:
+                body, sections = render(page.source, lang)
             previous = pages[i-1] if i else None
             following = pages[i+1] if i+1 < len(pages) else None
-            (directory/page.url).write_text(reader(lang, page, introduction, parts, body, sections, previous, following))
+            (directory/page.url).write_text(reader(lang, page, opening, parts, index, body, sections, previous, following))
             entries.append({'n': page.number, 'label': page.label, 'title': page.title, 'url': page.url, 'text': plain(body)})
         (DOCS/'assets'/f'search-{lang}.json').write_text(json.dumps(entries,ensure_ascii=False))
     (DOCS/'index.html').write_text(gateway())

@@ -13,7 +13,7 @@ from tempfile import TemporaryDirectory
 from zipfile import ZipFile, ZIP_DEFLATED
 
 from layout import EDITION
-from manuscript import read_manuscript
+from manuscript import read_manuscript, subject_entries
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -76,7 +76,7 @@ def render_edition(language, interludes_only=False):
         render_interlude_proof(language, content, setup)
         return
     cover = (content / "cover" / "cover.tex").read_text(encoding="utf-8")
-    introduction, parts = read_manuscript(content / language, labels)
+    opening, parts = read_manuscript(content / language, labels)
     pages = [page for part in parts for page in part.pages]
     chapters = [page for page in pages if page.number]
     credits = (content / language / "credits.tex").read_text(encoding="utf-8")
@@ -85,8 +85,8 @@ def render_edition(language, interludes_only=False):
         rf"\booktitlepage{{{labels['title']}}}{{{labels['subtitle']}}}{{{labels['edition']}}}",
         credits,
         rf"\bookfrontheading{{{labels['toc']}}}{{contents}}",
-        rf"\booktocentry{{}}{{{introduction.tex_title}}}{{front:introduction}}",
     ]
+    contents.extend(rf"\booktocentry{{}}{{{page.tex_title}}}{{front:{page.slug}}}" for page in opening)
     for part in parts:
         if part.pages:
             contents.append(rf"\booktocpart{{{part.label}}}{{{part.title}}}")
@@ -95,16 +95,23 @@ def render_edition(language, interludes_only=False):
                 contents.append(rf"\booktocentry{{{page.number}}}{{{page.tex_title}}}{{chapter:{page.number}}}")
             else:
                 contents.append(rf"\booktocentry{{}}{{\textit{{{labels['interlude']}}} · {page.tex_title}}}{{interlude:{part.numeral}}}")
+    contents.append(rf"\booktocentry{{}}{{{labels['subjectIndex']}}}{{front:subject-index}}")
     if any(part.planned for part in parts):
         contents.append(rf"\bookfrontheading{{{labels['forthcoming']}}}{{upcoming}}")
         for part in parts:
             if part.planned:
                 contents.append(rf"\bookplannedpart{{{part.label}}}{{{part.title}}}")
                 contents.extend(rf"\bookplannedentry{{{n}}}{{{title}}}" for n, title in part.planned)
+    index = [rf"\bookfrontheading{{{labels['subjectIndex']}}}{{subject-index}}",
+             r"\begin{multicols}{2}\raggedcolumns\raggedright\small"]
+    for term, refs in subject_entries(parts):
+        numbers = ", ".join(rf"\hyperref[{key}]{{\pageref*{{{key}}}}}" for _, key in refs)
+        index.append(rf"\bookindexentry{{{term}}}{{{numbers}}}")
+    index.append(r"\end{multicols}")
     cover_command = "\\bookcover" + "".join("{" + text + "}" for text in COVER_TEXT[language])
     front = setup + cover + "\n\\begin{document}\n\n" + cover_command + "\n\n"
-    book = front + "\n".join(contents) + "\n\n" + introduction.source + "\n\\clearpage\n\\pagenumbering{arabic}\n\n" + "\n\n".join(
-        page.source.strip() for page in pages) + "\n\n\\end{document}\n"
+    book = front + "\n".join(contents) + "\n\n" + "\n\n".join(page.source for page in opening) + "\n\\clearpage\n\\pagenumbering{arabic}\n\n" + "\n\n".join(
+        page.source.strip() for page in pages) + "\n\n" + "\n".join(index) + "\n\\end{document}\n"
     downloads = ROOT / "docs" / "downloads"
     assets = ROOT / "docs" / "assets"
     downloads.mkdir(parents=True, exist_ok=True)

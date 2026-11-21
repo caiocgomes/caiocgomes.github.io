@@ -72,6 +72,9 @@
 \newcommand{\bookinterludename}{Interlúdio}
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\usepackage{multicol}
+\newcommand{\bookanchor}[1]{\phantomsection\label{#1}}
+\newcommand{\bookindexentry}[2]{\par\noindent\hangindent=1em #1\enspace #2\par}
 \newcommand{\booktitlepage}[3]{%
   \thispagestyle{empty}\vspace*{.17\textheight}%
   {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
@@ -86,6 +89,7 @@
   \vspace{18pt}\noindent\ignorespaces
 }
 \newcommand{\bookintroduction}[1]{\bookfrontheading{#1}{introduction}}
+\newcommand{\bookpreface}[1]{\bookfrontheading{#1}{preface}}
 \newcommand{\bookinterlude}[3]{%
   \clearpage\thispagestyle{opening}\markright{#3}%
   \phantomsection\label{interlude:#1}\pdfbookmark[0]{\bookinterludename{} #1 - #2 · #3}{interlude#1}%
@@ -181,7 +185,8 @@ Envie a correção pelo repositório do livro.\\
 \end{quadro}
 
 \bookfrontheading{Sumário}{contents}
-\booktocentry{}{Introdução}{front:introduction}
+\booktocentry{}{Por que estou escrevendo este livro}{front:introduction}
+\booktocentry{}{Prefácio}{front:preface}
 \booktocpart{Parte I}{A aposta e a moeda}
 \booktocentry{1}{O que se aprende com uma cara}{chapter:1}
 \booktocentry{2}{Quanto vale a segunda cara}{chapter:2}
@@ -191,6 +196,7 @@ Envie a correção pelo repositório do livro.\\
 \booktocentry{6}{Quando um acerto já basta?}{chapter:6}
 \booktocentry{7}{Quanto pesa um 90\%?}{chapter:7}
 \booktocentry{}{\textit{Interlúdio} · Do outro lado da portinhola}{interlude:I}
+\booktocentry{}{Índice remissivo}{front:subject-index}
 \bookfrontheading{Capítulos em preparação}{upcoming}
 \bookplannedpart{Parte II}{A régua contínua}
 \bookplannedentry{8}{O preço na reta real}
@@ -205,9 +211,12 @@ Envie a correção pelo repositório do livro.\\
 \bookplannedentry{14}{Réguas multidimensionais e o gargalo do esquecimento}
 \bookplannedentry{15}{O Transformer: a mesa que nunca se fecha}
 
-\bookintroduction{Introdução}
+\bookintroduction{Por que estou escrevendo este livro}
 
 Eu sou o Caio. No trabalho também sou o CAIO, só que lá eles escrevem em maiúsculas. Eu sempre quis dar um curso inspirado nas Feynman Lectures. Quando percebi que já tinha o título, ficou faltando só a parte fácil, que era escrever o curso inteiro.
+
+
+\bookpreface{Prefácio}
 
 \clearpage
 \pagenumbering{arabic}
@@ -217,7 +226,7 @@ Eu sou o Caio. No trabalho também sou o CAIO, só que lá eles escrevem em mai�
 
 Eu acredito que discutir essas coisas sem dizer o que entendemos por elas é um caminho fadado ao fracasso. Inteligência e aprendizado me parecem ligados, então vou começar pelo que consigo pôr à prova. Já a ideia de artificial acho que é clara pra todo mundo, e não vejo muito ganho para a estatística em tentar decidir o que ela significa neste caso.
 
-\textbf{Chamaremos de aprendizado o processo \(\mathcal F\) que incorpora uma observação \(x\) ao que sabemos sobre \(Y\).} Vou representar esse conhecimento por uma distribuição de probabilidades. Antes de ver o dado, ela é \(p\). Depois, será \(\mathcal P\). Para qualquer hipótese \(y\), escrevemos
+\textbf{Chamaremos\bookanchor{topic-01-1} de aprendizado o processo \(\mathcal F\) que incorpora uma observação \(x\) ao que sabemos sobre \(Y\).} Vou representar esse conhecimento por uma distribuição de probabilidades. Antes de ver o dado, ela é \(p\). Depois, será \(\mathcal P\). Para qualquer hipótese \(y\), escrevemos
 \[
  p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
  \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
@@ -225,7 +234,7 @@ Eu acredito que discutir essas coisas sem dizer o que entendemos por elas é um 
 Em $\mathcal P(y)$ leio sua aposta depois de ver o dado. Em $\mathcal F$ leio também o que você teria feito se o dado fosse outro. Que relação deve haver entre essas respostas?
 
 \begin{quadro}{A hipótese atômica destas notas}
-\textbf{Aprender é conservar a coerência das apostas sob novos dados.}
+\textbf{Aprender\bookanchor{topic-01-2} é conservar a coerência das apostas sob novos dados.}
 
 O dado pode mudar o preço de um bilhete. Antes de olhar, você pode avaliá-lo diretamente ou fazer a média dos preços que daria depois de cada resultado, levando em conta a chance de cada um. As duas contas devem dar o mesmo preço.
 \end{quadro}
@@ -328,7 +337,7 @@ Nosso colega que nunca muda de ideia avaliaria o papel em $3/8$ de real quando c
 \itemq{Para dar preço a uma aposta condicional} O bilhete que paga quando ocorrem $x$ e $y$ precisa ter o mesmo preço calculado nas duas ordens. Nessas moedas, isso fixa $a=3$. Somar os preços desses bilhetes sobre todos os resultados recupera a aposta inicial na hipótese.
 \end{quadro}
 
-Podemos tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
+Podemos\bookanchor{topic-01-3} tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
 \[
  \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
@@ -385,7 +394,7 @@ Quer experimentar a conta numa observação bastante improvável? Em cada mesa p
 Agora mudo uma instrução. Nas mesas que recebem A, sorteio o envelope entre os quinhentos números ímpares. Nas que recebem B, entre os quinhentos pares. As moedas continuam igualmente prováveis. Qual é a chance de sair 731 antes de você saber a letra? Ainda uma em mil. E quando sair? Conhecida a moeda A, a chance do 731 era uma em quinhentas. O fator a favor de A é dois, exatamente o que faltava para levar sua probabilidade de $1/2$ a um. A única coisa que mudei entre os dois jogos foi a relação do número com aquilo que você queria descobrir. Um livro de registros que guardasse apenas o histograma dos números pareceria igual nos dois.
 
 \secao{O preço de olhar}
-Se alguém cobrar para abrir o envelope, temos de escolher quanto pagar antes de saber o resultado. Vou propor uma unidade para fazer essa conta. Ao fim da rodada, revelo a letra. Se você havia dado certeza à letra que saiu, não paga nada. Se lhe havia dado metade, paga um ponto. Se havia dado metade da metade, paga dois. Quanto custaria ter apostado um oitavo na letra certa?
+Se\bookanchor{topic-02-1} alguém cobrar para abrir o envelope, temos de escolher quanto pagar antes de saber o resultado. Vou propor uma unidade para fazer essa conta. Ao fim da rodada, revelo a letra. Se você havia dado certeza à letra que saiu, não paga nada. Se lhe havia dado metade, paga um ponto. Se havia dado metade da metade, paga dois. Quanto custaria ter apostado um oitavo na letra certa?
 
 Imagine que eu divida uma revelação em duas etapas. Você deu $1/2$ à primeira resposta e, sabendo dela, $1/4$ à segunda. Para acertar o par era preciso passar pelos dois filtros. A probabilidade que você deu ao par foi $1/8$. Posso lhe entregar uma conta de três pontos ou duas contas, uma de um ponto e outra de dois. Você pagou o mesmo. É para isso que quero o logaritmo. Ele conta quantas metades separam a sua aposta da certeza. Para $1/8$ são três metades exatas. Para uma aposta entre $1/4$ e $1/2$, a régua dá um número entre um e dois. Na notação matemática, se $r=2^{-c}$, a cobrança é $c=-\log_2 r$. Escolhemos o dois porque quisemos cobrar um ponto por metade.
 
@@ -398,11 +407,11 @@ Agora anote o preço de olhar. Se descobrir a face fez você dobrar a aposta na 
 
 Você pode até sair no prejuízo. Se tirei B e por acaso saiu cara, você baixou a aposta na moeda que vou lhe mostrar de $1/2$ para $1/4$. Espiar aquela cara lhe custou um ponto a mais. Isso ocorre num quarto das rodadas se incluirmos também o caso simétrico de A dar coroa. Nos outros três quartos, você aumenta a probabilidade da letra certa de $1/2$ para $3/4$. A economia média é $(3/4)\log_2(3/2)+(1/4)\log_2(1/2)$, cerca de $0{,}189$ ponto. Se a banca cobra $0{,}2$ ponto pelo direito de espiar, em média você paga mais do que economiza.
 
-Essa economia esperada é a \emph{informação mútua}, em bits se usamos logaritmos de base dois. Cada par de resultado e hipótese entra com o peso da sua probabilidade conjunta,
+Essa\bookanchor{topic-02-2} economia esperada é a \emph{informação mútua}, em bits se usamos logaritmos de base dois. Cada par de resultado e hipótese entra com o peso da sua probabilidade conjunta,
 \[
  I(X;Y)=\sum_{x,y:\,p(x,y)>0}p(x,y)\log_2 W(x,y).
 \]
-Podemos também calcular o que esperaríamos pagar antes de observar e subtrair o que esperaríamos pagar depois. Imagine cem rodadas feitas com a aposta $q$ em A. Em cerca de $100q$ delas você pagaria pela probabilidade que deu a A. Nas restantes, pagaria pela que deu a B. Dividindo a conta pelas cem rodadas, chegamos à cobrança média teórica $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, a \emph{entropia} de uma aposta binária. No empate, $h(1/2)=1$ bit. Quando sabemos a resposta, a letra que sairá tem probabilidade um e a cobrança é zero.
+Podemos\bookanchor{topic-02-4} também calcular o que esperaríamos pagar antes de observar e subtrair o que esperaríamos pagar depois. Imagine cem rodadas feitas com a aposta $q$ em A. Em cerca de $100q$ delas você pagaria pela probabilidade que deu a A. Nas restantes, pagaria pela que deu a B. Dividindo a conta pelas cem rodadas, chegamos à cobrança média teórica $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, a \emph{entropia} de uma aposta binária. No empate, $h(1/2)=1$ bit. Quando sabemos a resposta, a letra que sairá tem probabilidade um e a cobrança é zero.
 
 \secao{A melhor pergunta a fazer à moeda}
 Das caixas Comum e Dupla, ainda não sabemos qual saiu. Mas vimos uma cara. Se foi a Dupla, temos na mão a moeda de duas caras. Vale mais devolver a moeda e sortear de novo na mesma caixa, relançar a que ficou na mesa ou virá-la?
@@ -454,14 +463,14 @@ Imagine que você queira construir uma imitação do jogo. Seu programa precisa 
 
 Vamos mandar que use a mesma taxa e faça um novo sorteio, independente do primeiro. É uma instrução curta. Ela diz que, conhecidos a taxa e o tipo da moeda, a previsão para a próxima face continua a mesma qualquer que tenha sido a primeira. Outra escolha diz respeito a quais rodadas podemos juntar. Uma A de amanhã deve ter a mesma taxa de cara que as A cujo comportamento estamos estudando hoje. É assim que um caderno cheio de moedas antigas ganha o direito de dizer algo sobre uma moeda nova.
 
-Chamando de $Y$ a letra e de $X$ as faces, o programa atribui a cada rodada a probabilidade $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, onde $\theta$ reúne os três números que precisamos ajustar. Ele sabe, por exemplo, que a chance de escrever A e duas caras é $\pi\theta_A^2$. Se eu prometer um real por A e duas caras, terei de dar ao mesmo bilhete o mesmo preço pelas duas ordens de contagem. Mas quem me deu o direito de usar $\theta_A^2$ como chance de duas caras? A regra dos preços não diz que posso elevar um número ao quadrado. Fui eu que mandei o programa fazer dois sorteios independentes depois de escolher A. Quando ajustamos ao caderno a distribuição conjunta das faces e das letras, fazemos \emph{aprendizado generativo}. Podemos pedir ao programa que produza um novo caderno e examinar se o que saiu se parece com o que chegou da mesa.
+Chamando\bookanchor{topic-03-1} de $Y$ a letra e de $X$ as faces, o programa atribui a cada rodada a probabilidade $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, onde $\theta$ reúne os três números que precisamos ajustar. Ele sabe, por exemplo, que a chance de escrever A e duas caras é $\pi\theta_A^2$. Se eu prometer um real por A e duas caras, terei de dar ao mesmo bilhete o mesmo preço pelas duas ordens de contagem. Mas quem me deu o direito de usar $\theta_A^2$ como chance de duas caras? A regra dos preços não diz que posso elevar um número ao quadrado. Fui eu que mandei o programa fazer dois sorteios independentes depois de escolher A. Quando ajustamos ao caderno a distribuição conjunta das faces e das letras, fazemos \emph{aprendizado generativo}. Podemos pedir ao programa que produza um novo caderno e examinar se o que saiu se parece com o que chegou da mesa.
 
 \secao{Posso desmontar os pares?}
 Corte os quarenta registros de A ao meio. Por enquanto, deixe os dois pedaços de cada rodada lado a lado. De quantas caras dispomos? As quatro rodadas da primeira coluna não contribuem com nenhuma. As doze do meio contribuem com doze. As vinte e quatro da última contribuem com quarenta e oito. São sessenta caras e vinte coroas. Para um candidato $u$ à taxa de caras de A, a probabilidade daquelas anotações traz sessenta fatores $u$ e vinte fatores $1-u$. O agrupamento na tabela acrescenta um fator que é igual para todos os candidatos. Podemos compará-los usando apenas
 \[
                          L(u)=u^{60}(1-u)^{20}.
 \]
-Imagine um botão que regule a frequência de caras do nosso programa. Na posição $u=1/2$ ele imita uma moeda equilibrada. Deixe os oitenta pedaços quietos e gire só o botão. A altura da curva $L(u)$ diz quanto aquela regulagem favorece o registro que está na mesa. É isso que chamamos de \emph{verossimilhança}. Em $u=0$ o programa jamais produziria as sessenta caras. Em $u=1$ jamais produziria as vinte coroas. Entre essas pontas há um pico. Para que lado você giraria o botão a partir do meio?
+Imagine\bookanchor{topic-03-3} um botão que regule a frequência de caras do nosso programa. Na posição $u=1/2$ ele imita uma moeda equilibrada. Deixe os oitenta pedaços quietos e gire só o botão. A altura da curva $L(u)$ diz quanto aquela regulagem favorece o registro que está na mesa. É isso que chamamos de \emph{verossimilhança}. Em $u=0$ o programa jamais produziria as sessenta caras. Em $u=1$ jamais produziria as vinte coroas. Entre essas pontas há um pico. Para que lado você giraria o botão a partir do meio?
 
 Empurre-o de $0{,}50$ para $0{,}51$. Cada um dos sessenta fatores de cara cresce 2\% em relação ao que valia. Cada um dos vinte fatores de coroa encolhe 2\%. Para um movimento bem pequeno, as sessenta caras puxam mais. E se você já estivesse em $0{,}90$? A mesma mudança de um centésimo acrescentaria pouco mais de 1\% a cada fator de cara, mas tiraria 10\% de cada fator de coroa. Vinte coroas agora podem pesar mais que sessenta caras. O que elas têm de tão pesado? Você lhes deixou pouca probabilidade para ceder.
 
@@ -493,7 +502,7 @@ Quando a régua fica horizontal, o ganho das caras compensa a perda das coroas. 
 {\footnotesize\raggedright Cada ponto usa os mesmos oitenta pedaços. O traço no alto mostra a direção da tangente quando os ganhos nas caras compensam as perdas nas coroas.\par}
 \end{minipage}\par\addvspace{5pt}
 
-Para B há vinte caras em oitenta lançamentos. A mesma balança dá $\widehat\theta_B=1/4$. Das oitenta letras, quarenta são A, dando $\widehat\pi=1/2$. Recuperamos a folha de instruções do primeiro capítulo por \emph{máxima verossimilhança}. Se amanhã eu trouxer outra amostra, os três números poderão mudar.
+Para\bookanchor{topic-03-4} B há vinte caras em oitenta lançamentos. A mesma balança dá $\widehat\theta_B=1/4$. Das oitenta letras, quarenta são A, dando $\widehat\pi=1/2$. Recuperamos a folha de instruções do primeiro capítulo por \emph{máxima verossimilhança}. Se amanhã eu trouxer outra amostra, os três números poderão mudar.
 
 Você ainda está com os oitenta pedaços de A na mesa. Pegue duas rodadas que tinham uma cara e uma coroa cada. Troque uma face de uma rodada com a da outra para obter um par de caras e um par de coroas. Essa troca fabrica uma história diferente para o jogo. A linha de A, que dizia $4,12,24$, passaria a dizer $5,10,25$. O que o programa que estima $\theta_A$ perceberia? Continuam na mesa as mesmas sessenta caras e as mesmas vinte coroas. Se eu lhe entregasse as duas tabelas sem avisar qual alterei, você teria exatamente a mesma razão para preferir qualquer candidato $u$ a outro. O programa foi autorizado a esquecer em que companhia cada cara chegou.
 
@@ -557,7 +566,7 @@ No caderno que o gerador espera produzir, a conta também fecha,
 O primeiro usa as frequências observadas. O segundo usa a independência para compor o par. Para acusar um aprendiz de contradição, eu teria de obter dois preços partindo das hipóteses \emph{dele}. Para saber qual compra melhor, preciso de rodadas novas.
 
 \secao{Uma conta que só pede as letras}
-Amanhã, toda vez que tiver de responder, já terei visto as duas faces. Posso usar o treino para ajustar diretamente a probabilidade da letra para cada resultado que me mostrarem. Essa maneira de aprender a prever $Y$ a partir de $X$ é o \emph{aprendizado discriminativo}. Para ver como funciona, fique apenas com os vinte e oito bilhetes da última coluna e escolha uma probabilidade $q$ para anunciar. O que o caderno lhe cobraria por essa escolha?
+Amanhã,\bookanchor{topic-04-1} toda vez que tiver de responder, já terei visto as duas faces. Posso usar o treino para ajustar diretamente a probabilidade da letra para cada resultado que me mostrarem. Essa maneira de aprender a prever $Y$ a partir de $X$ é o \emph{aprendizado discriminativo}. Para ver como funciona, fique apenas com os vinte e oito bilhetes da última coluna e escolha uma probabilidade $q$ para anunciar. O que o caderno lhe cobraria por essa escolha?
 
 Imagine que você tenha anunciado $q=0{,}80$ para A. Separe os bilhetes em duas pilhas, as vinte e quatro letras A de um lado e as quatro B do outro. Agora dê a A um centésimo a mais de probabilidade. Na pilha maior, cada um dos vinte e quatro bilhetes ficará um pouco mais barato. De onde veio esse centésimo? Saiu dos $0{,}20$ que você tinha reservado a B. Os quatro bilhetes daquela pilha ficam mais caros. Se você continuar tirando de B, qual das duas pilhas acabará mandando na conta?
 
@@ -581,7 +590,7 @@ Pense nas marcas $1,3,9,27$ de uma régua para as chances. Cada passagem para a 
 \]
 A reta apareceu antes de falarmos em regressão. A marca inicial veio das chances antes de ver as faces. O comprimento do passo veio da diferença entre as duas moedas.
 
-Vamos conservar a régua e deixar que o caderno escolha as duas medidas. Chamemos de $\beta_0$ a marca inicial e de $\beta_1$ o tamanho do passo. Para um saldo $s$ lemos $v=\beta_0+\beta_1s$. Como voltar de uma marca a uma probabilidade? Se ela diz $\ln 3$, temos três partes de A para uma de B. A aposta em A vale três das quatro partes. Se a marca diz $v$, desfazer o logaritmo dá $e^v$ partes de A para uma de B. Divida pelo total de partes. Dividir depois o numerador e o denominador por $e^v$ apenas conta as mesmas partes em outra unidade. A \emph{regressão logística} devolve assim
+Vamos\bookanchor{topic-04-3} conservar a régua e deixar que o caderno escolha as duas medidas. Chamemos de $\beta_0$ a marca inicial e de $\beta_1$ o tamanho do passo. Para um saldo $s$ lemos $v=\beta_0+\beta_1s$. Como voltar de uma marca a uma probabilidade? Se ela diz $\ln 3$, temos três partes de A para uma de B. A aposta em A vale três das quatro partes. Se a marca diz $v$, desfazer o logaritmo dá $e^v$ partes de A para uma de B. Divida pelo total de partes. Dividir depois o numerador e o denominador por $e^v$ apenas conta as mesmas partes em outra unidade. A \emph{regressão logística} devolve assim
 \[
               q(s)=\frac{e^v}{1+e^v}=\frac{1}{1+e^{-v}},
               \qquad v=\beta_0+\beta_1s .
@@ -593,7 +602,7 @@ Você já viu os números da última coluna. Cubra-a mesmo assim. O que queremos
 
 Pode tirar o dedo. As chances observadas eram mesmo vinte e quatro para quatro. Nesta tabela, a reta que passa pelos dois pontos visíveis também minimiza a perda na terceira coluna. Como a altura é zero em $s=0$ e é $\ln 6$ em $s=2$, os coeficientes ajustados são $\widehat\beta_0=0$ e $\widehat\beta_1=(\ln 6)/2$. Com as taxas ajustadas pelo gerador a inclinação era $\ln 3$. Os dois programas chegaram a curvas da mesma família. Um ajustou as taxas que explicam as faces dentro de cada tipo. O outro ajustou as probabilidades que a reta dá às letras.
 
-Também podemos usar Bayes para aprender a reta. A cada letra revelada, multiplicamos o peso de cada reta candidata pela probabilidade que ela deu àquela letra para aquele saldo. Normalizamos sobre as candidatas. O treino continua discriminativo, pois as retas fazem apostas sobre a letra dadas as faces.
+Também\bookanchor{topic-04-4} podemos usar Bayes para aprender a reta. A cada letra revelada, multiplicamos o peso de cada reta candidata pela probabilidade que ela deu àquela letra para aquele saldo. Normalizamos sobre as candidatas. O treino continua discriminativo, pois as retas fazem apostas sobre a letra dadas as faces.
 
 Faça um pequeno estrago no caderno. Corrija uma única letra na coluna do meio, de B para A. As apostas das colunas extremas continuam dando alturas $-\ln 6$ e $\ln 6$, mas no meio as chances passam a treze para onze. Já não há uma reta que cumpra os três pedidos ao mesmo tempo. Se ajustarmos uma só reta às oitenta rodadas, uma correção no meio poderá mudar a aposta até na coluna das duas caras, onde letra alguma foi alterada. Somos capazes de aprender sobre uma coluna usando as outras pela mesma razão que nos permite errar uma delas quando a relação que imaginamos falha.
 
@@ -642,7 +651,7 @@ B & 5 & 45 & 45 & 5 & 100 \\
 
 O primeiro aprendiz quer fabricar bilhetes como os que encontrou. Mede a frequência de cara em cada janela de cada máquina. Encontra $1/2$ quatro vezes. Se eu lhe pedir cem bilhetes de A, ele sorteará duas faces com essas taxas, independentemente uma da outra. Espera produzir vinte e cinco bilhetes $CC$. A produziu quarenta e cinco. Se lhe pedir cem bilhetes de B, espera os mesmos vinte e cinco. B produziu cinco. Em qual das quatro contagens ele se enganou?
 
-Em nenhuma. Foi o aprendiz que escreveu no programa a instrução de fazer sorteios independentes. Quando usamos esse gerador para classificar, damos a ele o nome de \emph{Naive Bayes}. A hipótese que fizemos à mão é
+Em\bookanchor{topic-05-1} nenhuma. Foi o aprendiz que escreveu no programa a instrução de fazer sorteios independentes. Quando usamos esse gerador para classificar, damos a ele o nome de \emph{Naive Bayes}. A hipótese que fizemos à mão é
 \[
      p(x_1,x_2\mid y)=p(x_1\mid y)\,p(x_2\mid y).
 \]
@@ -668,9 +677,9 @@ O gerador e a logística concordam sobre a letra de \emph{todo} bilhete. Posso e
 \secao{Quem escolheu os exemplos?}
 Costumo dizer aos meus alunos que a modelagem acontece quando precisamos decidir o que trazer de casa para o problema. As duas oficinas a seguir querem a mesma coisa. Amanhã chegará um bilhete sem etiqueta e alguém terá de adivinhar sua origem. Em qual delas eu começaria por cada um dos caminhos?
 
-Na primeira, descobrir a letra custa dinheiro. A oficina só investiga metade dos bilhetes repetidos e um em dez dos diferentes. Dentro de cada grupo, escolhe os bilhetes ao acaso. Aplique esse procedimento à nossa tabela. Dos cem repetidos, esperamos investigar cinquenta, dos quais 45 serão de A. Dos cem diferentes, esperamos investigar dez, dos quais um será de A. Pelas contagens esperadas da auditoria, $50/60$ dos bilhetes têm faces iguais. Na esteira, a metade. Se eu usasse esse arquivo para fabricar uma nova tiragem, erraria já na primeira encomenda. Mas a chance de A entre os repetidos continua em $45/50$, e entre os diferentes, em $1/10$. O sorteio encolheu cada coluna sem favorecer uma letra dentro dela. Eu começaria pelo discriminativo porque sei por que as proporções de que preciso sobreviveram à coleta. A informação decisiva veio de quem escolheu os bilhetes para investigação.
+Na\bookanchor{topic-05-3} primeira, descobrir a letra custa dinheiro. A oficina só investiga metade dos bilhetes repetidos e um em dez dos diferentes. Dentro de cada grupo, escolhe os bilhetes ao acaso. Aplique esse procedimento à nossa tabela. Dos cem repetidos, esperamos investigar cinquenta, dos quais 45 serão de A. Dos cem diferentes, esperamos investigar dez, dos quais um será de A. Pelas contagens esperadas da auditoria, $50/60$ dos bilhetes têm faces iguais. Na esteira, a metade. Se eu usasse esse arquivo para fabricar uma nova tiragem, erraria já na primeira encomenda. Mas a chance de A entre os repetidos continua em $45/50$, e entre os diferentes, em $1/10$. O sorteio encolheu cada coluna sem favorecer uma letra dentro dela. Eu começaria pelo discriminativo porque sei por que as proporções de que preciso sobreviveram à coleta. A informação decisiva veio de quem escolheu os bilhetes para investigação.
 
-Na outra oficina eu mesmo vou até as duas impressoras. Recolho cem bilhetes ao acaso da saída de A e cem da saída de B. Agora posso estimar o que cada uma imprime. A fração de A no meu caderno é meio a meio porque acabei de decidir que seria. No turno de amanhã só um bilhete em dez virá de A. Se o mecânico me disser que as regulagens continuam as mesmas, posso transportar as taxas medidas na bancada e usar a mistura da produção. Uma repetição continua favorecendo A por um fator nove. Como as chances iniciais caíram para um contra nove, depois da repetição minha aposta fica em $1/2$. Aqui eu começaria pelo gerador. A estabilidade da regulagem é uma hipótese que eu defenderia com o mecânico. Os cem bilhetes de cada máquina, sozinhos, não a prometem.
+Na\bookanchor{topic-05-5} outra oficina eu mesmo vou até as duas impressoras. Recolho cem bilhetes ao acaso da saída de A e cem da saída de B. Agora posso estimar o que cada uma imprime. A fração de A no meu caderno é meio a meio porque acabei de decidir que seria. No turno de amanhã só um bilhete em dez virá de A. Se o mecânico me disser que as regulagens continuam as mesmas, posso transportar as taxas medidas na bancada e usar a mistura da produção. Uma repetição continua favorecendo A por um fator nove. Como as chances iniciais caíram para um contra nove, depois da repetição minha aposta fica em $1/2$. Aqui eu começaria pelo gerador. A estabilidade da regulagem é uma hipótese que eu defenderia com o mecânico. Os cem bilhetes de cada máquina, sozinhos, não a prometem.
 
 Também se pode corrigir a aposta de um discriminativo calibrado quando se conhecem a mistura anterior, a nova e essa mesma estabilidade. A escolha profissional depende do que consigo justificar a respeito do próximo turno. Para avaliá-la, eu reservaria um lote da esteira real. Se a encomenda é separar bilhetes, abriria as etiquetas para medir o custo de errar a gaveta. Se é dimensionar a tiragem, compararia as quantidades de cada desenho com aquelas que prometi ao comprador.
 
@@ -697,7 +706,7 @@ Você conhece um jeito de distingui-las. Volte à sala com o bilhete que custa R
 \secao{Apresente a conta por um acerto}
 Vamos manter as faces, os rótulos e até a forma da função que usamos para classificar. Como no capítulo anterior, $z=+1$ significa faces iguais, e $z=-1$, faces diferentes. O escore será $f_w(z)=wz$. Identificamos A com $y=+1$ e B com $y=-1$. A simetria da nossa oficina permite usar o mesmo coeficiente nos dois tipos de bilhete. Para as faces iguais, dão A tanto um $w=0{,}4$ quanto um $w=4$. O que faz um desses números merecer o lugar do outro?
 
-A regressão logística contém uma resposta. Seu escore mede as log-chances de A. Mas, ao corrigir a prova, já sabemos qual letra saiu. Um escore $-2$ quando sai B merece o mesmo crédito que um escore $+2$ quando sai A. Podemos virar a régua nos bilhetes B. Multiplicar o escore pelo rótulo $y$ deixa como está a leitura dos A e troca o sinal da leitura dos B. Chamemos de $m=yf_w(z)$ essa leitura do lado da letra que saiu. Nos dois acertos do exemplo, $m=2$.
+A\bookanchor{topic-06-1} regressão logística contém uma resposta. Seu escore mede as log-chances de A. Mas, ao corrigir a prova, já sabemos qual letra saiu. Um escore $-2$ quando sai B merece o mesmo crédito que um escore $+2$ quando sai A. Podemos virar a régua nos bilhetes B. Multiplicar o escore pelo rótulo $y$ deixa como está a leitura dos A e troca o sinal da leitura dos B. Chamemos de $m=yf_w(z)$ essa leitura do lado da letra que saiu. Nos dois acertos do exemplo, $m=2$.
 
 Que probabilidade o aprendiz deu à letra certa? Na régua que acabamos de virar, as chances a favor dela são $e^m$ para um. Das $1+e^m$ partes, $e^m$ dizem respeito a ela. Sua fração é, portanto, $p_{\rm certa}=1/(1+e^{-m})$, como no capítulo anterior. Para encontrar a cobrança, procure no denominador quantas vezes teria de multiplicar essa fração para chegar a um. O logaritmo desse fator é o preço que instituímos no capítulo 2, agora em unidades naturais,
 \[
@@ -705,11 +714,11 @@ Que probabilidade o aprendiz deu à letra certa? Na régua que acabamos de virar
 \]
 Mesmo quem acertou a letra sai devendo alguma coisa. No grupo dos bilhetes iguais, o ponto mais barato ocorre quando anunciamos a fração de A que a pilha trouxe, como vimos no capítulo 4. Nove letras A para uma B pedem chances de nove para um, ou $w=\ln 9$. Se a pilha tiver seis A e quatro B, as chances pedidas são três para dois e o escore cai para $\ln(3/2)$. Sem penalização, a simetria das frações no grupo dos diferentes permite usar o mesmo coeficiente nos dois grupos.
 
-Posso propor uma segunda correção. Vou cobrar um ponto pelo empate $m=0$. Se o aprendiz der um passo na direção certa, desconto um ponto. Se der um passo na direção errada, cobro um ponto a mais. A dívida tem um piso. De quem já chegou a $m=1$ não cobro mais nada naquele bilhete. Assim, um acerto com $m=0{,}6$ custa $0{,}4$ e um erro com $m=-0{,}6$ custa $1{,}6$. A regra é a perda \emph{hinge},
+Posso\bookanchor{topic-06-3} propor uma segunda correção. Vou cobrar um ponto pelo empate $m=0$. Se o aprendiz der um passo na direção certa, desconto um ponto. Se der um passo na direção errada, cobro um ponto a mais. A dívida tem um piso. De quem já chegou a $m=1$ não cobro mais nada naquele bilhete. Assim, um acerto com $m=0{,}6$ custa $0{,}4$ e um erro com $m=-0{,}6$ custa $1{,}6$. A regra é a perda \emph{hinge},
 \[
                   \ell_{\rm h}(m)=\max(0,1-m).
 \]
-Chamamos o produto $m$ de \emph{margem funcional}. Vejamos o que a nova cobrança faz com aqueles nove acertos.
+Chamamos\bookanchor{topic-06-4} o produto $m$ de \emph{margem funcional}. Vejamos o que a nova cobrança faz com aqueles nove acertos.
 
 \perdasmargem
 
@@ -718,22 +727,22 @@ Ponha dez bilhetes com faces iguais sobre a mesa, nove de A e um de B. Com $w=0$
 Troque três bilhetes de A por três de B. Restaram seis contra quatro. Até $w=1$, os seis descontos ainda pagam os quatro acréscimos. Depois de um, só os quatro erros encarecem. O melhor lugar continua sendo $w=1$. Posso lhe entregar o coeficiente vencedor, informar como escolhi seu valor e perguntar quanto devo pagar pelo próximo bilhete. Você teria como descobrir se eu estava com o maço dos nove ou com o dos seis? A portinhola lê o sinal positivo e dá a mesma resposta nos dois maços. Suponha agora que alguém aplique ao escore 1 a sigmoide da logística e anuncie cerca de $73\%$ para A. Essa operação daria o mesmo preço de R\$\,7,31 nos dois casos. Um maço sugere nove reais e o outro, seis. Posso até defender R\$\,7,31 se encontrar essa frequência em bilhetes novos com o mesmo escore. Mas essa promessa veio de uma hipótese a mais sobre o número 1. A perda \emph{hinge} só tinha cobrado a margem.
 
 \secao{De onde vem a margem}
-Para chegar à máquina de vetores de suporte, a \emph{SVM}, ainda falta fazer uma escolha. O inspetor da oficina traz um paquímetro. A portinhola agora separa peças pela medida do diâmetro. No lote de ajuste, a maior peça de B mede $4{,}8$ mm e a menor de A mede $5{,}2$ mm. Acima do limiar mandamos para A. Eu instalo o limiar em $5{,}15$ mm. Você instala o seu em $5{,}00$ mm. Testamos as peças uma a uma e os dois acertamos todas. Antes de mandar comprar a sua portinhola ou a minha, o que você gostaria de perguntar ao inspetor?
+Para\bookanchor{topic-06-5} chegar à máquina de vetores de suporte, a \emph{SVM}, ainda falta fazer uma escolha. O inspetor da oficina traz um paquímetro. A portinhola agora separa peças pela medida do diâmetro. No lote de ajuste, a maior peça de B mede $4{,}8$ mm e a menor de A mede $5{,}2$ mm. Acima do limiar mandamos para A. Eu instalo o limiar em $5{,}15$ mm. Você instala o seu em $5{,}00$ mm. Testamos as peças uma a uma e os dois acertamos todas. Antes de mandar comprar a sua portinhola ou a minha, o que você gostaria de perguntar ao inspetor?
 
 Ele pega a peça que mediu $5{,}2$, retira-a do paquímetro e torna a prendê-la. Conta que, só com a mudança de posição, duas leituras podem diferir até $0{,}10$ mm. Agora aparece uma diferença entre os dois acertos. Uma releitura de $5{,}10$ atravessa a minha portinhola para o lado de B. Na sua, a peça ainda tem folga. O mesmo vale do outro lado. Das fronteiras que acertaram o lote inteiro, a de $5{,}00$ mm é a que dá a maior folga à peça mais próxima de qualquer lado. A pessoa que sabia quanto valia essa folga estava segurando o paquímetro.
 
 E por que não bastou premiar um escore grande do lado correto? Se $f(\boldsymbol u)=\boldsymbol w^\top\boldsymbol u+b$ é nossa régua, posso dobrar $\boldsymbol w$ e $b$ sem mover a fronteira $f=0$ nem um milímetro. Os escores dobraram. A distância da peça à fronteira continua onde estava. Para ligar as duas réguas, imagine que um milímetro perpendicular à fronteira valha quatro pontos no visor. Nesse caso, para ganhar um ponto basta andar um quarto de milímetro. A norma $\lVert\boldsymbol w\rVert$ faz o papel desses quatro pontos por milímetro. Multiplicar os deslocamentos nos eixos pelos pesos e somar mede o quanto caminhamos na direção de $\boldsymbol w$. Nessa direção, perpendicular à fronteira, uma distância $d$ acrescenta $d\lVert\boldsymbol w\rVert$ ao escore. Por isso, a linha de escore $+1$ fica a $1/\lVert\boldsymbol w\rVert$ da fronteira, e a linha de escore $-1$ fica à mesma distância do outro lado.
 
-Quando conseguimos deixar todos os exemplos com $y_i f(\boldsymbol u_i)\geq1$, escolher a menor norma $\lVert\boldsymbol w\rVert$ abre a faixa mais larga. No caso do paquímetro, isso põe o limiar no meio das duas peças mais próximas. Já no bilhete com duas caras sabemos que há rótulos A e B para a mesmíssima entrada. Nenhuma reta os colocará em lados diferentes. Façamos então um acordo. Queremos abrir a faixa, mas aceitamos pagar pelas peças que caírem dentro dela ou do lado errado. Se eu dobrar o número de peças repetindo todas elas, quero que o preço médio dos erros continue igual. Por isso divido a cobrança das peças por $n$. Para o outro prato escolho cobrar pelo quadrado da norma. Dobrar a escala custa quatro vezes mais nessa parcela. É uma escolha sobre quanto vale a largura da faixa. Com essas duas cobranças, o custo que a SVM linear de \emph{margem suave} minimiza é
+Quando\bookanchor{topic-06-7} conseguimos deixar todos os exemplos com $y_i f(\boldsymbol u_i)\geq1$, escolher a menor norma $\lVert\boldsymbol w\rVert$ abre a faixa mais larga. No caso do paquímetro, isso põe o limiar no meio das duas peças mais próximas. Já no bilhete com duas caras sabemos que há rótulos A e B para a mesmíssima entrada. Nenhuma reta os colocará em lados diferentes. Façamos então um acordo. Queremos abrir a faixa, mas aceitamos pagar pelas peças que caírem dentro dela ou do lado errado. Se eu dobrar o número de peças repetindo todas elas, quero que o preço médio dos erros continue igual. Por isso divido a cobrança das peças por $n$. Para o outro prato escolho cobrar pelo quadrado da norma. Dobrar a escala custa quatro vezes mais nessa parcela. É uma escolha sobre quanto vale a largura da faixa. Com essas duas cobranças, o custo que a SVM linear de \emph{margem suave} minimiza é
 \[
  \frac1n\sum_{i=1}^n \max\{0,1-y_i f(\boldsymbol u_i)\}
        +\frac{\lambda}{2}\lVert\boldsymbol w\rVert^2,\qquad \lambda>0.
 \]
-O primeiro termo é a cobrança que fizemos nos dois maços. O segundo cobra por aumentar a escala dos coeficientes mesmo quando deixamos a fronteira exatamente onde estava. Um $\lambda$ maior dá mais peso à norma. A localização da fronteira depende das peças que alcançam a margem ou a violam, entre as quais ficam os chamados \emph{vetores de suporte}. O valor $w=1$ dos envelopes veio da perda sozinha. A penalização também participa do ajuste de uma SVM.\footnote{Corinna Cortes e Vladimir Vapnik desenvolvem o classificador com margem e violações em \href{https://doi.org/10.1007/BF00994018}{\emph{Support-Vector Networks}} (1995). Para a formulação por perda e penalização, veja T. Hastie, S. Rosset, R. Tibshirani e J. Zhu, \href{https://jmlr.org/papers/v5/hastie04a.html}{\emph{The Entire Regularization Path for the Support Vector Machine}} (2004).}
+O\bookanchor{topic-06-8} primeiro termo é a cobrança que fizemos nos dois maços. O segundo cobra por aumentar a escala dos coeficientes mesmo quando deixamos a fronteira exatamente onde estava. Um $\lambda$ maior dá mais peso à norma. A localização da fronteira depende das peças que alcançam a margem ou a violam, entre as quais ficam os chamados \emph{vetores de suporte}. O valor $w=1$ dos envelopes veio da perda sozinha. A penalização também participa do ajuste de uma SVM.\footnote{Corinna Cortes e Vladimir Vapnik desenvolvem o classificador com margem e violações em \href{https://doi.org/10.1007/BF00994018}{\emph{Support-Vector Networks}} (1995). Para a formulação por perda e penalização, veja T. Hastie, S. Rosset, R. Tibshirani e J. Zhu, \href{https://jmlr.org/papers/v5/hastie04a.html}{\emph{The Entire Regularization Path for the Support Vector Machine}} (2004).}
 
 Na oficina eu testaria a SVM se quisesse uma separação estável sob releituras e conseguisse defender a régua em que medi a distância. Se eu der à máquina o diâmetro e o peso, trocar gramas por miligramas já muda a geometria dos dados crus. Ninguém aprendeu nada novo sobre as peças com essa troca de unidades. Cabe a mim escolher o que vale um deslocamento em cada eixo. Para verificar minha escolha, reservaria peças de origem conhecida e tornaria a medi-las. A folga que medi nas peças de ontem só me interessa se ajudar a encaminhar as que vão passar hoje.
 
-Mude agora a encomenda. Queremos decidir se vale a pena inspecionar uma peça. A inspeção custa dois reais e evita um prejuízo de dez reais se ela tiver vindo de B. Chamando de $r$ o risco de B para aquela medida, vale inspecionar se $10r>2$. Sob um preço de quatro reais, o corte passa de $20\%$ para $40\%$. Uma peça com risco de $30\%$ muda de destino sem que ninguém mexa no paquímetro. Aqui eu começaria pela logística. Posso levar sua estimativa de risco à pessoa que sabe os preços. Há um detalhe. No lote que separou perfeitamente A e B, quem mediu o risco de uma peça de $5{,}05$ mm? Nenhuma peça tinha esse diâmetro. Uma curva logística cada vez mais íngreme pode melhorar o ajuste das letras do lote. Antes de usar seu número para gastar dinheiro, eu buscaria peças rotuladas perto da decisão e conferiria se os riscos anunciados se realizam. Também se pode aprender uma calibração para o escore de uma SVM. Para isso, eu separaria dados rotulados da população em que vou usar o escore e mediria ali a frequência de B.
+Mude\bookanchor{topic-06-10} agora a encomenda. Queremos decidir se vale a pena inspecionar uma peça. A inspeção custa dois reais e evita um prejuízo de dez reais se ela tiver vindo de B. Chamando de $r$ o risco de B para aquela medida, vale inspecionar se $10r>2$. Sob um preço de quatro reais, o corte passa de $20\%$ para $40\%$. Uma peça com risco de $30\%$ muda de destino sem que ninguém mexa no paquímetro. Aqui eu começaria pela logística. Posso levar sua estimativa de risco à pessoa que sabe os preços. Há um detalhe. No lote que separou perfeitamente A e B, quem mediu o risco de uma peça de $5{,}05$ mm? Nenhuma peça tinha esse diâmetro. Uma curva logística cada vez mais íngreme pode melhorar o ajuste das letras do lote. Antes de usar seu número para gastar dinheiro, eu buscaria peças rotuladas perto da decisão e conferiria se os riscos anunciados se realizam. Também se pode aprender uma calibração para o escore de uma SVM. Para isso, eu separaria dados rotulados da população em que vou usar o escore e mediria ali a frequência de B.
 
 \secao{Pode haver aprendizado quando a resposta continua igual?}
 Deixe os dois programas em $w=2$ e entregue a ambos um bilhete repetido cuja letra é A. Eles acertaram. Agora deslize o dedo para a direita no gráfico das perdas, de $2$ para $2{,}01$. Na \emph{hinge} você andou sobre a parte horizontal. Na logística a curva ainda desce. Só de olhar você já sabe qual dos dois aprendizes recebe desse bilhete uma razão para aumentar $w$.
@@ -742,7 +751,7 @@ Quanto ele ainda tem a ganhar? Para $m=2$, a cobrança logística vale cerca de 
 \[
  \ell'_{\rm log}(m)=-\frac{e^{-m}}{1+e^{-m}}=-(1-p_{\rm certa}).
 \]
-O aprendiz que apostou perto de $88\%$ na letra certa ainda tinha quase $12\%$ do lado errado. É esse resto que o bilhete põe na conta do ajuste. Um \emph{passo de gradiente} manda andar contra a inclinação para baixar a despesa. Se $\eta>0$ regula o tamanho do passo, como aqui $m=w$, o bilhete acrescenta $\eta/(1+e^2)$ a $w$. Na \emph{hinge}, a inclinação zero acrescenta zero. Se cobrarmos também $\lambda w^2/2$ pelo coeficiente, por que um $w$ grande é puxado com mais força de volta a zero? Imagine $w^2$ como a área de um quadrado de lado $w>0$. Ao aumentar o lado um pouquinho, você acrescenta duas tiras de comprimento $w$ e um cantinho que encolhe com o quadrado do passo. A área cresce à taxa $2w$. Multiplique pela tarifa $\lambda/2$ e terá uma inclinação $\lambda w$. Essa parcela retira $\eta\lambda w$ dos dois passos. Assim conseguimos separar no movimento do botão quanto veio da nova letra e quanto veio da cobrança que já existia.
+O\bookanchor{topic-06-11} aprendiz que apostou perto de $88\%$ na letra certa ainda tinha quase $12\%$ do lado errado. É esse resto que o bilhete põe na conta do ajuste. Um \emph{passo de gradiente} manda andar contra a inclinação para baixar a despesa. Se $\eta>0$ regula o tamanho do passo, como aqui $m=w$, o bilhete acrescenta $\eta/(1+e^2)$ a $w$. Na \emph{hinge}, a inclinação zero acrescenta zero. Se cobrarmos também $\lambda w^2/2$ pelo coeficiente, por que um $w$ grande é puxado com mais força de volta a zero? Imagine $w^2$ como a área de um quadrado de lado $w>0$. Ao aumentar o lado um pouquinho, você acrescenta duas tiras de comprimento $w$ e um cantinho que encolhe com o quadrado do passo. A área cresce à taxa $2w$. Multiplique pela tarifa $\lambda/2$ e terá uma inclinação $\lambda w$. Essa parcela retira $\eta\lambda w$ dos dois passos. Assim conseguimos separar no movimento do botão quanto veio da nova letra e quanto veio da cobrança que já existia.
 
 Poderíamos ter feito outra escolha desde o começo. Para cada tipo de bilhete, guarde apenas as contagens de A e B. Quando chegar uma letra nova, acrescente um à contagem correspondente. Com esse mesmo caderno posso responder qual letra é a mais frequente, calcular a proporção de A ou escolher o escore que minimiza cada uma das duas perdas naquela coluna. Mudar o que perguntei ao caderno custou uma nova conta na hora de lê-lo. A instrução de acrescentar um à contagem continuou servindo.
 
@@ -790,7 +799,7 @@ O termo $t-q$ vale $-0{,}9$ nos dois cadernos. Quanto o dado desloca a aposta? V
 Podemos programar um aprendiz que guarde só $q$? Claro. Dou ao último registro um décimo do peso, toda vez, e escrevo $q'=q+(t-q)/10$. Os dois papéis de $90\%$ agora levarão a $81\%$ depois de um B. Se o que eu queria era dar mais influência às rodadas recentes de uma máquina cuja regulagem pode mudar, tenho uma razão para experimentar essa regra. Mas acabei de tomar uma decisão sobre o aprendiz. No meu caderno com cem registros, a frequência observada daria ao registro seguinte um peso de $1/101$. Dar-lhe um décimo exige outra justificativa.
 
 \secao{Um teste para qualquer caderno}
-Chame de $h$ a história que o aprendiz leu e de $S(h)$ o que ele conservou dela. Escreva $hd$ quando acrescentarmos ao fim dessa história o dado $d$. Suponha que os dados que podemos entregar ao programa sejam os mesmos depois de qualquer história. No nosso jogo, posso lhe entregar A ou B.
+Chame\bookanchor{topic-07-1} de $h$ a história que o aprendiz leu e de $S(h)$ o que ele conservou dela. Escreva $hd$ quando acrescentarmos ao fim dessa história o dado $d$. Suponha que os dados que podemos entregar ao programa sejam os mesmos depois de qualquer história. No nosso jogo, posso lhe entregar A ou B.
 
 Quero fechar o arquivo com os registros antigos e, mesmo assim, obter amanhã exatamente o estado que obteria se reabrisse o arquivo e refizesse tudo. Ou seja, quero uma regra determinística $U$ tal que
 \[
@@ -825,12 +834,12 @@ Nos primeiros cadernos, os $90\%$ eram uma estimativa da frequência de A numa p
 
 No caderno das moedas recortadas, duas histórias com as mesmas sessenta caras em oitenta lançamentos dão a mesma estimativa de $3/4$. Se eu perguntar quantas vezes duas caras vieram juntas, basta trocar dois pedaços de lugar para fazê-las discordar. Nas impressoras, a primeira cara e a primeira coroa deixam a mesma aposta de $1/2$ na máquina. Basta abrir a segunda janela para descobrir por que precisávamos guardar a primeira.
 
-Até o valor de uma observação depende da encomenda. Na gaveta meio a meio, espiar a primeira face vale em média $0{,}189$ bit sobre a identidade da moeda, como calculamos no capítulo 2. Quanto você me pagaria para espiar se só pudesse usar o resultado para decidir sobre a compra de um bilhete que rende dez reais quando a moeda é A? A dois reais o bilhete, você compra antes de espiar e continua comprando mesmo se vir coroa, quando a aposta em A cai a $1/4$. Espiar vale zero real para essa decisão. Mudo o preço para cinco reais. Agora, se vir cara, você compra um bilhete com pagamento médio de R\$\,7,50. Se vir coroa, fica de fora. Antes da face, o ganho esperado era zero. A escolha que você pode fazer depois de olhar vale, em média, $(1/2)(7{,}50-5)=1{,}25$ real. Fiz alguma coisa à moeda para mudar o preço dessa informação?
+Até\bookanchor{topic-07-3} o valor de uma observação depende da encomenda. Na gaveta meio a meio, espiar a primeira face vale em média $0{,}189$ bit sobre a identidade da moeda, como calculamos no capítulo 2. Quanto você me pagaria para espiar se só pudesse usar o resultado para decidir sobre a compra de um bilhete que rende dez reais quando a moeda é A? A dois reais o bilhete, você compra antes de espiar e continua comprando mesmo se vir coroa, quando a aposta em A cai a $1/4$. Espiar vale zero real para essa decisão. Mudo o preço para cinco reais. Agora, se vir cara, você compra um bilhete com pagamento médio de R\$\,7,50. Se vir coroa, fica de fora. Antes da face, o ganho esperado era zero. A escolha que você pode fazer depois de olhar vale, em média, $(1/2)(7{,}50-5)=1{,}25$ real. Fiz alguma coisa à moeda para mudar o preço dessa informação?
 
 No fim da oficina, o gerador e a logística podiam dar a mesma aposta sobre a máquina. Só o primeiro sabia simular a tiragem. O escore da SVM bastava para abrir a portinhola. Para precificar o risco da peça, precisávamos de calibração. Na primeira página, você me ofereceu oitenta centavos se saísse cara e sessenta se saísse coroa por um bilhete que acabara de me vender por cinquenta. Conseguimos encontrar o erro antes de lançar a moeda. Agora temos dois testes para essa ideia. Quando os números são preços, posso escrever um único bilhete e cobrá-lo por dois caminhos. Quando ponho o programa para rodar, posso lhe dar dois passados que ele resumiu da mesma forma e pedir que honre as apostas que prometeu para a próxima rodada. O primeiro teste examina as contas do modelo. O segundo examina se o aprendiz guardou o necessário para fazê-las. E ainda há uma verificação que nenhum dos dois faz por mim. Se o modelo supõe independência onde a máquina copia a primeira face, ele pode passar nos dois testes e continuar perdendo dinheiro. Preciso abrir bilhetes novos.
 
 \secao{A oficina muda de ideia}
-No dia seguinte o inspetor faz um pedido pequeno. Desconfia que a regulagem esteja mudando e quer no visor a fração de A \emph{apenas nos três últimos bilhetes}. Mostro dois cadernos, com as letras na ordem de chegada,
+No\bookanchor{topic-07-4} dia seguinte o inspetor faz um pedido pequeno. Desconfia que a regulagem esteja mudando e quer no visor a fração de A \emph{apenas nos três últimos bilhetes}. Mostro dois cadernos, com as letras na ordem de chegada,
 \[
                            A\,A\,B \qquad\qquad A\,B\,A .
 \]
@@ -859,4 +868,39 @@ O inspetor procura no caderno a regulagem que vai usar amanhã. Nas últimas tr�
 
 Ela continua com o lápis na mão. Antes de lhe dar um número, eu queria ouvir a opinião de quem vai fazer os furos. O que dá mais trabalho nessa bancada, corrigir os meus três erros ou o seu?
 
+\bookfrontheading{Índice remissivo}{subject-index}
+\begin{multicols}{2}\raggedcolumns\raggedright\small
+\bookindexentry{Amostragem}{\hyperref[topic-05-3]{\pageref*{topic-05-3}}}
+\bookindexentry{Aprendizado}{\hyperref[topic-01-1]{\pageref*{topic-01-1}}}
+\bookindexentry{Aprendizado discriminativo}{\hyperref[topic-04-1]{\pageref*{topic-04-1}}, \hyperref[topic-05-3]{\pageref*{topic-05-3}}}
+\bookindexentry{Aprendizado generativo}{\hyperref[topic-03-1]{\pageref*{topic-03-1}}, \hyperref[topic-05-5]{\pageref*{topic-05-5}}}
+\bookindexentry{Bayes, regra de}{\hyperref[topic-01-3]{\pageref*{topic-01-3}}, \hyperref[topic-04-4]{\pageref*{topic-04-4}}}
+\bookindexentry{Bit}{\hyperref[topic-02-2]{\pageref*{topic-02-2}}}
+\bookindexentry{Calibração}{\hyperref[topic-06-10]{\pageref*{topic-06-10}}}
+\bookindexentry{Coerência das apostas}{\hyperref[topic-01-2]{\pageref*{topic-01-2}}}
+\bookindexentry{Distribuição conjunta}{\hyperref[topic-03-1]{\pageref*{topic-03-1}}}
+\bookindexentry{Entropia}{\hyperref[topic-02-4]{\pageref*{topic-02-4}}}
+\bookindexentry{Estado do aprendiz}{\hyperref[topic-07-1]{\pageref*{topic-07-1}}}
+\bookindexentry{Gradiente}{\hyperref[topic-06-11]{\pageref*{topic-06-11}}}
+\bookindexentry{Independência condicional}{\hyperref[topic-05-1]{\pageref*{topic-05-1}}}
+\bookindexentry{Informação mútua}{\hyperref[topic-02-2]{\pageref*{topic-02-2}}}
+\bookindexentry{Janela deslizante}{\hyperref[topic-07-4]{\pageref*{topic-07-4}}}
+\bookindexentry{Log-chances}{\hyperref[topic-06-1]{\pageref*{topic-06-1}}}
+\bookindexentry{Máquina de vetores de suporte (SVM)}{\hyperref[topic-06-5]{\pageref*{topic-06-5}}}
+\bookindexentry{Margem funcional}{\hyperref[topic-06-4]{\pageref*{topic-06-4}}}
+\bookindexentry{Margem suave}{\hyperref[topic-06-7]{\pageref*{topic-06-7}}}
+\bookindexentry{Máxima verossimilhança}{\hyperref[topic-03-4]{\pageref*{topic-03-4}}}
+\bookindexentry{Memória}{\hyperref[topic-07-4]{\pageref*{topic-07-4}}}
+\bookindexentry{Naive Bayes}{\hyperref[topic-05-1]{\pageref*{topic-05-1}}}
+\bookindexentry{Paquímetro}{\hyperref[topic-06-5]{\pageref*{topic-06-5}}}
+\bookindexentry{Perda hinge}{\hyperref[topic-06-3]{\pageref*{topic-06-3}}}
+\bookindexentry{Perda logística}{\hyperref[topic-06-1]{\pageref*{topic-06-1}}}
+\bookindexentry{Probabilidade condicional}{\hyperref[topic-04-1]{\pageref*{topic-04-1}}}
+\bookindexentry{Regressão logística}{\hyperref[topic-04-3]{\pageref*{topic-04-3}}}
+\bookindexentry{Regularização}{\hyperref[topic-06-8]{\pageref*{topic-06-8}}}
+\bookindexentry{Suficiência de estado}{\hyperref[topic-07-1]{\pageref*{topic-07-1}}}
+\bookindexentry{Valor da informação}{\hyperref[topic-02-1]{\pageref*{topic-02-1}}, \hyperref[topic-07-3]{\pageref*{topic-07-3}}}
+\bookindexentry{Verossimilhança}{\hyperref[topic-03-3]{\pageref*{topic-03-3}}}
+\bookindexentry{Vetores de suporte}{\hyperref[topic-06-8]{\pageref*{topic-06-8}}}
+\end{multicols}
 \end{document}

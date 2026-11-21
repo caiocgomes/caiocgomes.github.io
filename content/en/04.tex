@@ -34,7 +34,7 @@ In the notebook the generator expects to produce, the two prices agree as well,
 The first calculation uses observed frequencies. The second builds the pair of tosses by assuming independence. To catch either learner contradicting itself, I'd have to get two prices from \emph{its own} assumptions. To see which one makes the better purchase, I need fresh rounds.
 
 \secao{A bill that depends only on the letters}
-Tomorrow, whenever I have to give an answer, I'll already have seen both tosses. I can use the training rounds to fit the probability of the letter directly for each outcome I might be shown. Learning to predict $Y$ from $X$ this way is called \emph{discriminative learning}. To see how it works, keep just the twenty-eight tickets in the last column and pick a probability $q$ to announce for A. What would the notebook charge you for that choice?
+Tomorrow,\bookterms{Discriminative learning|Conditional probability} whenever I have to give an answer, I'll already have seen both tosses. I can use the training rounds to fit the probability of the letter directly for each outcome I might be shown. Learning to predict $Y$ from $X$ this way is called \emph{discriminative learning}. To see how it works, keep just the twenty-eight tickets in the last column and pick a probability $q$ to announce for A. What would the notebook charge you for that choice?
 
 Suppose you announced $q=0.80$ for A. Make two piles of tickets, the twenty-four A's on one side and the four B's on the other. Now give A an extra hundredth of probability. In the bigger pile, the charge on each of the twenty-four tickets goes down a little. Where did that hundredth come from? Out of the $0.20$ you had set aside for B. The four tickets in that pile get more expensive. If you keep taking from B, which pile will eventually have the greater say in the bill?
 
@@ -58,7 +58,7 @@ Imagine the marks $1,3,9,27$ on a ruler for the odds. It costs exactly one extra
 \]
 A straight line appeared before we ever mentioned regression. The starting mark came from the odds before we saw the tosses. The step length came from the difference between the two coins.
 
-Let's keep the ruler and let the notebook choose those two measurements. Call the starting mark $\beta_0$ and the step length $\beta_1$. For a difference $s$ we read $v=\beta_0+\beta_1s$. How do we get from a mark back to a probability? If it reads $\ln 3$, there are three parts A for one part B. The bet on A is three of the four parts. If the mark reads $v$, undoing the logarithm gives $e^v$ parts A for one part B. Divide by the total number of parts. Dividing the numerator and denominator by $e^v$ just counts the same parts in a different unit. This gives us \emph{logistic regression},
+Let's\bookterms{Logistic regression} keep the ruler and let the notebook choose those two measurements. Call the starting mark $\beta_0$ and the step length $\beta_1$. For a difference $s$ we read $v=\beta_0+\beta_1s$. How do we get from a mark back to a probability? If it reads $\ln 3$, there are three parts A for one part B. The bet on A is three of the four parts. If the mark reads $v$, undoing the logarithm gives $e^v$ parts A for one part B. Divide by the total number of parts. Dividing the numerator and denominator by $e^v$ just counts the same parts in a different unit. This gives us \emph{logistic regression},
 \[
               q(s)=\frac{e^v}{1+e^v}=\frac{1}{1+e^{-v}},
               \qquad v=\beta_0+\beta_1s .
@@ -70,7 +70,7 @@ You've seen the numbers in the last column. Cover it anyway. We want to know whe
 
 You can lift your finger. The observed odds were indeed twenty-four to four. In this table the line through the two visible points also minimizes the loss in the third column. The height is zero at $s=0$ and $\ln 6$ at $s=2$, so the fitted coefficients are $\widehat\beta_0=0$ and $\widehat\beta_1=(\ln 6)/2$. With the rates fitted by the generator, the slope was $\ln 3$. The two programs arrived at curves in the same family. One fitted rates that explain the tosses within each coin type. The other fitted the probabilities that the line assigns to the letters.
 
-We could also use Bayes to learn the line. Whenever a letter is revealed, we multiply the weight of each candidate line by the probability it gave that letter at that value of $s$. We then normalize across candidates. The training is still discriminative. The lines bet on the letter given the tosses.
+We\bookterms{Bayes’ rule} could also use Bayes to learn the line. Whenever a letter is revealed, we multiply the weight of each candidate line by the probability it gave that letter at that value of $s$. We then normalize across candidates. The training is still discriminative. The lines bet on the letter given the tosses.
 
 Let's do a little damage to the notebook. Correct a single letter in the middle column from B to A. The bets in the outer columns still give heights of $-\ln 6$ and $\ln 6$, but the odds in the middle are now thirteen to eleven. No straight line can meet all three requests at once. If we fit a single line to the eighty rounds, a correction in the middle can change the bet even in the two-heads column, where no letter changed. The same assumption that lets one column teach us about another can lead us astray when the relationship we imagined breaks down.
 

@@ -3,7 +3,7 @@
 
 Eu acredito que discutir essas coisas sem dizer o que entendemos por elas é um caminho fadado ao fracasso. Inteligência e aprendizado me parecem ligados, então vou começar pelo que consigo pôr à prova. Já a ideia de artificial acho que é clara pra todo mundo, e não vejo muito ganho para a estatística em tentar decidir o que ela significa neste caso.
 
-\textbf{Chamaremos de aprendizado o processo \(\mathcal F\) que incorpora uma observação \(x\) ao que sabemos sobre \(Y\).} Vou representar esse conhecimento por uma distribuição de probabilidades. Antes de ver o dado, ela é \(p\). Depois, será \(\mathcal P\). Para qualquer hipótese \(y\), escrevemos
+\textbf{Chamaremos\bookterms{Aprendizado} de aprendizado o processo \(\mathcal F\) que incorpora uma observação \(x\) ao que sabemos sobre \(Y\).} Vou representar esse conhecimento por uma distribuição de probabilidades. Antes de ver o dado, ela é \(p\). Depois, será \(\mathcal P\). Para qualquer hipótese \(y\), escrevemos
 \[
  p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
  \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
@@ -11,7 +11,7 @@ Eu acredito que discutir essas coisas sem dizer o que entendemos por elas é um 
 Em $\mathcal P(y)$ leio sua aposta depois de ver o dado. Em $\mathcal F$ leio também o que você teria feito se o dado fosse outro. Que relação deve haver entre essas respostas?
 
 \begin{quadro}{A hipótese atômica destas notas}
-\textbf{Aprender é conservar a coerência das apostas sob novos dados.}
+\textbf{Aprender\bookterms{Coerência das apostas} é conservar a coerência das apostas sob novos dados.}
 
 O dado pode mudar o preço de um bilhete. Antes de olhar, você pode avaliá-lo diretamente ou fazer a média dos preços que daria depois de cada resultado, levando em conta a chance de cada um. As duas contas devem dar o mesmo preço.
 \end{quadro}
@@ -114,7 +114,7 @@ Nosso colega que nunca muda de ideia avaliaria o papel em $3/8$ de real quando c
 \itemq{Para dar preço a uma aposta condicional} O bilhete que paga quando ocorrem $x$ e $y$ precisa ter o mesmo preço calculado nas duas ordens. Nessas moedas, isso fixa $a=3$. Somar os preços desses bilhetes sobre todos os resultados recupera a aposta inicial na hipótese.
 \end{quadro}
 
-Podemos tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
+Podemos\bookterms{Bayes, regra de} tirar as moedas da fórmula. Para variáveis discretas, escreva $q_x(y)=[\mathcal F(p;x)](y)$ para a aposta que a regra propõe depois de $x$. O papel que paga por $x$ e $y$ vale $p(y)p(x\mid y)$ se começarmos pela hipótese e $p(x)q_x(y)$ se começarmos pelo dado. Fixe as probabilidades do experimento. O preço conjunto já está na mesa. Para descobrir quanto o bilhete vale entre as mesas que viram $x$, reparta esse preço pela fração $p(x)$ de mesas que ficaram no jogo. Só podemos fazer essa conta se houver mesas desse tipo, isto é, se $p(x)>0$. Para o operador que satisfaz essa exigência escrevemos, na notação clássica, a fórmula de Bayes,
 \[
  \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)

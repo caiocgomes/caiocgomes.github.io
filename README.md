@@ -27,7 +27,7 @@ Na raiz do pacote, rode o comando abaixo e abra <http://localhost:8000/>. O serv
 
 Edite os capítulos em **content/pt-br/** e **content/en/**. Cada arquivo numerado tem o texto integral do capítulo e a mesma posição nos dois idiomas. Os preâmbulos tipográficos estão em **content/preamble-pt-br.tex** e **content/preamble-en.tex**. Os arquivos em **docs/** são a saída já construída. O CSS e o JavaScript do leitor vivem diretamente em **docs/assets/**.
 
-A introdução de cada edição fica em **content/pt-br/introduction.tex** e **content/en/introduction.tex** e alimenta tanto o PDF quanto a página `introduction.html` do leitor. No PDF, a capa e a folha de rosto são seguidas pela página de créditos, pelo sumário e pela introdução. A página de créditos vem de `credits.tex` na pasta de cada idioma. As páginas preliminares usam algarismos romanos e o capítulo 1 começa na página 1. O sumário usa os títulos dos capítulos e referências de página calculadas pelo LaTeX. A tipografia dessa abertura está em **content/frontmatter.tex**.
+A introdução de cada edição fica em **content/pt-br/introduction.tex** e **content/en/introduction.tex** e alimenta tanto o PDF quanto a página `introduction.html` do leitor. No PDF, a capa e a folha de rosto são seguidas pela página de créditos, pelo sumário, por “Por que estou escrevendo este livro” e pelo prefácio. O texto do prefácio fica em `preface.tex` na pasta de cada idioma. A página de créditos vem de `credits.tex` na pasta de cada idioma. As páginas preliminares usam algarismos romanos e o capítulo 1 começa na página 1. O sumário usa os títulos dos capítulos e referências de página calculadas pelo LaTeX. A tipografia dessa abertura está em **content/frontmatter.tex**.
 
 O miolo dos PDFs usa páginas de **16,5 × 23,5 cm**, Palatino de **12 pontos**, entrelinha ampliada e uma pequena separação entre parágrafos. Quadros, tabelas e subtítulos têm espaçamento próprio. A edição em português usa a hifenização brasileira do Babel. Esses ajustes ficam nos preâmbulos de cada idioma.
 
@@ -36,6 +36,8 @@ Cada capítulo termina com um quadro de três ideias principais, uma síntese do
 Entre duas partes há um interlúdio sem número, com página própria. Quem escreve pode partir de um objeto da parte anterior, entregá-lo a alguém que precisa tomar outra decisão e encerrar a cena no ponto em que o leitor também quer saber a resposta. Os arquivos `interlude-07.tex`, `interlude-09.tex`, `interlude-11.tex` e `interlude-13.tex` ficam nas duas pastas de idioma. Cada interlúdio entra no PDF e no leitor depois que o capítulo de mesmo número existe. Os três textos das partes em preparação podem ser revistos junto com os capítulos vizinhos.
 
 Para ler os quatro interlúdios em sequência, abra a prova em [português](provas/interludios-pt-br.pdf) ou [inglês](provas/interludes-en.pdf). O comando `python3 tools/print_editions.py --interludes-only` atualiza as duas provas.
+
+O índice remissivo fecha as duas edições. Para indexar uma passagem nova, acrescente `\bookterms{Termo}` junto à palavra no capítulo. Use `\bookterms{Termo A|Termo B}` para associar dois conceitos ao mesmo trecho. A compilação ordena os termos e calcula as páginas do PDF e os links do leitor.
 
 Para reconstruir, use Python 3.12+, Pandoc 3, TeX Live com latexmk, TikZ, standalone e fontes Palatino (mathpazo), e Poppler com pdftocairo. Os scripts Python usam a biblioteca padrão.
 

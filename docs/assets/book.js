@@ -61,7 +61,7 @@
       const response = await fetch('../assets/search-'+language+'.json');
       if (!response.ok) throw Error();
       const rows = await response.json();
-      if (!Array.isArray(rows) || !rows.every(r => typeof r.title==='string' && typeof r.label==='string' && /^(?:introduction|(?:interlude-)?\d{2})\.html$/.test(r.url))) throw Error();
+      if (!Array.isArray(rows) || !rows.every(r => typeof r.title==='string' && typeof r.label==='string' && /^(?:introduction|preface|subject-index|(?:interlude-)?\d{2})\.html$/.test(r.url))) throw Error();
       records = rows;
     } catch (_) { fallback = true; }
     render();

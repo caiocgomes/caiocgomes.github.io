@@ -1,6 +1,7 @@
 """Reading order shared by the print and web editions."""
 from dataclasses import dataclass
 import re
+import unicodedata
 
 
 PART_ENDS = (("I", 7), ("II", 9), ("III", 11), ("IV", 13), ("V", 15))
@@ -14,6 +15,7 @@ class Page:
     source: str
     number: int | None = None
     description: str = ""
+    topics: tuple = ()
 
     @property
     def title(self):
@@ -39,12 +41,31 @@ def read_page(path, heading_pattern, label, number=None, description=""):
     heading = re.fullmatch(heading_pattern, source.split("\n", 1)[0].strip())
     if not heading:
         raise ValueError(f"Unexpected heading in {path}")
-    return Page(path.stem, heading[1], label, source, number, description)
+    topics = []
+    def anchor(match):
+        key = f"topic-{path.stem}-{len(topics)+1}"
+        topics.extend((term.strip(), key) for term in match[1].split("|"))
+        return rf"\bookanchor{{{key}}}"
+    source = re.sub(r"\\bookterms\{([^{}]+)\}", anchor, source)
+    return Page(path.stem, heading[1], label, source, number, description, tuple(topics))
+
+
+def subject_entries(parts):
+    entries = {}
+    for part in parts:
+        for page in part.pages:
+            for term, key in page.topics:
+                entries.setdefault(term, []).append((page, key))
+    def sort_key(row):
+        return ''.join(c for c in unicodedata.normalize('NFD', row[0].casefold()) if not unicodedata.combining(c))
+    return sorted(entries.items(), key=sort_key)
 
 
 def read_manuscript(directory, labels):
-    introduction = read_page(directory / "introduction.tex", r"\\bookintroduction\{(.+)\}",
-                             labels["frontmatter"], number=0, description=labels["introductionDesc"])
+    opening = [
+        read_page(directory / f"{name}.tex", rf"\\book{name}\{{(.+)\}}", labels["frontmatter"], number=0)
+        for name in ("introduction", "preface")
+    ]
     files = sorted(directory.glob("[0-9][0-9].tex"))
     if not files or [int(path.stem) for path in files] != list(range(1, len(files) + 1)):
         raise ValueError(f"Number the chapters in {directory} consecutively from 01.")
@@ -70,4 +91,4 @@ def read_manuscript(directory, labels):
         parts.append(Part(numeral, f"{labels['part']} {numeral}",
                           labels["partNames"][index], pages, planned))
         first = end + 1
-    return introduction, parts
+    return opening, parts

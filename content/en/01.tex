@@ -3,7 +3,7 @@
 
 I think we are bound to get nowhere if we discuss these things without saying what we mean by them. Intelligence and learning seem connected to me, so I will start with the one I can put to the test. I think we all have a fair idea of what artificial means here, and I doubt that statistics has much to gain from settling that question.
 
-\textbf{We will call learning the process \(\mathcal F\) that incorporates an observation \(x\) into what we know about \(Y\).} I will use a probability distribution to represent that knowledge. Before we see the observation, the distribution is \(p\). Afterward, it will be \(\mathcal P\). For any hypothesis \(y\), we write
+\textbf{We\bookterms{Learning} will call learning the process \(\mathcal F\) that incorporates an observation \(x\) into what we know about \(Y\).} I will use a probability distribution to represent that knowledge. Before we see the observation, the distribution is \(p\). Afterward, it will be \(\mathcal P\). For any hypothesis \(y\), we write
 \[
  p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
  \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
@@ -11,7 +11,7 @@ I think we are bound to get nowhere if we discuss these things without saying wh
 From $\mathcal P(y)$ I can read off your bet once you have seen the outcome. From $\mathcal F$ I can also tell what you would have done if the outcome had been different. How should those answers fit together?
 
 \begin{quadro}{The atomic hypothesis of these notes}
-\textbf{To learn is to keep our bets coherent as new data arrive.}
+\textbf{To\bookterms{Coherence of bets} learn is to keep our bets coherent as new data arrive.}
 
 An observation can change the price of a ticket. Before you look, you can price the ticket directly, or you can average the prices you would give after each possible outcome, weighting each by its chance of occurring. The two calculations should give the same price.
 \end{quadro}
@@ -114,7 +114,7 @@ Our colleague who never changes their mind would price the ticket at $3/8$ of a 
 \itemq{To price a conditional bet} The ticket that pays when both $x$ and $y$ occur must have the same price in either order of calculation. For these coins, that fixes $a=3$. Adding the prices of these tickets over all possible observations recovers the original bet on the hypothesis.
 \end{quadro}
 
-We can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
+We\bookterms{Bayes’ rule} can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
 \[
  \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)

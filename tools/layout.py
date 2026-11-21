@@ -24,8 +24,7 @@ EDITION = {
         "desc": "Uma das minhas moedas dá cara três vezes em quatro. A outra, uma vez em quatro. Escolho uma delas ao acaso e lanço. Sai cara. Quanto você apostaria que escolhi a primeira?",
         "figure": "Um lançamento", "side1": "Cara", "side2": "Coroa", "plate": "Prancha",
         "intro": "Um livro aberto de", "number": "Cap.", "read": "Abrir capítulo",
-        "introduction": "Introdução", "frontmatter": "Sobre este livro",
-        "introductionDesc": "",
+        "frontmatter": "Sobre este livro", "subjectIndex": "Índice remissivo",
         "section": "Seção", "forthcoming": "Capítulos em preparação", "searchIntro": "Busque um conceito, um exemplo ou um capítulo.",
         "descriptions": (
             "Quando uma nova observação nos obriga a mudar de aposta?",
@@ -59,8 +58,7 @@ EDITION = {
         "desc": "One of my coins comes up heads three times out of four. The other does so once in four. I pick one at random and toss it. Heads. What would you bet that I picked the first coin?",
         "figure": "One toss", "side1": "Heads", "side2": "Tails", "plate": "Plate",
         "intro": "An open book on", "number": "Ch.", "read": "Open chapter",
-        "introduction": "Introduction", "frontmatter": "About this book",
-        "introductionDesc": "",
+        "frontmatter": "About this book", "subjectIndex": "Subject index",
         "section": "Section", "forthcoming": "Chapters in preparation", "searchIntro": "Find a concept, an example, or a chapter.",
         "descriptions": (
             "When does a new observation oblige us to change a bet?",
@@ -134,7 +132,7 @@ def search_attrs(page):
     return f'data-chapter-title="{escape(page.title, quote=True)}" data-page-label="{escape(page.label, quote=True)}"'
 
 
-def landing(lang, introduction, parts):
+def landing(lang, opening, parts, index):
     t = EDITION[lang]
 
     def catalog_row(page):
@@ -145,7 +143,7 @@ def landing(lang, introduction, parts):
                 f'<span class="row-t"><strong>{escape(page.title)}</strong>{note}</span>'
                 f'<span class="row-arrow">{icon("right")}</span></a></li>')
 
-    groups = [f'<ol class="chapter-list">{catalog_row(introduction)}</ol>']
+    groups = [f'<ol class="chapter-list">{"".join(catalog_row(p) for p in opening)}</ol>']
     for part in parts:
         status = f'<small>{t["prep"]}</small>' if not part.pages else ''
         groups.append(f'<div class="group-head future"><span>{part.label}</span>'
@@ -157,6 +155,7 @@ def landing(lang, introduction, parts):
             if part.pages:
                 groups.append(f'<p class="tiny">{t["forthcoming"]}</p>')
             groups.append(f'<ol class="planned" start="{part.planned[0][0]}">{rows}</ol>')
+    groups.append(f'<ol class="chapter-list">{catalog_row(index)}</ol>')
     inner = f'''<main id="main" class="home">
 <section class="hero"><div class="hero-copy"><div class="kicker"><span></span>{t["edition"]}</div><h1>{escape(t["title"])}</h1><p class="sub">{t["subtitle"]}</p><p class="deck">{t["desc"]}</p>
 <div class="actions"><a class="button primary" href="01.html">{t["begin"]}{icon("right")}</a><a class="button secondary" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></div>
@@ -165,7 +164,7 @@ def landing(lang, introduction, parts):
 <div class="catalog-list">{''.join(groups)}</div></section></main>'''
     return shell(lang,t["title"]+' · Caio Gomes',t["desc"],'index.html',inner)
 
-def reader(lang, page, introduction, parts, body, sections, previous, following):
+def reader(lang, page, opening, parts, index, body, sections, previous, following):
     t = EDITION[lang]
 
     def link_attrs(target):
@@ -187,8 +186,8 @@ def reader(lang, page, introduction, parts, body, sections, previous, following)
         dest = target.url if target else 'index.html#contents'
         label = t["previous" if side == "left" else "next"] if target else t["back"]
         return f'<a class="pager-{side}" href="{dest}"><span>{icon(side)}{label}</span><b>{escape(name)}</b></a>'
-    intro_link = f'<a class="contents-link" {link_attrs(introduction)}>{escape(introduction.title)}</a>'
-    inner=f'''<main class="read-layout" id="main"><aside class="index-rail"><details class="book-menu" open><summary>{icon("book")} {t["open"]}</summary><div><a class="contents-link" href="index.html#contents">{t["toc"]}</a>{intro_link}{''.join(groups)}<a class="rail-pdf" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></details></aside>
+    opening_links = ' '.join(f'<a class="contents-link" {link_attrs(p)}>{escape(p.title)}</a>' for p in opening)
+    inner=f'''<main class="read-layout" id="main"><aside class="index-rail"><details class="book-menu" open><summary>{icon("book")} {t["open"]}</summary><div><a class="contents-link" href="index.html#contents">{t["toc"]}</a>{opening_links}{''.join(groups)}<a class="contents-link" {link_attrs(index)}>{escape(index.title)}</a><a class="rail-pdf" href="../downloads/{t["pdfFile"]}" download>{icon("down")}{t["pdf"]}</a></div></details></aside>
 <div class="reading"><header class="chapter-head"><a class="crumb" href="index.html">{escape(t["title"])}</a><div class="kicker"><span></span>{escape(page.label)}</div><h1>{escape(page.title)}</h1><div class="by">{t["author"]}</div></header>
 {('<details class="local-index"><summary>'+t["here"]+'</summary><ol>'+subsections+'</ol></details>') if sections else ''}
 <article class="prose">{body}</article><nav class="pager" aria-label="{t["nav"]}">{page_nav(previous,"left")}{page_nav(following,"right")}</nav></div></main>'''

@@ -1,5 +1,8 @@
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\usepackage{multicol}
+\newcommand{\bookanchor}[1]{\phantomsection\label{#1}}
+\newcommand{\bookindexentry}[2]{\par\noindent\hangindent=1em #1\enspace #2\par}
 \newcommand{\booktitlepage}[3]{%
   \thispagestyle{empty}\vspace*{.17\textheight}%
   {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
@@ -14,6 +17,7 @@
   \vspace{18pt}\noindent\ignorespaces
 }
 \newcommand{\bookintroduction}[1]{\bookfrontheading{#1}{introduction}}
+\newcommand{\bookpreface}[1]{\bookfrontheading{#1}{preface}}
 \newcommand{\bookinterlude}[3]{%
   \clearpage\thispagestyle{opening}\markright{#3}%
   \phantomsection\label{interlude:#1}\pdfbookmark[0]{\bookinterludename{} #1 - #2 · #3}{interlude#1}%

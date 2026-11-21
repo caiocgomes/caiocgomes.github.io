@@ -64,6 +64,9 @@
 \newcommand{\bookinterludename}{Interlude}
 % Shared front matter, inlined into the downloadable LaTeX manuscripts.
 \usepackage{tabularx}
+\usepackage{multicol}
+\newcommand{\bookanchor}[1]{\phantomsection\label{#1}}
+\newcommand{\bookindexentry}[2]{\par\noindent\hangindent=1em #1\enspace #2\par}
 \newcommand{\booktitlepage}[3]{%
   \thispagestyle{empty}\vspace*{.17\textheight}%
   {\raggedright\noindent\color{tinta}\fontsize{30}{35}\selectfont\bfseries #1\par}%
@@ -78,6 +81,7 @@
   \vspace{18pt}\noindent\ignorespaces
 }
 \newcommand{\bookintroduction}[1]{\bookfrontheading{#1}{introduction}}
+\newcommand{\bookpreface}[1]{\bookfrontheading{#1}{preface}}
 \newcommand{\bookinterlude}[3]{%
   \clearpage\thispagestyle{opening}\markright{#3}%
   \phantomsection\label{interlude:#1}\pdfbookmark[0]{\bookinterludename{} #1 - #2 · #3}{interlude#1}%
@@ -173,7 +177,8 @@ Send corrections through the book’s repository.\\
 \end{quadro}
 
 \bookfrontheading{Contents}{contents}
-\booktocentry{}{Introduction}{front:introduction}
+\booktocentry{}{Why I'm writing this book}{front:introduction}
+\booktocentry{}{Preface}{front:preface}
 \booktocpart{Part I}{The bet and the coin}
 \booktocentry{1}{What Can We Learn from a Coin Toss?}{chapter:1}
 \booktocentry{2}{How Much Is a Second Head Worth?}{chapter:2}
@@ -183,6 +188,7 @@ Send corrections through the book’s repository.\\
 \booktocentry{6}{When Is Getting It Right Enough?}{chapter:6}
 \booktocentry{7}{How Much Does 90\% Weigh?}{chapter:7}
 \booktocentry{}{\textit{Interlude} · On the Other Side of the Gate}{interlude:I}
+\booktocentry{}{Subject index}{front:subject-index}
 \bookfrontheading{Chapters in preparation}{upcoming}
 \bookplannedpart{Part II}{The continuous ruler}
 \bookplannedentry{8}{A price on the real line}
@@ -197,9 +203,12 @@ Send corrections through the book’s repository.\\
 \bookplannedentry{14}{Multidimensional rulers and the bottleneck of forgetting}
 \bookplannedentry{15}{The Transformer: the table that never closes}
 
-\bookintroduction{Introduction}
+\bookintroduction{Why I'm writing this book}
 
 I'm Caio. At work, I'm also the CAIO, only there they write it in all caps. I've always wanted to teach a course inspired by the Feynman Lectures. When I realized I already had the title, all that was left was the easy part: writing the entire course.
+
+
+\bookpreface{Preface}
 
 \clearpage
 \pagenumbering{arabic}
@@ -209,7 +218,7 @@ I'm Caio. At work, I'm also the CAIO, only there they write it in all caps. I've
 
 I think we are bound to get nowhere if we discuss these things without saying what we mean by them. Intelligence and learning seem connected to me, so I will start with the one I can put to the test. I think we all have a fair idea of what artificial means here, and I doubt that statistics has much to gain from settling that question.
 
-\textbf{We will call learning the process \(\mathcal F\) that incorporates an observation \(x\) into what we know about \(Y\).} I will use a probability distribution to represent that knowledge. Before we see the observation, the distribution is \(p\). Afterward, it will be \(\mathcal P\). For any hypothesis \(y\), we write
+\textbf{We\bookanchor{topic-01-1} will call learning the process \(\mathcal F\) that incorporates an observation \(x\) into what we know about \(Y\).} I will use a probability distribution to represent that knowledge. Before we see the observation, the distribution is \(p\). Afterward, it will be \(\mathcal P\). For any hypothesis \(y\), we write
 \[
  p \xrightarrow{\ \mathcal F(\,\cdot\,;x)\ } \mathcal P,
  \qquad \mathcal P(y)=[\mathcal F(p;x)](y).
@@ -217,7 +226,7 @@ I think we are bound to get nowhere if we discuss these things without saying wh
 From $\mathcal P(y)$ I can read off your bet once you have seen the outcome. From $\mathcal F$ I can also tell what you would have done if the outcome had been different. How should those answers fit together?
 
 \begin{quadro}{The atomic hypothesis of these notes}
-\textbf{To learn is to keep our bets coherent as new data arrive.}
+\textbf{To\bookanchor{topic-01-2} learn is to keep our bets coherent as new data arrive.}
 
 An observation can change the price of a ticket. Before you look, you can price the ticket directly, or you can average the prices you would give after each possible outcome, weighting each by its chance of occurring. The two calculations should give the same price.
 \end{quadro}
@@ -320,7 +329,7 @@ Our colleague who never changes their mind would price the ticket at $3/8$ of a 
 \itemq{To price a conditional bet} The ticket that pays when both $x$ and $y$ occur must have the same price in either order of calculation. For these coins, that fixes $a=3$. Adding the prices of these tickets over all possible observations recovers the original bet on the hypothesis.
 \end{quadro}
 
-We can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
+We\bookanchor{topic-01-3} can take the coins out of the formula. For discrete variables, write $q_x(y)=[\mathcal F(p;x)](y)$ for the bet the rule proposes after $x$. The slip that pays for $x$ and $y$ is worth $p(y)p(x\mid y)$ if we start from the hypothesis and $p(x)q_x(y)$ if we start from the observation. Fix the probabilities of the experiment. The joint price is already on the table. To find what the ticket is worth among the tables that saw $x$, divide that price by the fraction $p(x)$ of tables still in the game. We can do this only if some tables can get that outcome, that is, if $p(x)>0$. For the operator that satisfies this requirement we write, in its classical notation, Bayes' formula,
 \[
  \begin{gathered}
  [\mathcal F_{\mathrm{cond}}(p;x)](y)=p(y\mid x)
@@ -377,7 +386,7 @@ Would you like to try the calculation on a particularly unlikely observation? At
 Now I change one instruction. At tables that get A, I draw the envelope from the five hundred odd numbers. At tables that get B, I draw from the five hundred even ones. The two coins are still equally likely. What chance do you give 731 before you know the letter? Still one in a thousand. And when it turns up? Given coin A, 731 had one chance in five hundred. The factor in favor of A is two, just enough to take its probability from $1/2$ to one. All I changed between the two games was how the number related to what you wanted to find out. A notebook that kept only a histogram of the numbers would look the same in both.
 
 \secao{The Price of a Look}
-If someone charges us to open the envelope, we have to decide how much to pay before we know the result. Let me suggest a unit for keeping score. At the end of the round, I reveal the letter. If you had assigned certainty to the letter that came up, you pay nothing. If you had given it one half, you pay one point. If you had given it half of a half, you pay two. What would it cost to have given the right letter one eighth?
+If\bookanchor{topic-02-1} someone charges us to open the envelope, we have to decide how much to pay before we know the result. Let me suggest a unit for keeping score. At the end of the round, I reveal the letter. If you had assigned certainty to the letter that came up, you pay nothing. If you had given it one half, you pay one point. If you had given it half of a half, you pay two. What would it cost to have given the right letter one eighth?
 
 Imagine I reveal the answer in two stages. You gave the first answer probability $1/2$ and, knowing it, gave the second probability $1/4$. Getting the pair right meant getting through both filters. The probability you assigned the pair was $1/8$. I can hand you a single bill for three points or two bills, one for a point and one for two. You pay the same amount. That's what I want the logarithm for. It counts the halvings between certainty and your bet. For $1/8$ there are exactly three. For a bet between $1/4$ and $1/2$, the scale reads somewhere between one and two. In mathematical notation, if $r=2^{-c}$, the charge is $c=-\log_2 r$. We chose two as the base because we wanted to charge one point per halving.
 
@@ -390,11 +399,11 @@ Now work out what a look is worth. If seeing the face doubled your bet on the le
 
 You can even come out behind. If I drew B and happened to toss heads, you lowered your bet on the coin I'm about to show you from $1/2$ to $1/4$. Peeking at that head cost you an extra point. This happens in a quarter of the rounds if we include the mirror case where A comes up tails. In the other three quarters you raise the probability of the right letter from $1/2$ to $3/4$. The average saving is $(3/4)\log_2(3/2)+(1/4)\log_2(1/2)$, about $0.189$ points. If the house charges $0.2$ points for a peek, on average you pay more than you save.
 
-This expected saving is the \emph{mutual information}, measured in bits when we take logarithms to base two. Each outcome and hypothesis enter as a pair, with their joint probability as the weight,
+This\bookanchor{topic-02-2} expected saving is the \emph{mutual information}, measured in bits when we take logarithms to base two. Each outcome and hypothesis enter as a pair, with their joint probability as the weight,
 \[
  I(X;Y)=\sum_{x,y:\,p(x,y)>0}p(x,y)\log_2 W(x,y).
 \]
-We could also work out what we expect to pay before observing and subtract what we expect to pay afterward. Imagine a hundred rounds with your bet on A set at $q$. In about $100q$ of them, you'd pay the charge for the probability you gave A. In the rest you'd pay for the probability you gave B. Divide the bill by a hundred rounds and you get the theoretical average charge $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, the \emph{entropy} of a binary bet. At even odds, $h(1/2)=1$ bit. When we know the answer, the letter that will come up has probability one and the charge is zero.
+We\bookanchor{topic-02-4} could also work out what we expect to pay before observing and subtract what we expect to pay afterward. Imagine a hundred rounds with your bet on A set at $q$. In about $100q$ of them, you'd pay the charge for the probability you gave A. In the rest you'd pay for the probability you gave B. Divide the bill by a hundred rounds and you get the theoretical average charge $h(q)=-q\log_2 q-(1-q)\log_2(1-q)$, the \emph{entropy} of a binary bet. At even odds, $h(1/2)=1$ bit. When we know the answer, the letter that will come up has probability one and the charge is zero.
 
 \secao{The Best Question to Ask the Coin}
 We still don't know which box was picked, Ordinary or Double. But we did see a head. If it was the Double box, we're holding the two-headed coin. Which is worth more to us now: putting the coin back and drawing again from the same box, tossing the coin on the table again, or simply turning it over?
@@ -446,14 +455,14 @@ Imagine you wanted to build an imitation of the game. Your program has to supply
 
 Let's tell it to use the same rate and draw again, independently of the first draw. A short instruction. It says that once we know the type and its rate, the prediction for the next face stays the same whatever came up on the first toss. We also have to decide which rounds we can pool. An A drawn tomorrow has to have the same rate of heads as the A coins whose behavior we're studying today. That's how a notebook full of old coins earns the right to tell us something about a new one.
 
-Write $Y$ for the letter and $X$ for the faces. The program assigns each round the probability $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, where $\theta$ collects the three numbers we need to fit. It knows, for instance, that the chance of writing down A and two heads is $\pi\theta_A^2$. If I promise one real for A and two heads, I have to give the same ticket the same price whichever way I count. But who gave me the right to use $\theta_A^2$ as the probability of two heads? The pricing rule says nothing about squaring a number. I was the one who told the program to make two independent draws after choosing A. When we fit the joint distribution of the faces and letters to the notebook, we're doing \emph{generative learning}. We can ask the program to produce a new notebook and see how well what comes out resembles what we brought back from the table.
+Write\bookanchor{topic-03-1} $Y$ for the letter and $X$ for the faces. The program assigns each round the probability $p_\theta(x,y)=p_\theta(y)p_\theta(x\mid y)$, where $\theta$ collects the three numbers we need to fit. It knows, for instance, that the chance of writing down A and two heads is $\pi\theta_A^2$. If I promise one real for A and two heads, I have to give the same ticket the same price whichever way I count. But who gave me the right to use $\theta_A^2$ as the probability of two heads? The pricing rule says nothing about squaring a number. I was the one who told the program to make two independent draws after choosing A. When we fit the joint distribution of the faces and letters to the notebook, we're doing \emph{generative learning}. We can ask the program to produce a new notebook and see how well what comes out resembles what we brought back from the table.
 
 \secao{Can I Take the Pairs Apart?}
 Cut each of the forty records for A in half. For the moment, leave the two pieces from each round side by side. How many heads do we have? The four rounds in the first column contribute none. The twelve in the middle contribute twelve. The twenty-four in the last column contribute forty-eight. That's sixty heads and twenty tails. For a candidate value $u$ of A's rate of heads, the probability of those records contains sixty factors of $u$ and twenty factors of $1-u$. Grouping the records in the table introduces a factor that's the same for every candidate. We can compare them using just
 \[
                          L(u)=u^{60}(1-u)^{20}.
 \]
-Imagine a knob that controls how often the program produces heads. Set it at $u=1/2$ and it imitates a fair coin. Leave the eighty pieces where they are and turn only the knob. The height of the curve $L(u)$ tells you how much that setting favors the record on the table. That's what we call the \emph{likelihood}. At $u=0$ the program could never have produced those sixty heads. At $u=1$ it could never have produced the twenty tails. Somewhere between those ends there's a peak. If you started in the middle, which way would you turn the knob?
+Imagine\bookanchor{topic-03-3} a knob that controls how often the program produces heads. Set it at $u=1/2$ and it imitates a fair coin. Leave the eighty pieces where they are and turn only the knob. The height of the curve $L(u)$ tells you how much that setting favors the record on the table. That's what we call the \emph{likelihood}. At $u=0$ the program could never have produced those sixty heads. At $u=1$ it could never have produced the twenty tails. Somewhere between those ends there's a peak. If you started in the middle, which way would you turn the knob?
 
 Nudge it from $0.50$ to $0.51$. Each of the sixty factors for heads grows by 2\% of what it was. Each of the twenty factors for tails shrinks by 2\%. For a small enough nudge, the sixty heads pull harder. What if you were already at $0.90$? The same change of one hundredth would add a little over 1\% to each factor for heads but take 10\% off each factor for tails. Twenty tails can now outweigh sixty heads. What makes them so heavy? You've left them very little probability to give up.
 
@@ -485,7 +494,7 @@ Where the straightedge lies level, the gain on heads balances the loss on tails.
 {\footnotesize\raggedright Each point uses the same eighty slips of paper. The little line at the top shows the tangent where the gains on heads balance the losses on tails.\par}
 \end{minipage}\par\addvspace{5pt}
 
-For B there are twenty heads in eighty tosses. The same balance gives $\widehat\theta_B=1/4$. Of the eighty letters, forty are A, giving $\widehat\pi=1/2$. We have recovered the instruction sheet from Chapter 1 by \emph{maximum likelihood}. If I bring another sample tomorrow, all three numbers might change.
+For\bookanchor{topic-03-4} B there are twenty heads in eighty tosses. The same balance gives $\widehat\theta_B=1/4$. Of the eighty letters, forty are A, giving $\widehat\pi=1/2$. We have recovered the instruction sheet from Chapter 1 by \emph{maximum likelihood}. If I bring another sample tomorrow, all three numbers might change.
 
 You still have A's eighty slips on the table. Pick two rounds that each had a head and a tail. Swap one face from the first round with one from the other so you end up with a pair of heads and a pair of tails. You've made up a different history for the game. A's row, which read $4,12,24$, would now read $5,10,25$. What would the program that estimates $\theta_A$ notice? The same sixty heads and twenty tails are still on the table. If I handed you the two tables without saying which one I'd changed, you'd have exactly the same grounds for preferring any candidate $u$ to any other in either table. We gave the program permission to forget which other face each head came with.
 
@@ -549,7 +558,7 @@ In the notebook the generator expects to produce, the two prices agree as well,
 The first calculation uses observed frequencies. The second builds the pair of tosses by assuming independence. To catch either learner contradicting itself, I'd have to get two prices from \emph{its own} assumptions. To see which one makes the better purchase, I need fresh rounds.
 
 \secao{A bill that depends only on the letters}
-Tomorrow, whenever I have to give an answer, I'll already have seen both tosses. I can use the training rounds to fit the probability of the letter directly for each outcome I might be shown. Learning to predict $Y$ from $X$ this way is called \emph{discriminative learning}. To see how it works, keep just the twenty-eight tickets in the last column and pick a probability $q$ to announce for A. What would the notebook charge you for that choice?
+Tomorrow,\bookanchor{topic-04-1} whenever I have to give an answer, I'll already have seen both tosses. I can use the training rounds to fit the probability of the letter directly for each outcome I might be shown. Learning to predict $Y$ from $X$ this way is called \emph{discriminative learning}. To see how it works, keep just the twenty-eight tickets in the last column and pick a probability $q$ to announce for A. What would the notebook charge you for that choice?
 
 Suppose you announced $q=0.80$ for A. Make two piles of tickets, the twenty-four A's on one side and the four B's on the other. Now give A an extra hundredth of probability. In the bigger pile, the charge on each of the twenty-four tickets goes down a little. Where did that hundredth come from? Out of the $0.20$ you had set aside for B. The four tickets in that pile get more expensive. If you keep taking from B, which pile will eventually have the greater say in the bill?
 
@@ -573,7 +582,7 @@ Imagine the marks $1,3,9,27$ on a ruler for the odds. It costs exactly one extra
 \]
 A straight line appeared before we ever mentioned regression. The starting mark came from the odds before we saw the tosses. The step length came from the difference between the two coins.
 
-Let's keep the ruler and let the notebook choose those two measurements. Call the starting mark $\beta_0$ and the step length $\beta_1$. For a difference $s$ we read $v=\beta_0+\beta_1s$. How do we get from a mark back to a probability? If it reads $\ln 3$, there are three parts A for one part B. The bet on A is three of the four parts. If the mark reads $v$, undoing the logarithm gives $e^v$ parts A for one part B. Divide by the total number of parts. Dividing the numerator and denominator by $e^v$ just counts the same parts in a different unit. This gives us \emph{logistic regression},
+Let's\bookanchor{topic-04-3} keep the ruler and let the notebook choose those two measurements. Call the starting mark $\beta_0$ and the step length $\beta_1$. For a difference $s$ we read $v=\beta_0+\beta_1s$. How do we get from a mark back to a probability? If it reads $\ln 3$, there are three parts A for one part B. The bet on A is three of the four parts. If the mark reads $v$, undoing the logarithm gives $e^v$ parts A for one part B. Divide by the total number of parts. Dividing the numerator and denominator by $e^v$ just counts the same parts in a different unit. This gives us \emph{logistic regression},
 \[
               q(s)=\frac{e^v}{1+e^v}=\frac{1}{1+e^{-v}},
               \qquad v=\beta_0+\beta_1s .
@@ -585,7 +594,7 @@ You've seen the numbers in the last column. Cover it anyway. We want to know whe
 
 You can lift your finger. The observed odds were indeed twenty-four to four. In this table the line through the two visible points also minimizes the loss in the third column. The height is zero at $s=0$ and $\ln 6$ at $s=2$, so the fitted coefficients are $\widehat\beta_0=0$ and $\widehat\beta_1=(\ln 6)/2$. With the rates fitted by the generator, the slope was $\ln 3$. The two programs arrived at curves in the same family. One fitted rates that explain the tosses within each coin type. The other fitted the probabilities that the line assigns to the letters.
 
-We could also use Bayes to learn the line. Whenever a letter is revealed, we multiply the weight of each candidate line by the probability it gave that letter at that value of $s$. We then normalize across candidates. The training is still discriminative. The lines bet on the letter given the tosses.
+We\bookanchor{topic-04-4} could also use Bayes to learn the line. Whenever a letter is revealed, we multiply the weight of each candidate line by the probability it gave that letter at that value of $s$. We then normalize across candidates. The training is still discriminative. The lines bet on the letter given the tosses.
 
 Let's do a little damage to the notebook. Correct a single letter in the middle column from B to A. The bets in the outer columns still give heights of $-\ln 6$ and $\ln 6$, but the odds in the middle are now thirteen to eleven. No straight line can meet all three requests at once. If we fit a single line to the eighty rounds, a correction in the middle can change the bet even in the two-heads column, where no letter changed. The same assumption that lets one column teach us about another can lead us astray when the relationship we imagined breaks down.
 
@@ -634,7 +643,7 @@ B & 5 & 45 & 45 & 5 & 100 \\
 
 The first learner wants to make tickets like the ones it found. It measures the frequency of heads in each window for each machine. It gets $1/2$ four times. If I order a hundred A tickets, it will draw the two faces independently at those rates. It expects to produce twenty-five $HH$ tickets. A produced forty-five. If I order a hundred B tickets, it expects the same twenty-five. B produced five. Which of the four counts did it get wrong?
 
-It got them all right. The learner itself put the instruction to draw the faces independently into the program. When we use a generator like this for classification, we call it \emph{Naive Bayes}. Here is the assumption we put in by hand,
+It\bookanchor{topic-05-1} got them all right. The learner itself put the instruction to draw the faces independently into the program. When we use a generator like this for classification, we call it \emph{Naive Bayes}. Here is the assumption we put in by hand,
 \[
      p(x_1,x_2\mid y)=p(x_1\mid y)\,p(x_2\mid y).
 \]
@@ -660,9 +669,9 @@ The generator and the logistic model agree on the letter for \emph{every} ticket
 \secao{Who chose the examples?}
 I often tell my students that we do the modeling when we decide what assumptions we have to bring to the problem ourselves. The next two workshops want the same thing. Tomorrow an unlabeled ticket will arrive and someone will have to guess its origin. In which workshop would I start with each approach?
 
-In the first, it costs money to discover the letter. The workshop investigates only half the tickets with matching faces and one in ten of those with different faces. Within each group it chooses the tickets at random. Apply that procedure to our table. Of the hundred matching tickets, we expect to investigate fifty, of which 45 will be A's. Of the hundred mismatches we expect to investigate ten, of which one will be an A. The expected audit counts put the share of matching tickets at $50/60$. On the conveyor belt it's one half. If I used this file to generate another print run, I'd already be wrong on my first order. But the chance of A among the matches is still $45/50$, and among the mismatches it's $1/10$. Sampling shrank each column without favoring either letter within it. I'd start with the discriminative approach because I understand why the proportions I need survived sampling. The decisive information came from whoever chose the tickets for inspection.
+In\bookanchor{topic-05-3} the first, it costs money to discover the letter. The workshop investigates only half the tickets with matching faces and one in ten of those with different faces. Within each group it chooses the tickets at random. Apply that procedure to our table. Of the hundred matching tickets, we expect to investigate fifty, of which 45 will be A's. Of the hundred mismatches we expect to investigate ten, of which one will be an A. The expected audit counts put the share of matching tickets at $50/60$. On the conveyor belt it's one half. If I used this file to generate another print run, I'd already be wrong on my first order. But the chance of A among the matches is still $45/50$, and among the mismatches it's $1/10$. Sampling shrank each column without favoring either letter within it. I'd start with the discriminative approach because I understand why the proportions I need survived sampling. The decisive information came from whoever chose the tickets for inspection.
 
-In the other workshop I go to the two printers myself. I take a hundred tickets at random from A's output and a hundred from B's. Now I can estimate what each machine prints. My notebook is half A because I just decided it would be. On tomorrow's shift only one ticket in ten will come from A. If the mechanic tells me the settings are staying put, I can carry over the rates I measured at the bench and use the production mix. A repeat still favors A by a factor of nine. Since the starting odds have fallen to one to nine, after a repeat my bet on A is $1/2$. Here I'd start with the generator. Stable settings are an assumption I'd want to be able to defend with the mechanic. The hundred tickets from each machine can't make that promise on their own.
+In\bookanchor{topic-05-5} the other workshop I go to the two printers myself. I take a hundred tickets at random from A's output and a hundred from B's. Now I can estimate what each machine prints. My notebook is half A because I just decided it would be. On tomorrow's shift only one ticket in ten will come from A. If the mechanic tells me the settings are staying put, I can carry over the rates I measured at the bench and use the production mix. A repeat still favors A by a factor of nine. Since the starting odds have fallen to one to nine, after a repeat my bet on A is $1/2$. Here I'd start with the generator. Stable settings are an assumption I'd want to be able to defend with the mechanic. The hundred tickets from each machine can't make that promise on their own.
 
 You can also correct the bet of a calibrated discriminative model if you know the old mix, the new mix, and that the same stability holds. In practice, the choice depends on what I can justify about the next shift. To test my choice, I'd set aside a batch from the actual conveyor belt. If the job is to sort tickets, I'd uncover the labels to measure the cost of sending a ticket to the wrong bin. If it's to plan the print run, I'd compare the number of tickets of each pattern with the quantities I'd promised the buyer.
 
@@ -689,7 +698,7 @@ You know a way to tell them apart. Walk back into the room with the ticket that 
 \secao{What Do You Charge for a Right Answer?}
 Let's keep the faces, the labels, and even the form of the function we use to classify them. As in the last chapter, $z=+1$ means the faces match, and $z=-1$ means they differ. Our score will be $f_w(z)=wz$. Give A the label $y=+1$ and B the label $y=-1$. The symmetry of our workshop lets us use the same coefficient for both kinds of ticket. On matching faces, $w=0.4$ gives A, and so does $w=4$. What would make one number earn its place over the other?
 
-Logistic regression has an answer. Its score measures the log odds of A. By the time we grade the test, though, we know which letter came up. A score of $-2$ when the letter is B deserves as much credit as $+2$ when the letter is A. We can turn the ruler around for the B tickets. Multiplying the score by the label $y$ leaves the reading alone for A and reverses its sign for B. Call this reading in favor of the letter that actually came up $m=yf_w(z)$. For both right answers in the example, $m=2$.
+Logistic\bookanchor{topic-06-1} regression has an answer. Its score measures the log odds of A. By the time we grade the test, though, we know which letter came up. A score of $-2$ when the letter is B deserves as much credit as $+2$ when the letter is A. We can turn the ruler around for the B tickets. Multiplying the score by the label $y$ leaves the reading alone for A and reverses its sign for B. Call this reading in favor of the letter that actually came up $m=yf_w(z)$. For both right answers in the example, $m=2$.
 
 What probability did the learner give the right letter? On the ruler we just turned around, the odds in its favor are $e^m$ to one. Of the $1+e^m$ parts, $e^m$ belong to that letter. Its share is therefore $p_{\rm right}=1/(1+e^{-m})$, as in the previous chapter. To work out the charge, look at the denominator. It tells you what you would have to multiply that share by to get back to one. The logarithm of that factor is the price we set in Chapter 2, this time in natural logarithm units,
 \[
@@ -697,11 +706,11 @@ What probability did the learner give the right letter? On the ruler we just tur
 \]
 Even a learner who got the letter right still owes something. Among the tickets with matching faces, the bill is smallest when we quote the fraction of A tickets in the pile, as we saw in Chapter 4. Nine A tickets and one B ticket call for odds of nine to one, or $w=\ln 9$. If the pile has six A tickets and four B tickets, the odds are three to two and the score drops to $\ln(3/2)$. With no penalty, the fractions for the tickets with different faces are mirror images of these, so the same coefficient works for both groups.
 
-Let me propose another way to grade the test. I'll charge one point for a tie, $m=0$. For a step in the right direction, I'll take a point off the bill. For a step in the wrong direction, I'll add a point. The bill has a floor. Once you reach $m=1$, I charge nothing more on that ticket. A right answer with $m=0.6$ therefore costs $0.4$ points and a wrong one with $m=-0.6$ costs $1.6$. This rule is called the \emph{hinge loss},
+Let\bookanchor{topic-06-3} me propose another way to grade the test. I'll charge one point for a tie, $m=0$. For a step in the right direction, I'll take a point off the bill. For a step in the wrong direction, I'll add a point. The bill has a floor. Once you reach $m=1$, I charge nothing more on that ticket. A right answer with $m=0.6$ therefore costs $0.4$ points and a wrong one with $m=-0.6$ costs $1.6$. This rule is called the \emph{hinge loss},
 \[
                   \ell_{\rm h}(m)=\max(0,1-m).
 \]
-We call the product $m$ the \emph{functional margin}. Let's see what the new bill does to those nine right answers.
+We\bookanchor{topic-06-4} call the product $m$ the \emph{functional margin}. Let's see what the new bill does to those nine right answers.
 
 \perdasmargem
 
@@ -710,22 +719,22 @@ Put ten tickets with matching faces on the table, nine from A and one from B. At
 Trade three A tickets for three B tickets. You now have six against four. Up to $w=1$, the six discounts still cover the four extra charges. Beyond one, all that happens is that the four mistakes get more expensive. The best place is still $w=1$. I could hand you the winning coefficient, explain exactly how I chose it, and ask what I ought to pay for the next ticket. Could you tell whether I had the pile with nine A tickets or the one with six? The gate reads the positive sign and gives the same answer for both piles. Now suppose someone feeds the score of one through the logistic sigmoid and announces a probability of about $73\%$ for A. That gives us a price of R\$\,7.31 for both piles. One pile suggests nine reais and the other suggests six. I could defend R\$\,7.31 if I found that frequency in fresh tickets with the same score. But that promise took an extra assumption about what the number one meant. The hinge loss only charged us for the margin.
 
 \secao{Where the Margin Comes From}
-To get to a \emph{support vector machine}, or SVM, we have one more choice to make. The workshop inspector brings us a caliper. The gate now sorts parts by their measured diameter. In the batch we fit to, the largest B part measures $4.8$ mm and the smallest A part measures $5.2$ mm. Anything above the threshold goes to A. I set my threshold at $5.15$ mm. You set yours at $5.00$ mm. We test the parts one by one, and we both get every one right. Before placing an order for your gate or mine, what would you like to ask the inspector?
+To\bookanchor{topic-06-5} get to a \emph{support vector machine}, or SVM, we have one more choice to make. The workshop inspector brings us a caliper. The gate now sorts parts by their measured diameter. In the batch we fit to, the largest B part measures $4.8$ mm and the smallest A part measures $5.2$ mm. Anything above the threshold goes to A. I set my threshold at $5.15$ mm. You set yours at $5.00$ mm. We test the parts one by one, and we both get every one right. Before placing an order for your gate or mine, what would you like to ask the inspector?
 
 He takes the part that measured $5.2$, lifts it out of the caliper, and clamps it again. Just changing its position, he tells us, can make two readings differ by as much as $0.10$ mm. Now there is a difference between our two perfect scores. A second reading of $5.10$ sends the part through my gate to B. At your gate it still has room to spare. The same reasoning works from the other side. Among the boundaries that got the whole batch right, the one at $5.00$ mm gives the nearest part on either side the most clearance. The person who knew how much that clearance was worth was holding the caliper.
 
 Why didn't we simply reward a high score on the right side? If our ruler is $f(\boldsymbol u)=\boldsymbol w^\top\boldsymbol u+b$, I can double $\boldsymbol w$ and $b$ without moving the boundary $f=0$ by so much as a millimeter. The scores have doubled. The part is just as far from the boundary as before. To connect the two scales, imagine that walking one millimeter perpendicular to the boundary adds four points on the display. To pick up one point, you need to move a quarter of a millimeter. The norm $\lVert\boldsymbol w\rVert$ plays the part of those four points per millimeter. Take the displacement along each axis, multiply it by its weight, and add the results. This measures how far you went in the direction of $\boldsymbol w$, scaled by its length. In that direction, perpendicular to the boundary, a distance $d$ adds $d\lVert\boldsymbol w\rVert$ to the score. The line where the score is $+1$ therefore lies $1/\lVert\boldsymbol w\rVert$ from the boundary. The line where it is $-1$ lies just as far away on the other side.
 
-When we can give every example $y_i f(\boldsymbol u_i)\geq1$, choosing the smallest norm $\lVert\boldsymbol w\rVert$ gives us the widest strip. With our caliper, that puts the threshold halfway between the two nearest parts. But for a ticket with two heads, we know the very same input can carry either label, A or B. No straight line can put them on different sides. Let's strike a bargain. We want to widen the strip and we're willing to pay for the parts that fall inside it or on the wrong side. If I double the number of parts by copying each one, I want the average cost of the errors to stay the same. That's why I divide the bill for the parts by $n$. On the other pan of the balance I choose to charge for the square of the norm. Doubling the scale makes that charge four times as large. I have made a choice about what the width of the strip is worth. With both charges included, the cost minimized by a linear \emph{soft-margin} SVM is
+When\bookanchor{topic-06-7} we can give every example $y_i f(\boldsymbol u_i)\geq1$, choosing the smallest norm $\lVert\boldsymbol w\rVert$ gives us the widest strip. With our caliper, that puts the threshold halfway between the two nearest parts. But for a ticket with two heads, we know the very same input can carry either label, A or B. No straight line can put them on different sides. Let's strike a bargain. We want to widen the strip and we're willing to pay for the parts that fall inside it or on the wrong side. If I double the number of parts by copying each one, I want the average cost of the errors to stay the same. That's why I divide the bill for the parts by $n$. On the other pan of the balance I choose to charge for the square of the norm. Doubling the scale makes that charge four times as large. I have made a choice about what the width of the strip is worth. With both charges included, the cost minimized by a linear \emph{soft-margin} SVM is
 \[
  \frac1n\sum_{i=1}^n \max\{0,1-y_i f(\boldsymbol u_i)\}
        +\frac{\lambda}{2}\lVert\boldsymbol w\rVert^2,\qquad \lambda>0.
 \]
-The first term is the charge we applied to our two piles. The second charges for scaling up the coefficients even when we leave the boundary exactly where it was. A larger $\lambda$ puts more weight on the norm. The location of the boundary depends on the parts that reach the margin or violate it. Among them are the \emph{support vectors}. The value $w=1$ in our envelope example came from the loss alone. In fitting an SVM, the penalty has a say too.\footnote{Corinna Cortes and Vladimir Vapnik develop the classifier with a margin and margin violations in \href{https://doi.org/10.1007/BF00994018}{\emph{Support-Vector Networks}} (1995). For the formulation in terms of a loss and a penalty, see T. Hastie, S. Rosset, R. Tibshirani, and J. Zhu, \href{https://jmlr.org/papers/v5/hastie04a.html}{\emph{The Entire Regularization Path for the Support Vector Machine}} (2004).}
+The\bookanchor{topic-06-8} first term is the charge we applied to our two piles. The second charges for scaling up the coefficients even when we leave the boundary exactly where it was. A larger $\lambda$ puts more weight on the norm. The location of the boundary depends on the parts that reach the margin or violate it. Among them are the \emph{support vectors}. The value $w=1$ in our envelope example came from the loss alone. In fitting an SVM, the penalty has a say too.\footnote{Corinna Cortes and Vladimir Vapnik develop the classifier with a margin and margin violations in \href{https://doi.org/10.1007/BF00994018}{\emph{Support-Vector Networks}} (1995). For the formulation in terms of a loss and a penalty, see T. Hastie, S. Rosset, R. Tibshirani, and J. Zhu, \href{https://jmlr.org/papers/v5/hastie04a.html}{\emph{The Entire Regularization Path for the Support Vector Machine}} (2004).}
 
 At the workshop I would test the SVM if I wanted the sorting decision to hold up under repeated measurements and could justify the ruler I used to measure distance. If I give the machine both diameter and weight, changing grams to milligrams already changes the geometry of the raw data. Nobody learned anything new about the parts by changing units. It falls to me to decide what a step along each axis is worth. To check my choice, I would set aside parts of known origin and measure them again. The clearance I found on yesterday's parts interests me only if it helps route the ones coming through today.
 
-Now change the job. We want to decide whether a part is worth inspecting. An inspection costs two reais and prevents a loss of ten reais if the part came from B. Call the risk of B at that measurement $r$. An inspection is worth doing when $10r>2$. At an inspection price of four reais, the cutoff moves from $20\%$ to $40\%$. A part with a $30\%$ risk changes destination without anybody touching the caliper. Here I would start with logistic regression. I can take its risk estimate to the person who knows the prices. There is one detail. In the batch where A and B separated perfectly, who measured the risk for a $5.05$ mm part? No part had that diameter. A steeper and steeper logistic curve can keep improving the fit to the letters in the batch. Before spending money on the strength of its number, I would find labeled parts near the decision threshold and check whether the announced risks match what happens. We can also learn to calibrate an SVM score. For that I would set aside labeled data from the population where I plan to use the score and measure the frequency of B there.
+Now\bookanchor{topic-06-10} change the job. We want to decide whether a part is worth inspecting. An inspection costs two reais and prevents a loss of ten reais if the part came from B. Call the risk of B at that measurement $r$. An inspection is worth doing when $10r>2$. At an inspection price of four reais, the cutoff moves from $20\%$ to $40\%$. A part with a $30\%$ risk changes destination without anybody touching the caliper. Here I would start with logistic regression. I can take its risk estimate to the person who knows the prices. There is one detail. In the batch where A and B separated perfectly, who measured the risk for a $5.05$ mm part? No part had that diameter. A steeper and steeper logistic curve can keep improving the fit to the letters in the batch. Before spending money on the strength of its number, I would find labeled parts near the decision threshold and check whether the announced risks match what happens. We can also learn to calibrate an SVM score. For that I would set aside labeled data from the population where I plan to use the score and measure the frequency of B there.
 
 \secao{Can We Learn When the Answer Stays the Same?}
 Set both programs to $w=2$. Give each of them a ticket with matching faces that turns out to be an A. Both got it right. Now slide your finger to the right on the loss graph, from $2$ to $2.01$. On the hinge curve, your finger traveled along the flat stretch. The logistic curve still slopes down. Just by looking, you can tell which learner has a reason to increase $w$ after seeing this ticket.
@@ -734,7 +743,7 @@ How much does it still stand to gain? At $m=2$, the logistic charge is about $0.
 \[
  \ell'_{\rm log}(m)=-\frac{e^{-m}}{1+e^{-m}}=-(1-p_{\rm right}).
 \]
-The learner who put close to $88\%$ on the right letter still had nearly $12\%$ on the wrong side. That leftover share is what the ticket contributes to the adjustment. A \emph{gradient step} tells us to move against the slope to bring the bill down. If $\eta>0$ controls the step size, then, since $m=w$ here, the ticket adds $\eta/(1+e^2)$ to $w$. On the hinge curve, a slope of zero adds zero. Suppose we also charge $\lambda w^2/2$ for the coefficient. Why does a large $w$ feel a stronger pull back toward zero? Picture $w^2$ as the area of a square with side $w>0$. Extend the side a little and you add two strips of length $w$ and a tiny corner that shrinks with the square of the step. The area grows at a rate of $2w$. Multiply by the rate we charge, $\lambda/2$, and you get a slope of $\lambda w$. That part subtracts $\eta\lambda w$ from both updates. We can now tell how much of the turn of the dial came from the new letter and how much came from a charge that was already there.
+The\bookanchor{topic-06-11} learner who put close to $88\%$ on the right letter still had nearly $12\%$ on the wrong side. That leftover share is what the ticket contributes to the adjustment. A \emph{gradient step} tells us to move against the slope to bring the bill down. If $\eta>0$ controls the step size, then, since $m=w$ here, the ticket adds $\eta/(1+e^2)$ to $w$. On the hinge curve, a slope of zero adds zero. Suppose we also charge $\lambda w^2/2$ for the coefficient. Why does a large $w$ feel a stronger pull back toward zero? Picture $w^2$ as the area of a square with side $w>0$. Extend the side a little and you add two strips of length $w$ and a tiny corner that shrinks with the square of the step. The area grows at a rate of $2w$. Multiply by the rate we charge, $\lambda/2$, and you get a slope of $\lambda w$. That part subtracts $\eta\lambda w$ from both updates. We can now tell how much of the turn of the dial came from the new letter and how much came from a charge that was already there.
 
 We could have made a different choice at the outset. For each kind of ticket, keep just the counts of A and B. When a new letter arrives, add one to its count. With the same notebook I can tell you which letter occurs more often, calculate the fraction of A tickets, or choose the score that minimizes either loss in that column. Changing the question I asked the notebook cost me a fresh calculation when I read it. The instruction to add one to the count still worked.
 
@@ -782,7 +791,7 @@ The term $t-q$ is $-0.9$ in both notebooks. How far does the observation move th
 Could we program a learner that keeps only $q$? Sure. Give the latest entry one tenth of the weight every time and write $q'=q+(t-q)/10$. Both slips marked $90\%$ will now give $81\%$ after a B. If I want recent rounds to carry more weight because a machine's setting can change, I have a reason to try that rule. But I've just made a choice about the learner. With a hundred entries in my notebook, the observed frequency would give the next one a weight of $1/101$. Giving it a tenth needs a reason of its own.
 
 \secao{A Test for Any Notebook}
-Let $h$ stand for the history the learner has read, and $S(h)$ for what it kept. Write $hd$ for the history we get by adding the observation $d$ at the end. Assume we can give the program the same set of possible observations after any history. In our game I can hand you an A or a B.
+Let\bookanchor{topic-07-1} $h$ stand for the history the learner has read, and $S(h)$ for what it kept. Write $hd$ for the history we get by adding the observation $d$ at the end. Assume we can give the program the same set of possible observations after any history. In our game I can hand you an A or a B.
 
 I want to close the file of old records and still get exactly the state tomorrow that I'd get if I reopened the file and worked through everything again. In other words, I want a deterministic rule $U$ such that
 \[
@@ -817,12 +826,12 @@ In the first two notebooks, $90\%$ was an estimate of the frequency of A in a po
 
 In the coin notebook we cut into pieces, two histories with the same sixty heads in eighty tosses give the same estimate of $3/4$. Ask how often two heads came together, and swapping two pieces is enough to make the histories disagree. With the printers, a first head and a first tail both leave our bet on the machine at $1/2$. Open the second window and you discover why we needed to remember the first.
 
-Even the value of an observation depends on the job at hand. When the drawer gives either coin an equal chance, peeking at the first toss tells us, on average, $0.189$ bits about the coin's identity, as we worked out in Chapter 2. How much would you pay me for that peek if all you could do with the result was decide whether to buy a ticket paying ten reais if the coin is A? At two reais a ticket, you'd buy before peeking and still buy if you saw tails, when your probability for A fell to $1/4$. The peek is worth zero reais for that decision. Now I raise the price to five reais. If you see heads, you buy a ticket with an expected payout of R\$\,7.50. If you see tails, you sit it out. Before seeing the toss, your expected gain was zero. Getting to choose after you look is worth $(1/2)(7.50-5)=1.25$ reais on average. Did I do anything to the coin to change the price of that information?
+Even\bookanchor{topic-07-3} the value of an observation depends on the job at hand. When the drawer gives either coin an equal chance, peeking at the first toss tells us, on average, $0.189$ bits about the coin's identity, as we worked out in Chapter 2. How much would you pay me for that peek if all you could do with the result was decide whether to buy a ticket paying ten reais if the coin is A? At two reais a ticket, you'd buy before peeking and still buy if you saw tails, when your probability for A fell to $1/4$. The peek is worth zero reais for that decision. Now I raise the price to five reais. If you see heads, you buy a ticket with an expected payout of R\$\,7.50. If you see tails, you sit it out. Before seeing the toss, your expected gain was zero. Getting to choose after you look is worth $(1/2)(7.50-5)=1.25$ reais on average. Did I do anything to the coin to change the price of that information?
 
 Back in the workshop, the generative model and logistic regression could give the same odds on the machine. Only the first could simulate a production run. The SVM score was enough to operate the sorting gate. Pricing the risk on a part took calibration. On the first page, you offered me eighty centavos if the coin landed heads and sixty if it landed tails for a ticket you'd just sold me for fifty. We found the mistake before tossing the coin. Our hypothesis was this. \emph{To learn is to keep our bets coherent as new data arrive.} Now we have two tests for that idea. When the numbers are prices, I can write out a single ticket and price it two ways. When I run the program, I can give it two pasts it summarized in the same way and ask it to honor the bets it promised for the next round. The first test checks the model's arithmetic. The second checks whether the learner kept what it needs to do that arithmetic. There's still a check neither one can do for me. If the model assumes independence where the machine copies the first face, it can pass both tests and keep losing money. I need to open fresh tickets.
 
 \secao{The Workshop Changes Its Mind}
-The next day the inspector has a small request. He suspects the machine's setting has begun to drift and wants the display to show the fraction of A's \emph{in the last three tickets only}. I show him two notebooks, with the letters in the order they came in,
+The\bookanchor{topic-07-4} next day the inspector has a small request. He suspects the machine's setting has begun to drift and wants the display to show the fraction of A's \emph{in the last three tickets only}. I show him two notebooks, with the letters in the order they came in,
 \[
                            A\,A\,B \qquad\qquad A\,B\,A .
 \]
@@ -851,4 +860,39 @@ The inspector looks up the setting he plans to use tomorrow. The last three time
 
 She's still holding the pencil. Before I give her a number, I'd like to hear from the person who has to bore the holes. Whose mistakes would take more work to put right at this bench, my three or your one?
 
+\bookfrontheading{Subject index}{subject-index}
+\begin{multicols}{2}\raggedcolumns\raggedright\small
+\bookindexentry{Bayes’ rule}{\hyperref[topic-01-3]{\pageref*{topic-01-3}}, \hyperref[topic-04-4]{\pageref*{topic-04-4}}}
+\bookindexentry{Bit}{\hyperref[topic-02-2]{\pageref*{topic-02-2}}}
+\bookindexentry{Calibration}{\hyperref[topic-06-10]{\pageref*{topic-06-10}}}
+\bookindexentry{Caliper}{\hyperref[topic-06-5]{\pageref*{topic-06-5}}}
+\bookindexentry{Coherence of bets}{\hyperref[topic-01-2]{\pageref*{topic-01-2}}}
+\bookindexentry{Conditional independence}{\hyperref[topic-05-1]{\pageref*{topic-05-1}}}
+\bookindexentry{Conditional probability}{\hyperref[topic-04-1]{\pageref*{topic-04-1}}}
+\bookindexentry{Discriminative learning}{\hyperref[topic-04-1]{\pageref*{topic-04-1}}, \hyperref[topic-05-3]{\pageref*{topic-05-3}}}
+\bookindexentry{Entropy}{\hyperref[topic-02-4]{\pageref*{topic-02-4}}}
+\bookindexentry{Functional margin}{\hyperref[topic-06-4]{\pageref*{topic-06-4}}}
+\bookindexentry{Generative learning}{\hyperref[topic-03-1]{\pageref*{topic-03-1}}, \hyperref[topic-05-5]{\pageref*{topic-05-5}}}
+\bookindexentry{Gradient}{\hyperref[topic-06-11]{\pageref*{topic-06-11}}}
+\bookindexentry{Hinge loss}{\hyperref[topic-06-3]{\pageref*{topic-06-3}}}
+\bookindexentry{Joint distribution}{\hyperref[topic-03-1]{\pageref*{topic-03-1}}}
+\bookindexentry{Learner state}{\hyperref[topic-07-1]{\pageref*{topic-07-1}}}
+\bookindexentry{Learning}{\hyperref[topic-01-1]{\pageref*{topic-01-1}}}
+\bookindexentry{Likelihood}{\hyperref[topic-03-3]{\pageref*{topic-03-3}}}
+\bookindexentry{Log odds}{\hyperref[topic-06-1]{\pageref*{topic-06-1}}}
+\bookindexentry{Logistic loss}{\hyperref[topic-06-1]{\pageref*{topic-06-1}}}
+\bookindexentry{Logistic regression}{\hyperref[topic-04-3]{\pageref*{topic-04-3}}}
+\bookindexentry{Maximum likelihood}{\hyperref[topic-03-4]{\pageref*{topic-03-4}}}
+\bookindexentry{Memory}{\hyperref[topic-07-4]{\pageref*{topic-07-4}}}
+\bookindexentry{Mutual information}{\hyperref[topic-02-2]{\pageref*{topic-02-2}}}
+\bookindexentry{Naive Bayes}{\hyperref[topic-05-1]{\pageref*{topic-05-1}}}
+\bookindexentry{Regularization}{\hyperref[topic-06-8]{\pageref*{topic-06-8}}}
+\bookindexentry{Sampling}{\hyperref[topic-05-3]{\pageref*{topic-05-3}}}
+\bookindexentry{Sliding window}{\hyperref[topic-07-4]{\pageref*{topic-07-4}}}
+\bookindexentry{Soft margin}{\hyperref[topic-06-7]{\pageref*{topic-06-7}}}
+\bookindexentry{State sufficiency}{\hyperref[topic-07-1]{\pageref*{topic-07-1}}}
+\bookindexentry{Support vector machine (SVM)}{\hyperref[topic-06-5]{\pageref*{topic-06-5}}}
+\bookindexentry{Support vectors}{\hyperref[topic-06-8]{\pageref*{topic-06-8}}}
+\bookindexentry{Value of information}{\hyperref[topic-02-1]{\pageref*{topic-02-1}}, \hyperref[topic-07-3]{\pageref*{topic-07-3}}}
+\end{multicols}
 \end{document}

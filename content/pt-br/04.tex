@@ -34,7 +34,7 @@ No caderno que o gerador espera produzir, a conta também fecha,
 O primeiro usa as frequências observadas. O segundo usa a independência para compor o par. Para acusar um aprendiz de contradição, eu teria de obter dois preços partindo das hipóteses \emph{dele}. Para saber qual compra melhor, preciso de rodadas novas.
 
 \secao{Uma conta que só pede as letras}
-Amanhã, toda vez que tiver de responder, já terei visto as duas faces. Posso usar o treino para ajustar diretamente a probabilidade da letra para cada resultado que me mostrarem. Essa maneira de aprender a prever $Y$ a partir de $X$ é o \emph{aprendizado discriminativo}. Para ver como funciona, fique apenas com os vinte e oito bilhetes da última coluna e escolha uma probabilidade $q$ para anunciar. O que o caderno lhe cobraria por essa escolha?
+Amanhã,\bookterms{Aprendizado discriminativo|Probabilidade condicional} toda vez que tiver de responder, já terei visto as duas faces. Posso usar o treino para ajustar diretamente a probabilidade da letra para cada resultado que me mostrarem. Essa maneira de aprender a prever $Y$ a partir de $X$ é o \emph{aprendizado discriminativo}. Para ver como funciona, fique apenas com os vinte e oito bilhetes da última coluna e escolha uma probabilidade $q$ para anunciar. O que o caderno lhe cobraria por essa escolha?
 
 Imagine que você tenha anunciado $q=0{,}80$ para A. Separe os bilhetes em duas pilhas, as vinte e quatro letras A de um lado e as quatro B do outro. Agora dê a A um centésimo a mais de probabilidade. Na pilha maior, cada um dos vinte e quatro bilhetes ficará um pouco mais barato. De onde veio esse centésimo? Saiu dos $0{,}20$ que você tinha reservado a B. Os quatro bilhetes daquela pilha ficam mais caros. Se você continuar tirando de B, qual das duas pilhas acabará mandando na conta?
 
@@ -58,7 +58,7 @@ Pense nas marcas $1,3,9,27$ de uma régua para as chances. Cada passagem para a 
 \]
 A reta apareceu antes de falarmos em regressão. A marca inicial veio das chances antes de ver as faces. O comprimento do passo veio da diferença entre as duas moedas.
 
-Vamos conservar a régua e deixar que o caderno escolha as duas medidas. Chamemos de $\beta_0$ a marca inicial e de $\beta_1$ o tamanho do passo. Para um saldo $s$ lemos $v=\beta_0+\beta_1s$. Como voltar de uma marca a uma probabilidade? Se ela diz $\ln 3$, temos três partes de A para uma de B. A aposta em A vale três das quatro partes. Se a marca diz $v$, desfazer o logaritmo dá $e^v$ partes de A para uma de B. Divida pelo total de partes. Dividir depois o numerador e o denominador por $e^v$ apenas conta as mesmas partes em outra unidade. A \emph{regressão logística} devolve assim
+Vamos\bookterms{Regressão logística} conservar a régua e deixar que o caderno escolha as duas medidas. Chamemos de $\beta_0$ a marca inicial e de $\beta_1$ o tamanho do passo. Para um saldo $s$ lemos $v=\beta_0+\beta_1s$. Como voltar de uma marca a uma probabilidade? Se ela diz $\ln 3$, temos três partes de A para uma de B. A aposta em A vale três das quatro partes. Se a marca diz $v$, desfazer o logaritmo dá $e^v$ partes de A para uma de B. Divida pelo total de partes. Dividir depois o numerador e o denominador por $e^v$ apenas conta as mesmas partes em outra unidade. A \emph{regressão logística} devolve assim
 \[
               q(s)=\frac{e^v}{1+e^v}=\frac{1}{1+e^{-v}},
               \qquad v=\beta_0+\beta_1s .
@@ -70,7 +70,7 @@ Você já viu os números da última coluna. Cubra-a mesmo assim. O que queremos
 
 Pode tirar o dedo. As chances observadas eram mesmo vinte e quatro para quatro. Nesta tabela, a reta que passa pelos dois pontos visíveis também minimiza a perda na terceira coluna. Como a altura é zero em $s=0$ e é $\ln 6$ em $s=2$, os coeficientes ajustados são $\widehat\beta_0=0$ e $\widehat\beta_1=(\ln 6)/2$. Com as taxas ajustadas pelo gerador a inclinação era $\ln 3$. Os dois programas chegaram a curvas da mesma família. Um ajustou as taxas que explicam as faces dentro de cada tipo. O outro ajustou as probabilidades que a reta dá às letras.
 
-Também podemos usar Bayes para aprender a reta. A cada letra revelada, multiplicamos o peso de cada reta candidata pela probabilidade que ela deu àquela letra para aquele saldo. Normalizamos sobre as candidatas. O treino continua discriminativo, pois as retas fazem apostas sobre a letra dadas as faces.
+Também\bookterms{Bayes, regra de} podemos usar Bayes para aprender a reta. A cada letra revelada, multiplicamos o peso de cada reta candidata pela probabilidade que ela deu àquela letra para aquele saldo. Normalizamos sobre as candidatas. O treino continua discriminativo, pois as retas fazem apostas sobre a letra dadas as faces.
 
 Faça um pequeno estrago no caderno. Corrija uma única letra na coluna do meio, de B para A. As apostas das colunas extremas continuam dando alturas $-\ln 6$ e $\ln 6$, mas no meio as chances passam a treze para onze. Já não há uma reta que cumpra os três pedidos ao mesmo tempo. Se ajustarmos uma só reta às oitenta rodadas, uma correção no meio poderá mudar a aposta até na coluna das duas caras, onde letra alguma foi alterada. Somos capazes de aprender sobre uma coluna usando as outras pela mesma razão que nos permite errar uma delas quando a relação que imaginamos falha.
 
